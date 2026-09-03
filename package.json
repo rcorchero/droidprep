@@ -12,6 +12,7 @@
     "astro": "astro",
     "parse": "node scripts/parse-questions.mjs",
     "validate": "node scripts/validate-data.mjs",
+    "test": "node tests/questions-schema.test.mjs && node tests/mcq-schema.test.mjs",
     "lint": "astro check"
   },
   "dependencies": {

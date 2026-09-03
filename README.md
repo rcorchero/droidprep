@@ -26,6 +26,7 @@ npm run preview    # preview the production build
 | `npm run build` | Build the production site to `./dist/` |
 | `npm run preview` | Preview the production build |
 | `npm run validate` | Validate data schemas (questions, MCQ, difficulty, categories) |
+| `npm test` | Run schema tests in `./tests/` |
 | `npm run lint` | Astro type check |
 | `npm run parse` | Regenerate `questions.json` from the source markdown database |
 
@@ -40,6 +41,7 @@ droidprep/
 │   ├── layouts/     # BaseLayout
 │   └── styles/      # global.css design tokens
 ├── scripts/         # Parsing & validation
+├── tests/           # Schema test suites (questions, MCQ, difficulty)
 ├── public/          # Static assets
 └── .github/workflows/  # CI + GitHub Pages deploy
 ```
