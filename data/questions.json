@@ -1,0 +1,1737 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-09-03T13:09:28.702Z",
+  "totalQuestions": 173,
+  "questions": [
+    {
+      "id": "algorithms-01",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "What is Big O notation and why is it important?",
+      "answer": "Big O notation describes how the runtime or memory usage of an algorithm grows relative to the input size `n`, ignoring constants and lower-order terms. It gives a high-level measure of efficiency so you can compare algorithms and choose the right one for the scale of your data.",
+      "whyItMatters": "A core CS-fundamentals question; Android candidates must reason about time/space complexity of their solutions (lists, maps, sorting, search).",
+      "codeExample": "// O(1) - constant\nfun first(list: List<Int>): Int = list.first()\n\n// O(n) - linear\nfun contains(list: List<Int>, x: Int): Boolean {\n    for (v in list) if (v == x) return true\n    return false\n}\n\n// O(n^2) - quadratic (nested loops)\nfun pairs(list: List<Int>) {\n    for (i in list) for (j in list) println(\"$i,$j\")\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-02",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "What are Arrays, and what are their time/space complexities?",
+      "answer": "An array stores elements of a type at contiguous memory locations, enabling fast random access by index. Access is O(1); search is O(n); insertion/deletion is O(n) because middle elements must be shifted. Static arrays have fixed size; dynamic arrays (Kotlin `ArrayList`) resize as needed (amortized O(1) append). Space is O(n).",
+      "whyItMatters": "Choosing whether to use an array/list vs. a map depends on knowing these trade-offs.",
+      "codeExample": "val fixed = IntArray(5)        // static-size primitive array\nval dyn = mutableListOf(1, 2, 3) // dynamic array (ArrayList)\ndyn.add(4)                      // amortized O(1)",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-03",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "What is a Hash Table, and how are collisions handled?",
+      "answer": "A hash table maps keys to values by passing a key through a hash function to compute an index. It gives O(1) average search/insert/delete. Collisions (two keys mapping to the same index) are handled by linear probing (find next free slot) or chaining (store a linked list at the slot). With a poor hash or high load, worst case degrades to O(n).",
+      "whyItMatters": "Hash maps (`HashMap`, `Map`) are everywhere in Android; candidates must understand when lookups are fast and what breaks them.",
+      "codeExample": "val map = HashMap<String, Int>()\nmap[\"a\"] = 1   // hashCode -> index -> store\nmap[\"b\"] = 2\nprintln(map[\"a\"]) // O(1) average",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-04",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "Singly linked list vs. doubly linked list — trade-offs?",
+      "answer": "Both are linear chains of nodes. A singly linked list (SLL) stores a `next` pointer; you can only traverse forward. A doubly linked list (DLL) adds a `prev` pointer, enabling backward traversal and O(1) deletion given a node, at the cost of extra memory per node. Insertion at head/tail is O(1); lookup is O(n) for both.",
+      "whyItMatters": "Understanding when a linked list outperforms arrays (frequent inserts near head/tail, no random access needed).",
+      "codeExample": "class Node<T>(val value: T, var next: Node<T>? = null, var prev: Node<T>? = null)\n\nclass DoublyLinkedList<T> {\n    var head: Node<T>? = null\n    fun prepend(value: T) {\n        val n = Node(value, next = head)\n        head?.prev = n\n        head = n\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-05",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "Stacks vs. Queues — how are they different?",
+      "answer": "Both are linear structures with restricted access. A **stack** is LIFO (last in, first out) — `push`/`pop`/`peek` operate on the top; used for undo, back-navigation, DFS. A **queue** is FIFO (first in, first out) — `enqueue` at the back, `dequeue` from the front; used for task scheduling, BFS. Both are O(1) for their core operations, slow for arbitrary lookup.",
+      "whyItMatters": "Recognising which restricted structure matches a problem is a classic interview signal.",
+      "codeExample": "// Stack (Kotlin: use ArrayDeque for efficiency)\nval stack = ArrayDeque<Int>()\nstack.addLast(1); stack.addLast(2) // push\nstack.removeLast()                  // pop -> 2\n\n// Queue\nval queue = ArrayDeque<Int>()\nqueue.addLast(1); queue.addLast(2) // enqueue\nqueue.removeFirst()                // dequeue -> 1",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-06",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "What is a Priority Queue and how is it different from a normal Queue?",
+      "answer": "A normal queue serves elements FIFO. A priority queue serves elements by priority — the highest (or lowest) priority is removed first. Note that a heap-backed `PriorityQueue` (Kotlin/Java) does **not** guarantee order among equal-priority elements: ties are broken arbitrarily, not FIFO. It is usually implemented with a binary heap, giving O(log n) insertion and removal.",
+      "whyItMatters": "Priority queues underpin scheduling, and are used in algorithms like Dijkstra; candidates should know the data structure choice (heap).",
+      "codeExample": "// Min-heap priority queue (higher priority = smaller value)\nval pq = PriorityQueue<Int>()\npq.offer(5); pq.offer(1); pq.offer(3)\nprintln(pq.poll()) // 1 (smallest polled first)",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-07",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "What are the different types of binary trees (full, perfect, complete)?",
+      "answer": "A binary tree has at most two children per node. **Full**: every node has 0 or 2 children. **Perfect**: every internal node has exactly 2 children and all leaves are at the same level. **Complete**: all levels are fully filled except the lowest, which is filled from the left. A **binary heap** is a complete tree.",
+      "whyItMatters": "These precise definitions matter for heap properties and tree traversal questions.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-08",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "What is a Binary Search Tree (BST) and what are its operations?",
+      "answer": "A BST is a binary tree where, for every node, all keys in its left subtree are smaller and all keys in its right subtree are larger (recursively). This enables O(log n) average search/insert/delete. If unbalanced, worst case degrades to O(n) (degenerates toward a linked list). Space is O(n).",
+      "whyItMatters": "Understanding BST properties and the balancing problem is foundational for choosing data structures and explaining tree-based lookups.",
+      "codeExample": "fun search(root: TreeNode?, key: Int): Boolean = when {\n    root == null -> false\n    root.value == key -> true\n    key < root.value -> search(root.left, key)\n    else -> search(root.right, key)\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-09",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "What are AVL and Red-Black trees, and how do they differ?",
+      "answer": "Both are self-balancing binary search trees that keep operations near O(log n). An AVL tree maintains a strict balance factor (height difference ≤ 1) per node, giving tighter balance but more rotations on insertion/deletion. A red-black tree allows slightly more imbalance (via color rules) and needs fewer rotations, making it better for frequent insert/delete. Kotlin's `TreeMap`/`TreeSet` are typically red-black trees.",
+      "whyItMatters": "Explains why map/set implementations stay fast and which to mentally model.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-10",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "What is a Binary Heap and when would you use it?",
+      "answer": "A binary heap is a complete binary tree that is a min-heap (root is smallest, recursively) or max-heap (root is largest). Because the tree is complete, its height is O(log n). Heaps support O(log n) insert and extract-min/max and O(1) peek, making them the basis of priority queues.",
+      "whyItMatters": "Heaps power priority queues, top-K problems, and scheduling; candidates should recognise heap-vs-sorted-array trade-offs.",
+      "codeExample": "val minHeap = PriorityQueue<Int>()\nminHeap.addAll(listOf(7, 3, 9, 1))\nprintln(minHeap.peek()) // 1 (min at root)",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-11",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "What is a Trie (prefix tree) and when is it useful?",
+      "answer": "A trie stores strings by common prefixes, sharing nodes for shared prefixes. Lookups and prefix queries run in O(length of word). It is efficient for autocomplete, dictionary validation, and \"does any word start with this prefix\" questions — but can be memory-heavy (pointer overhead) and is usually not built into standard libraries.",
+      "whyItMatters": "Strong candidates bring up tries for string/prefix problems rather than brute-force searching.",
+      "codeExample": "class TrieNode(val children: MutableMap<Char, TrieNode> = mutableMapOf(),\n               var isWord: Boolean = false)\nclass Trie {\n    val root = TrieNode()\n    fun insert(word: String) {\n        var node = root\n        for (c in word) node = node.children.getOrPut(c) { TrieNode() }\n        node.isWord = true\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-12",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "How do you represent a graph? (adjacency matrix vs. list vs. edge list)",
+      "answer": "An adjacency matrix is an n×n grid marking edges (good for dense graphs, O(1) edge lookup, O(n²) space). An adjacency list stores per-vertex neighbor lists (space-efficient for sparse graphs, common default). An edge list is a flat list of edges. The choice depends on graph density and the operations you need.",
+      "whyItMatters": "Choosing the right representation affects traversal and pathfinding performance.",
+      "codeExample": "// Adjacency list (most common, sparse-friendly)\nval graph = mutableMapOf<Int, MutableList<Int>>()\nfun addEdge(u: Int, v: Int) {\n    graph.getOrPut(u) { mutableListOf() }.add(v)\n    graph.getOrPut(v) { mutableListOf() }.add(u) // undirected\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-13",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "BFS vs. DFS — when do you use each?",
+      "answer": "BFS (breadth-first search) explores level by level using a queue; it finds the shortest path in unweighted graphs and uses more memory (O(V), the queue frontier). DFS (depth-first search) explores branch by branch using a stack/recursion; it is good for detecting cycles, exhaustive exploration, and path existence, and usually uses less memory (O(V) in the worst case, O(V+E) time). Both run in O(V+E) time and O(V) worst-case space.",
+      "whyItMatters": "Knowing when to reach for BFS vs DFS is a recurring coding-interview decision.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-14",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "Dijkstra vs. Bellman-Ford — how do you choose a shortest-path algorithm?",
+      "answer": "Dijkstra finds shortest paths from a source in O((V+E)logV) using a priority queue but fails with negative edge weights. Bellman-Ford handles negative edge weights (and detects negative cycles) at O(VE) cost. Use Dijkstra for non-negative weights (typical maps/networks); use Bellman-Ford when negative weights may exist.",
+      "whyItMatters": "Knowing the constraints (negative weights) that rule algorithms in/out shows depth in graph theory.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-15",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "Recursion vs. iteration — what are the trade-offs and how do you avoid stack overflow?",
+      "answer": "Recursion breaks a problem into smaller subproblems and calls itself; it is elegant and concise (great for trees/D&C) but adds stack overhead, uses more memory, and can overflow the call stack without a base case (infinite recursion). Iteration uses loops, is faster and uses less memory, but can be less readable. Every recursive function needs a base case that terminates.",
+      "whyItMatters": "Candidates must implement recursive algorithms safely and know when to convert to iteration/memoization.",
+      "codeExample": "// Recursion - needs a base case\nfun factorial(n: Int): Long = if (n <= 1) 1L else n * factorial(n - 1)\n\n// Iteration - no stack growth\nfun factorialIter(n: Int): Long {\n    var result = 1L\n    for (i in 2..n) result *= i\n    return result\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-16",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "Compare the common sorting algorithms — which do you pick and why?",
+      "answer": "Bubble, Selection, and Insertion sort are O(n²) — simple but slow for large data (Insertion is O(n) on nearly-sorted data and is a good building block). Merge Sort is O(n log n) stable but uses O(n) extra space. Quick Sort is O(n log n) average, in-place, but O(n²) worst case with a poor pivot. For large general data, Merge or Quick (or the platform's hybrid Timsort/Introsort) wins.",
+      "whyItMatters": "Practical array manipulation shows you understand complexity, stability, and in-place constraints.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-17",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "Linear search vs. binary search — when do you use each?",
+      "answer": "Linear search checks each element, O(n), and works on unsorted data. Binary search repeatedly halves a sorted collection, O(log n), but requires the input to be sorted first. Use linear for small/unsorted/constantly-changing data; use binary for large sorted collections (or sort once, search many).",
+      "whyItMatters": "Efficient search is fundamental to database/Android list lookups and a frequent interview topic.",
+      "codeExample": "// Binary search on a sorted list (Kotlin built-in)\nval sorted = listOf(1, 3, 5, 7, 9)\nval index = sorted.binarySearch(7) // 3, works only if sorted",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-18",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "What is dynamic programming and memoization?",
+      "answer": "Dynamic programming (DP) solves problems by breaking them into overlapping subproblems and storing their solutions. Memoization caches the results of repeated expensive function calls (top-down), avoiding recomputation. DP applies when a problem has optimal substructure and overlapping subproblems — e.g., Fibonacci, knapsack, LCS.",
+      "whyItMatters": "Naive recursive solutions (O(2^n) Fibonacci) become polynomial with memoization, a key optimization skill.",
+      "codeExample": "// Fibonacci - naive recursion is O(2^n)\nfun fibNaive(n: Int): Int = if (n < 2) n else fibNaive(n - 1) + fibNaive(n - 2)\n\n// Memoized top-down DP is O(n)\nval memo = mutableMapOf<Int, Long>()\nfun fibMemo(n: Int): Long =\n    memo.getOrPut(n) { if (n < 2) n.toLong() else fibMemo(n - 1) + fibMemo(n - 2) }",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-01",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "Why favor Composition over Inheritance in Android?",
+      "answer": "Composition promotes loose coupling and flexibility. In modern Android development, we moved from heavy inheritance hierarchies to injecting dependencies and composing UIs with Jetpack Compose, where components don't inherit properties but are built by assembling independent functions.",
+      "whyItMatters": "",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-02",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "What is the difference between MVVM and MVI?",
+      "answer": "- **MVVM**: Model-View-ViewModel. Multiple observable state holders (e.g., separate LiveData/StateFlow per state); events flow up (View→ViewModel) and state flows down (ViewModel→View), still unidirectional.\n- **MVI**: Model-View-Intent. Single source of truth, unidirectional data flow.",
+      "whyItMatters": "",
+      "codeExample": "// MVVM - multiple states\nclass MyViewModel : ViewModel() {\n    var userName = MutableLiveData<String>()\n    var isLoading = MutableLiveData<Boolean>()\n    var error = MutableLiveData<String?>()\n}\n\n// MVI - single state\ndata class UiState(\n    val userName: String = \"\",\n    val isLoading: Boolean = false,\n    val error: String? = null\n)\n\nclass MyViewModel : ViewModel() {\n    private val _uiState = MutableStateFlow(UiState())\n    val uiState: StateFlow<UiState> = _uiState.asStateFlow()\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-03",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "In a Clean Architecture, how do you distribute responsibilities between UI, ViewModel, Repository, and Use Cases?",
+      "answer": "- **UI (Compose)**: Renders UI, handles user interactions\n- **ViewModel**: Manages UI state, calls Use Cases\n- **Use Cases**: Business logic, orchestrates Repositories\n- **Repository**: Data access, coordinates multiple data sources",
+      "whyItMatters": "",
+      "codeExample": "// UI Layer\n@Composable\nfun UserScreen(viewModel: UserViewModel) {\n    val state by viewModel.uiState.collectAsStateWithLifecycle()\n    UserContent(state, viewModel::onAction)\n}\n\n// ViewModel\nclass UserViewModel(getUserUseCase: GetUserUseCase) : ViewModel() {\n    fun onAction(action: UserAction) {\n        when (action) {\n            is UserAction.LoadUser -> loadUser(action.id)\n        }\n    }\n}\n\n// Use Case\nclass GetUserUseCase(private val repository: UserRepository) {\n    suspend operator fun invoke(userId: String): User {\n        return repository.getUser(userId)\n    }\n}\n\n// Repository\nclass UserRepositoryImpl(private val api: UserApi, private val dao: UserDao) {\n    suspend fun getUser(id: String): User {\n        return dao.getUser(id) ?: api.getUser(id)\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-04",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "How would you approach unit testing a ViewModel that depends on an asynchronous Use Case using Mockito?",
+      "answer": "Use `Dispatchers.setMain` for test dispatcher, mock the Use Case, and test state changes.",
+      "whyItMatters": "",
+      "codeExample": "class UserViewModelTest {\n    @get:Rule\n    val mainDispatcherRule = MainDispatcherRule()\n    \n    private val getUserUseCase = mock<GetUserUseCase>()\n    private lateinit var viewModel: UserViewModel\n    \n    @Before\n    fun setup() {\n        viewModel = UserViewModel(getUserUseCase)\n    }\n    \n    @Test\n    fun `load user success`() = runTest {\n        // Arrange\n        val user = User(\"1\", \"John\")\n        // The use case invoke() is a suspend function, so stub it inside runBlocking\n        whenever(runBlocking { getUserUseCase(\"1\") }).thenReturn(user)\n\n        // Act\n        viewModel.onAction(UserAction.LoadUser(\"1\"))\n\n        // Coroutines launched on the main dispatcher need to make progress\n        advanceUntilIdle()\n\n        // Assert\n        val state = viewModel.uiState.value\n        assertFalse(state.isLoading)\n        assertEquals(user, state.user)\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-05",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "What concrete improvements would you apply to improve RecyclerView performance?",
+      "answer": "1. Use `DiffUtil` for efficient updates\n2. Use `ViewHolder` pattern (though less relevant with Compose)\n3. Avoid heavy operations in `onBindViewHolder`\n4. Use `setHasStableIds(true)` with unique IDs\n5. Implement pagination\n6. Use `ConstraintLayout` for complex item layouts\n7. Profile with Layout Inspector and Systrace",
+      "whyItMatters": "",
+      "codeExample": "class UserDiffCallback : DiffUtil.ItemCallback<User>() {\n    override fun areItemsTheSame(old: User, new: User) = old.id == new.id\n    override fun areContentsTheSame(old: User, new: User) = old == new\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-06",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "Describe your thought process when approaching a complex problem or edge case crash.",
+      "answer": "1. **Reproduce**: Try to reproduce the issue consistently\n2. **Analyze**: Check logs, stack traces, and device state\n3. **Hypothesize**: Form hypotheses about the root cause\n4. **Test**: Create minimal reproducible case\n5. **Fix**: Implement targeted fix\n6. **Verify**: Test fix across different scenarios\n7. **Document**: Document the issue and solution\n8. **Prevent**: Add tests to prevent regression",
+      "whyItMatters": "",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-07",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "What are common design patterns in Android and when to use them?",
+      "answer": "- **MVVM/MVI**: UI architecture patterns\n- **Repository**: Data access abstraction\n- **Dependency Injection**: Hilt/Koin for managing dependencies\n- **Observer**: LiveData/Flow for reactive updates\n- **Factory**: Creating objects without exposing construction logic\n- **Strategy**: Interchangeable algorithms\n- **Singleton**: Single instance (use carefully)",
+      "whyItMatters": "",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-08",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "When does it make more sense to use Room, DataStore, or other caching strategies in Android?",
+      "answer": "- **Room**: Structured data with relationships, complex queries\n- **DataStore**: Key-value storage, preferences, simple data\n- **SharedPreferences**: Legacy, simple key-value (use DataStore instead)\n- **In-memory cache**: Frequently accessed data\n- **Disk cache**: Large files, images",
+      "whyItMatters": "",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-09",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "How would you manage a bug that only occurs in production on a specific device?",
+      "answer": "1. **Device information**: Get exact device model, OS version, app version\n2. **Remote logging**: Use Crashlytics or similar for stack traces\n3. **Feature flags**: Gradually roll out fixes\n4. **A/B testing**: Test fixes on small user group\n5. **Device lab**: Test on specific device if available\n6. **Remote debugging**: Use Firebase Remote Config or similar",
+      "whyItMatters": "",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-10",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "What are the advantages and disadvantages of a modularized architecture versus a monolith?",
+      "answer": "**Modularization advantages:**\n- Faster build times\n- Better separation of concerns\n- Easier testing\n- Independent development",
+      "whyItMatters": "",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-11",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "Explain the Dependency Inversion Principle (DIP) and why it matters for Android architecture.",
+      "answer": "DIP states that high-level modules should depend on abstractions, not on concrete low-level implementations, and that abstractions should not depend on details. This decouples layers, making them testable, swappable, and modular.",
+      "whyItMatters": "It is the foundation of Clean Architecture and DI, and shows you understand why the UI layer depends on interfaces (repositories, use cases) rather than concrete Retrofit/Room impls.",
+      "codeExample": "// High-level depends on abstraction, not concrete impl\ninterface UserRepository {\n    suspend fun getUser(): User\n}\n\nclass RoomUserRepository : UserRepository { /* Room impl */ }\nclass RemoteUserRepository : UserRepository { /* Retrofit impl */ }\n\nclass GetUserUseCase(private val repo: UserRepository) { // depends on abstraction\n    suspend operator fun invoke() = repo.getUser()\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-12",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "Dependency Injection vs. Service Locator — what are the trade-offs?",
+      "answer": "DI supplies dependencies explicitly at construction time (clear contracts, easier to test and trace). A Service Locator resolves dependencies globally from a registry at use time — less boilerplate but hidden dependencies that reduce transparency, testability, and traceability. DI is generally preferred in production Android (Hilt/Koin); a service locator may be pragmatic in small apps but you should know its costs.",
+      "whyItMatters": "Distinguishes an understanding of inversion-of-control mechanisms beyond \"just using Hilt\".",
+      "codeExample": "// DI: dependencies explicit at the constructor\nclass LoginViewModel(private val repo: AuthRepository) : ViewModel()\n\n// Service Locator: resolved lazily at point of use (hidden dependency)\nclass LoginViewModel : ViewModel() {\n    private val repo by serviceLocator<AuthRepository>() // hidden\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-13",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "What is Assisted Injection and when would you need it?",
+      "answer": "Assisted Injection combines dependencies provided by the DI container with runtime parameters that are only known at creation time. In Android it is commonly used for ViewModel factories or classes that require a runtime ID/argument (e.g., an item ID from a deep link).",
+      "whyItMatters": "A senior/staff-level concept showing you understand how to handle \"constructor dependencies + runtime args\" cleanly, beyond plain `@Inject` constructors.",
+      "codeExample": "// Assisted pattern (Dagger/Hilt assisted or manual factory)\nclass ProductDetailViewModel(\n    private val repo: ProductRepository,   // DI-provided\n    private val productId: String           // runtime arg (assisted)\n) : ViewModel()\n\nclass ProductDetailViewModelFactory(\n    private val repo: ProductRepository,\n    private val productId: String\n) : ViewModelProvider.Factory {\n    override fun <T : ViewModel> create(modelClass: Class<T>): T =\n        ProductDetailViewModel(repo, productId) as T\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-14",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "How would you design a scalable architecture for a multi-module Android app?",
+      "answer": "1. **Clean Architecture**: Separate concerns\n2. **Feature modules**: Independent development\n3. **Core modules**: Shared utilities\n4. **Navigation**: Dynamic feature modules\n5. **Dependency injection**: Hilt for module integration\n6. **Testing**: Each module independently",
+      "whyItMatters": "",
+      "codeExample": "app/\n├── core/\n│   ├── network/          # API clients\n│   ├── database/         # Local storage\n│   ├── common/           # Utilities\n│   └── ui/               # Shared UI components\n├── feature/\n│   ├── home/             # Feature module\n│   ├── profile/          # Feature module\n│   └── settings/         # Feature module\n└── app/                  # App module\n    ├── di/               # Dependency injection\n    └── navigation/       # Navigation setup",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-01",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is Recomposition?",
+      "answer": "Recomposition is the process where Jetpack Compose re-executes composable functions when their inputs or states change in order to update the UI. Compose intelligently tracks which composables depend on which states and only recomposes those that need updating.",
+      "whyItMatters": "",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-02",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What triggers Recomposition?",
+      "answer": "Changes in the `State` objects observed by the composable or changes in the input arguments passed to the composable function trigger recomposition.",
+      "whyItMatters": "",
+      "codeExample": "@Composable\nfun Counter() {\n    var count by remember { mutableIntStateOf(0) }\n    \n    // Recomposes when count changes\n    Button(onClick = { count++ }) {\n        Text(\"Count: $count\")\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-03",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "How can you prevent unnecessary recomposition?",
+      "answer": "Several strategies:\n1. **Use `remember`** to cache expensive computations\n2. **Mark data classes as `@Immutable` or `@Stable`** to help Compose skip recomposition\n3. **Use `derivedStateOf`** for derived properties\n4. **Use `key`** in lazy lists to maintain item state\n5. **Use `LaunchedEffect`** for side effects",
+      "whyItMatters": "",
+      "codeExample": "@Composable\nfun OptimizedList(items: List<Item>) {\n    LazyColumn {\n        items(items, key = { it.id }) { item ->\n            // key helps Compose track items\n            ItemRow(item)\n        }\n    }\n}\n\n@Stable\ndata class StableItem(val id: String, val name: String)",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-04",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is the difference between `remember` and `rememberSaveable`?",
+      "answer": "- **`remember`**: Keeps state across recompositions but loses it on configuration changes (like screen rotation)\n- **`rememberSaveable`**: Survives configuration changes and process death by saving the state in a `Bundle`",
+      "whyItMatters": "",
+      "codeExample": "@Composable\nfun Form() {\n    // Lost on rotation\n    var tempInput by remember { mutableStateOf(\"\") }\n    \n    // Survives rotation\n    var savedInput by rememberSaveable { mutableStateOf(\"\") }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-05",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is State Hoisting?",
+      "answer": "State Hoisting is a design pattern where state is moved up to the parent composable, making the child composable stateless and highly reusable. The child receives state as parameters and emits events.",
+      "whyItMatters": "",
+      "codeExample": "// Stateful component\n@Composable\nfun CounterScreen() {\n    var count by remember { mutableIntStateOf(0) }\n    Counter(\n        count = count,\n        onIncrement = { count++ }\n    )\n}\n\n// Stateless component - reusable\n@Composable\nfun Counter(count: Int, onIncrement: () -> Unit) {\n    Button(onClick = onIncrement) {\n        Text(\"Count: $count\")\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-06",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is the difference between `mutableStateOf` and `StateFlow`?",
+      "answer": "- **`mutableStateOf`**: Native to Compose, optimized for UI state management\n- **`StateFlow`**: Part of Kotlin Coroutines, better suited for domain/data layer, often converted using `collectAsState()`",
+      "whyItMatters": "",
+      "codeExample": "// Compose state\nval uiState = remember { mutableStateOf(UiState()) }\n\n// StateFlow (typically from ViewModel)\nval uiState: StateFlow<UiState> = viewModel.uiState\n\n// Collecting StateFlow in Compose\nval state by uiState.collectAsStateWithLifecycle()",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-07",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is `derivedStateOf` and when should you use it?",
+      "answer": "`derivedStateOf` creates a computed state that only recomposes when its calculation result actually changes. Use it when you need to compute a value based on one or more other states.",
+      "whyItMatters": "",
+      "codeExample": "@Composable\nfun FilteredList(items: List<Item>, query: String) {\n    val filteredItems by remember(items, query) {\n        derivedStateOf {\n            items.filter { it.name.contains(query, ignoreCase = true) }\n        }\n    }\n    \n    LazyColumn {\n        items(filteredItems) { item ->\n            ItemRow(item)\n        }\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-08",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is the difference between `LaunchedEffect` and `DisposableEffect`?",
+      "answer": "- **`LaunchedEffect`**: Runs suspend blocks in a lifecycle-aware manner. Re-launches when keys change.\n- **`DisposableEffect`**: Runs effects that require cleanup when leaving the lifecycle scope (e.g., registering/unregistering listeners).",
+      "whyItMatters": "",
+      "codeExample": "@Composable\nfun Timer() {\n    var seconds by remember { mutableIntStateOf(0) }\n    \n    // LaunchedEffect - runs suspend function\n    LaunchedEffect(Unit) {\n        while (true) {\n            delay(1000)\n            seconds++\n        }\n    }\n}\n\n@Composable\nfun LocationListener() {\n    DisposableEffect(Unit) {\n        val listener = LocationListener { /* ... */ }\n        locationManager.register(listener)\n        \n        onDispose {\n            locationManager.unregister(listener)\n        }\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-09",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is `SideEffect` and when is it useful?",
+      "answer": "`SideEffect` executes after every successful recomposition. Use it to publish Compose state to objects not managed by Compose (e.g., analytics, logging).",
+      "whyItMatters": "",
+      "codeExample": "@Composable\nfun Screen(screenName: String) {\n    SideEffect {\n        // Called after every recomposition\n        analytics.logScreenView(screenName)\n    }\n    \n    // UI content\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-10",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is `CompositionLocal` and how does it work?",
+      "answer": "`CompositionLocal` allows passing data implicitly through the UI tree without prop drilling. It's useful for theme, locale, or dependency injection.",
+      "whyItMatters": "",
+      "codeExample": "val LocalTheme = compositionLocalOf { LightTheme }\n\n@Composable\nfun App() {\n    CompositionLocalProvider(LocalTheme provides DarkTheme) {\n        // All descendants can access LocalTheme.current\n        ThemedContent()\n    }\n}\n\n@Composable\nfun ThemedContent() {\n    val theme = LocalTheme.current\n    // Use theme\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-11",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is the difference between `Column` and `LazyColumn`?",
+      "answer": "- **`Column`**: Renders all child elements at once. Use for small, fixed lists.\n- **`LazyColumn`**: Only renders visible elements (like RecyclerView). Use for long or dynamic lists.",
+      "whyItMatters": "",
+      "codeExample": "// Column - renders all items\nColumn {\n    items.forEach { item ->\n        ItemRow(item)  // All rendered at once\n    }\n}\n\n// LazyColumn - renders only visible\nLazyColumn {\n    items(items) { item ->\n        ItemRow(item)  // Only visible items rendered\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-12",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "Why use `key` in `LazyColumn`?",
+      "answer": "`key` helps Compose maintain correct item state when items are reordered, filtered, or deleted. Without keys, Compose uses item position, which can cause incorrect state associations.",
+      "whyItMatters": "",
+      "codeExample": "LazyColumn {\n    items(items, key = { it.id }) { item ->\n        // Compose can correctly track this item by id\n        ItemRow(item)\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-13",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is `snapshotFlow`?",
+      "answer": "`snapshotFlow` converts Compose state into a Kotlin Flow, allowing reactive observation of state changes. Useful for observing state changes in side effects.",
+      "whyItMatters": "",
+      "codeExample": "@Composable\nfun LazyListScreen(lazyListState: LazyListState) {\n    LaunchedEffect(lazyListState) {\n        snapshotFlow { lazyListState.firstVisibleItemIndex }\n            .collect { index ->\n                // React to scroll position changes\n                analytics.logScrollPosition(index)\n            }\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-14",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "How do you collect a Flow in Compose?",
+      "answer": "Use `collectAsStateWithLifecycle()` (recommended) as it's lifecycle-aware and stops collection when the UI is not visible.",
+      "whyItMatters": "",
+      "codeExample": "@Composable\nfun UserScreen(viewModel: UserViewModel) {\n    // Recommended - lifecycle-aware\n    val uiState by viewModel.uiState.collectAsStateWithLifecycle()\n    \n    // Not recommended - doesn't respect lifecycle\n    val uiState by viewModel.uiState.collectAsState()\n    \n    // Use uiState\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-15",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is `collectAsStateWithLifecycle` and why is it preferred?",
+      "answer": "`collectAsStateWithLifecycle` stops collecting when the UI is not in the STARTED state, saving resources and preventing unnecessary updates to hidden UI.",
+      "whyItMatters": "",
+      "codeExample": "@Composable\nfun DataScreen(viewModel: DataViewModel) {\n    // Only collects when screen is visible\n    val data by viewModel.dataFlow.collectAsStateWithLifecycle()\n    \n    // Display data\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-16",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "How does navigation work in Jetpack Compose?",
+      "answer": "Navigation uses `NavHost`, `NavController`, and routes to navigate between screens. Modern apps use **type-safe navigation** with serializable route classes, though the older string-based routes (with `navArgument`) still work.",
+      "whyItMatters": "",
+      "codeExample": "@Serializable\nobject Home\n\n@Serializable\ndata class Detail(val itemId: String)\n\n@Composable\nfun AppNavigation() {\n    val navController = rememberNavController()\n    \n    NavHost(navController, startDestination = Home) {\n        composable<Home> {\n            HomeScreen(\n                onNavigateToDetail = { navController.navigate(Detail(it)) }\n            )\n        }\n        composable<Detail> { backStackEntry ->\n            val itemId = backStackEntry.toRoute<Detail>().itemId\n            DetailScreen(itemId)\n        }\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-17",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "How do you pass arguments between screens?",
+      "answer": "With type-safe navigation, arguments are defined as properties in `@Serializable` route classes. With the legacy string-based approach, they are passed through the route definition with configured `navArgument`.",
+      "whyItMatters": "",
+      "codeExample": "// Type-safe approach\n@Serializable\ndata class Detail(val itemId: String, val showHeader: Boolean = true)\n\n// Navigate\nnavController.navigate(Detail(itemId = \"123\"))\n\n// Read in destination\ncomposable<Detail> { backStackEntry ->\n    val args = backStackEntry.toRoute<Detail>()\n    DetailScreen(args.itemId)\n}\n\n// Legacy string approach\ncomposable(\n    route = \"detail/{itemId}\",\n    arguments = listOf(\n        navArgument(\"itemId\") {\n            type = NavType.StringType\n            nullable = false\n        }\n    )\n) { backStackEntry ->\n    val itemId = backStackEntry.arguments?.getString(\"itemId\")\n    DetailScreen(itemId)\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-18",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "How do you handle configuration changes?",
+      "answer": "Use `rememberSaveable` for simple state, `ViewModel` for complex state, and `SavedInstanceState` when needed.",
+      "whyItMatters": "",
+      "codeExample": "@Composable\nfun Screen() {\n    // Simple state - survives rotation\n    var text by rememberSaveable { mutableStateOf(\"\") }\n    \n    // Complex state - ViewModel survives rotation\n    val viewModel: MyViewModel = viewModel()\n    \n    // Use both\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-19",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What are `@Stable` and `@Immutable` annotations?",
+      "answer": "These are hints to the Compose compiler that help it skip unnecessary recompositions.",
+      "whyItMatters": "",
+      "codeExample": "@Immutable\ndata class User(val name: String, val email: String)\n\n@Stable\nclass UserState {\n    var name by mutableStateOf(\"\")\n    var email by mutableStateOf(\"\")\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-20",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "How do you optimize performance in large Compose apps?",
+      "answer": "Key strategies:\n1. Use `derivedStateOf` for computed values\n2. Use `key` in lazy lists\n3. Use `remember` to avoid expensive recalculations\n4. Use `LazyColumn` instead of `Column` for long lists\n5. Avoid passing lambdas that cause unnecessary recompositions\n6. Use `@Stable` and `@Immutable` for data classes",
+      "whyItMatters": "",
+      "codeExample": "@Composable\nfun OptimizedScreen() {\n    val items by remember { derivedStateOf { computeExpensiveList() } }\n    \n    LazyColumn {\n        items(items, key = { it.id }) { item ->\n            ItemRow(item)\n        }\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-21",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is a `Modifier`, and why does the order of modifiers matter?",
+      "answer": "A `Modifier` is an ordered, immutable chain that decorates a composable with layout, drawing, and input behaviors. Order matters because each modifier wraps the previous one; semantic changes like padding vs. clickable region change depending on position in the chain.",
+      "whyItMatters": "Showing you know modifier order changes behavior (touch target size, spacing) is a classic Compose interview signal for understanding how composition wraps the UI.",
+      "codeExample": "// clickable FIRST (outer), then padding inside: touch area INCLUDES the padding (larger target)\nModifier.clickable { onClick() }.padding(8.dp)\n\n// padding FIRST (outer), then clickable on the content inside: touch area EXCLUDES the padding\nModifier.padding(8.dp).clickable { onClick() }",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-22",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is the difference between `mutableStateOf` and a plain `val` in Compose?",
+      "answer": "`mutableStateOf` creates observable state that Compose tracks; when its value changes, Compose schedules recomposition of the composables that read it. A plain `val` is not observable, so changing it does not notify Compose and the UI will not update.",
+      "whyItMatters": "Distinguishes \"state that drives the UI and triggers recomposition\" from ordinary read-only values — the core mental model of Compose state.",
+      "codeExample": "val plainText = \"Hello\"              // NOT observable\nvar stateText by mutableStateOf(\"Hi\") // observable → reading stateText triggers recomposition",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-23",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What problem does `rememberUpdatedState` solve?",
+      "answer": "It keeps the latest value of a lambda/variable inside a long-running effect without restarting the effect. This lets you reference a \"current\" callback from inside a coroutine (e.g., a polling loop or animation) while keeping the effect keyed on a stable value.",
+      "whyItMatters": "Prevents stale-closure bugs and avoids repeatedly cancelling/restarting effects just to pick up a new callback.",
+      "codeExample": "@Composable\nfun Polling(onTick: (Long) -> Unit) {\n    val currentOnTick by rememberUpdatedState(onTick) // always latest lambda\n    LaunchedEffect(Unit) {\n        while (true) {\n            delay(1_000)\n            currentOnTick(System.currentTimeMillis()) // no restart needed\n        }\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-24",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "How do you model one-shot events (navigation, snackbar, toast) so they are not repeated on recomposition?",
+      "answer": "Keep persistent UI state separate from transient events. Emit one-shot events from the ViewModel via a `Channel` or `SharedFlow(extraBufferCapacity = 1)`, and consume them in a `LaunchedEffect`. This prevents the \"event replayed after rotation/recomposition\" bug.",
+      "whyItMatters": "One-shot events are a frequent senior-level design question — getting them wrong causes duplicated toasts/navigation on process death or recomposition.",
+      "codeExample": "class OrderViewModel : ViewModel() {\n    private val _events = Channel<OrderEvent>(Channel.BUFFERED)\n    val events = _events.receiveAsFlow()\n\n    fun submit() {\n        viewModelScope.launch { _events.send(OrderEvent.NavigatedToConfirmation) }\n    }\n}\nsealed interface OrderEvent { data object NavigatedToConfirmation : OrderEvent }\n\n// In Compose:\nLaunchedEffect(Unit) {\n    viewModel.events.collect { event ->\n        when (event) { OrderEvent.NavigatedToConfirmation -> navToConfirmation() }\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-25",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "How would you approach migrating a legacy Android app to Jetpack Compose?",
+      "answer": "1. **Strangler fig pattern**: Gradually replace UI components\n2. **Start with new features**: Implement in Compose\n3. **Migrate leaf components first**: Simple, self-contained\n4. **Interop with View**: Use `AndroidView` for legacy components\n5. **Test thoroughly**: Ensure no regressions",
+      "whyItMatters": "",
+      "codeExample": "// Compose in legacy Activity\nclass LegacyActivity : AppCompatActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContentView(R.layout.activity_legacy)\n        \n        // Add Compose to existing layout\n        val composeView = findViewById<ComposeView>(R.id.compose_container)\n        composeView.setContent {\n            NewFeature()\n        }\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-26",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "How would you manage state in a complex Compose application?",
+      "answer": "1. **Unidirectional data flow**: State flows down, events flow up\n2. **State hoisting**: Keep state close to where it's used\n3. **ViewModel**: Single source of truth\n4. **Use `remember`**: For UI-only state\n5. **Use `rememberSaveable`**: For state that survives config changes",
+      "whyItMatters": "",
+      "codeExample": "// Complex state management\ndata class FormState(\n    val name: String = \"\",\n    val email: String = \"\",\n    val isValid: Boolean = false\n)\n\n@Composable\nfun FormScreen(viewModel: FormViewModel) {\n    val state by viewModel.formState.collectAsStateWithLifecycle()\n    \n    FormContent(\n        state = state,\n        onNameChange = viewModel::updateName,\n        onEmailChange = viewModel::updateEmail,\n        onSubmit = viewModel::submit\n    )\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-27",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "How would you implement a custom View or Composable for complex UI requirements?",
+      "answer": "1. **Composable functions**: Start with basic building blocks\n2. **Custom layout**: Use `Layout` composable\n3. **Canvas**: For custom drawing\n4. **Modifiers**: For styling and behavior\n5. **Testing**: Ensure reusability",
+      "whyItMatters": "",
+      "codeExample": "// Custom composable\n@Composable\nfun CircularProgressBar(\n    progress: Float,\n    modifier: Modifier = Modifier,\n    color: Color = MaterialTheme.colorScheme.primary\n) {\n    Canvas(modifier = modifier) {\n        drawArc(\n            color = color,\n            startAngle = -90f,\n            sweepAngle = progress * 360f,\n            useCenter = false,\n            style = Stroke(width = 8.dp.toPx())\n        )\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-28",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "How would you approach performance profiling in Android?",
+      "answer": "1. **Systrace**: System-level performance\n2. **Perfetto**: Modern tracing tool\n3. **Android Profiler**: CPU, memory, network\n4. **Layout Inspector**: UI hierarchy\n5. **Macrobenchmark**: App startup, scroll performance\n6. **Compose Compiler Metrics**: Recomposition analysis",
+      "whyItMatters": "",
+      "codeExample": "# Systrace\npython systrace.py -o trace.html sched freq idle am wm gfx view\n\n# Baseline Profiles\n./gradlew :app:benchmark:benchmarkStartup",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-29",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What are Compose Compiler metrics and stability reports, and how do you use them?",
+      "answer": "The Compose Compiler can emit a *reports* file (per-composable skippable/restartable status and per-class stability) and a *metrics* file (aggregate counts of stable/skippable composables). They expose why a composable recomposes or a type is marked unstable, so you can target `@Stable`/`@Immutable` fixes where they matter. Stability analysis is compile-time and identical for debug/release, so the build type doesn't change the results — only optimize when you've actually measured a stability-driven recomposition problem.",
+      "whyItMatters": "Deep Compose performance work is a staff-level differentiator; candidates should know the tooling and the \"don't prematurely optimize\" caveat.",
+      "codeExample": "// build.gradle.kts (per Compose module)\nandroid { ... }\n\ncomposeCompiler {\n    reportsDestination = layout.buildDirectory.dir(\"compose_compiler\")\n    metricsDestination = layout.buildDirectory.dir(\"compose_compiler\")\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-30",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "What is Strong Skipping mode in the Compose compiler?",
+      "answer": "Strong skipping relaxes Compose's stability rules: all *restartable* composables become *skippable* even with unstable parameters, and **all lambdas inside composables are automatically memoized** (previously only lambdas capturing stable values were). It is **enabled by default in Kotlin 2.0.20+**, so most code gets faster without manual `@Stable`/`remember` work. Key nuance: with strong skipping, unstable parameters are compared using instance equality (`===`) rather than `Object.equals`. Opt out of skipping with `@NonSkippableComposable` and of lambda memoization with `@DontMemoize`.",
+      "whyItMatters": "Shows current awareness of Compose compiler behavior changes and their trade-offs (e.g., APK size slightly increases, and code that \"worked accidentally\" via side effects may now be skipped).",
+      "codeExample": "composeCompiler {\n    // Explicit config (not needed on Kotlin 2.0.20+, shown for reference)\n    featureFlags = setOf(ComposeFeatureFlag.StrongSkipping.disabled())\n}\n\n// Opt a single composable out of strong skipping\n@NonSkippableComposable\n@Composable\nfun ExpensiveButMustRun() { /* ... */ }",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-01",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What are the main Coroutine Dispatchers in Android?",
+      "answer": "- **`Dispatchers.Main`**: For UI operations and quick tasks\n- **`Dispatchers.IO`**: For network calls, database queries (Room), and file operations\n- **`Dispatchers.Default`**: For CPU-intensive tasks like complex JSON parsing or filtering large lists\n- **`Dispatchers.Unconfined`**: Rarely used; starts on the caller's thread but is not confined — it resumes on whatever thread the suspending function completes on",
+      "whyItMatters": "",
+      "codeExample": "viewModelScope.launch {\n    // Main thread for UI updates\n    showLoading()\n    \n    withContext(Dispatchers.IO) {\n        // IO thread for network/database\n        val data = repository.fetchData()\n    }\n    \n    // Back to Main thread\n    hideLoading()\n    updateUI(data)\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-02",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is the difference between `viewModelScope` and `lifecycleScope`?",
+      "answer": "- **`viewModelScope`**: Bound to ViewModel's lifecycle, cancels when ViewModel is cleared\n- **`lifecycleScope`**: Bound to the `LifecycleOwner`'s lifecycle — in an Activity it cancels at `DESTROYED`; in a Fragment it is tied to the *Fragment's* lifecycle (not the view), so use `viewLifecycleOwner.lifecycleScope` to cancel on view destruction",
+      "whyItMatters": "",
+      "codeExample": "class MyViewModel : ViewModel() {\n    init {\n        viewModelScope.launch {\n            // Runs until ViewModel is cleared\n        }\n    }\n}\n\n// In Activity/Fragment\nlifecycleScope.launch {\n    // Runs until Activity/Fragment is destroyed\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-03",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is a Coroutine and why is it better than Threads?",
+      "answer": "A coroutine is a cancellable unit of suspended computation that runs on a thread without permanently confining to one. A coroutine can suspend (pause) and resume without blocking the underlying OS thread, enabling cooperative multitasking with far lower overhead than spawning system threads.",
+      "whyItMatters": "",
+      "codeExample": "// Thread - heavyweight\nthread {\n    Thread.sleep(1000)\n    println(\"Done\")\n}\n\n// Coroutine - lightweight\nviewModelScope.launch {\n    delay(1000)  // Non-blocking\n    println(\"Done\")\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-04",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is a Suspend Function?",
+      "answer": "A suspend function is a function that can pause its execution without blocking the current thread until the operation completes.",
+      "whyItMatters": "",
+      "codeExample": "suspend fun fetchUser(): User {\n    return withContext(Dispatchers.IO) {\n        // Can suspend here without blocking\n        api.getUser()\n    }\n}\n\n// Called in coroutine\nviewModelScope.launch {\n    val user = fetchUser()  // Suspends, doesn't block\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-05",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is the difference between `launch` and `async`?",
+      "answer": "- **`launch`**: Fire-and-forget, doesn't return a result\n- **`async`**: Returns a `Deferred` that can be awaited for a result",
+      "whyItMatters": "",
+      "codeExample": "// launch - no result\nviewModelScope.launch {\n    repository.saveUser(user)\n}\n\n// async - with result\nviewModelScope.launch {\n    val user = async { repository.getUser() }\n    val posts = async { repository.getPosts() }\n    \n    // Wait for both\n    displayUser(user.await(), posts.await())\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-06",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is Structured Concurrency?",
+      "answer": "Structured concurrency ensures that coroutines are launched in a specific scope and are automatically cancelled when the scope is cancelled. It prevents coroutine leaks.",
+      "whyItMatters": "",
+      "codeExample": "viewModelScope.launch {\n    // Child coroutines\n    val job1 = launch { /* ... */ }\n    val job2 = launch { /* ... */ }\n    \n    // If viewModelScope is cancelled, both jobs are cancelled\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-07",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is the difference between `coroutineScope` and `supervisorScope`?",
+      "answer": "- **`coroutineScope`**: If one child fails, all children are cancelled\n- **`supervisorScope`**: Child failures don't affect other children",
+      "whyItMatters": "",
+      "codeExample": "// coroutineScope - all fail together\ncoroutineScope {\n    launch { throw Exception(\"Error\") }\n    launch { delay(1000) }  // Also cancelled\n}\n\n// supervisorScope - independent failures\nsupervisorScope {\n    launch { throw Exception(\"Error\") }\n    launch { delay(1000) }  // Continues running\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-08",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is the difference between `Flow` and `LiveData`?",
+      "answer": "- **`Flow`**: Part of Kotlin Coroutines, supports operators, cold stream\n- **`LiveData`**: Android-specific, lifecycle-aware, hot stream",
+      "whyItMatters": "",
+      "codeExample": "// Flow in ViewModel\nval users: Flow<List<User>> = repository.getUsers()\n\n// Convert to Compose state\n@Composable\nfun UserList(viewModel: UserViewModel) {\n    val users by viewModel.users.collectAsStateWithLifecycle()\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-09",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is a \"Cold\" Flow? And a \"Hot\" Flow?",
+      "answer": "- **Cold Flow**: Doesn't emit until collected. Each collection starts fresh.\n- **Hot Flow**: Emits regardless of collection. Multiple collectors receive the same emissions.",
+      "whyItMatters": "",
+      "codeExample": "// Cold - starts on collection\nval coldFlow = flow {\n    emit(1)\n    delay(1000)\n    emit(2)\n}\n\n// Hot - StateFlow and SharedFlow are hot\nval hotFlow = MutableStateFlow(0)\nhotFlow.value = 1  // Emitted immediately",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-10",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "Explain `StateFlow` and `SharedFlow`",
+      "answer": "- **`StateFlow`**: Hot flow that holds a single value. Always has a current value. Replays the latest value to new collectors.\n- **`SharedFlow`**: Hot flow without initial value. Can replay emissions to new collectors.",
+      "whyItMatters": "",
+      "codeExample": "// StateFlow - holds current state\nval _uiState = MutableStateFlow(UiState())\nval uiState: StateFlow<UiState> = _uiState.asStateFlow()\n\n// SharedFlow - for events\nprivate val _events = MutableSharedFlow<Event>()\nval events: SharedFlow<Event> = _events.asSharedFlow()\n\n// Emitting\n_uiState.value = UiState.Loading\n_events.emit(Event.NavigateToDetail)",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-11",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "How do you handle thread safety in Coroutines?",
+      "answer": "Use `Mutex` for coroutine-safe locking or `Channel` for communication between coroutines.",
+      "whyItMatters": "",
+      "codeExample": "// Mutex for coroutine-safe access\nclass Counter {\n    private var count = 0\n    private val mutex = Mutex()\n    \n    suspend fun increment() = mutex.withLock {\n        count++\n    }\n}\n\n// Channel for communication\nval channel = Channel<Int>()\n\nviewModelScope.launch {\n    channel.send(1)\n}\n\nviewModelScope.launch {\n    val value = channel.receive()\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-12",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is Context Preservation in Flows?",
+      "answer": "Context preservation ensures that Flow emissions happen in the same context, regardless of where operators are called. Use `flowOn` to change the context.",
+      "whyItMatters": "",
+      "codeExample": "// Context is preserved\nrepository.getUsers()\n    .map { /* Still on IO thread */ }\n    .filter { /* Still on IO thread */ }\n    .flowOn(Dispatchers.IO)  // Changes context upstream\n\n// Collect on Main\nviewModelScope.launch {\n    repository.getUsers()\n        .collect { /* On Main thread */ }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-13",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What does `withContext` do?",
+      "answer": "`withContext` switches to a different coroutine context while remaining within the same coroutine.",
+      "whyItMatters": "",
+      "codeExample": "viewModelScope.launch(Dispatchers.Main) {\n    val data = withContext(Dispatchers.IO) {\n        repository.fetchData()  // Runs on IO thread\n    }\n    // Back on Main thread\n    updateUI(data)\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-14",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is the difference between `collect` and `collectLatest`?",
+      "answer": "- **`collect`**: Processes each emission fully before accepting the next\n- **`collectLatest`**: Cancels previous processing if a new emission arrives",
+      "whyItMatters": "",
+      "codeExample": "// collect - processes all\nflow.collect { value ->\n    delay(1000)  // If new value arrives, waits\n    process(value)\n}\n\n// collectLatest - cancels previous\nflow.collectLatest { value ->\n    delay(1000)  // If new value arrives, cancels and starts new\n    process(value)\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-15",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "How does `CoroutineExceptionHandler` work?",
+      "answer": "`CoroutineExceptionHandler` handles uncaught exceptions in coroutines. It's the last line of defense.",
+      "whyItMatters": "",
+      "codeExample": "val exceptionHandler = CoroutineExceptionHandler { _, exception ->\n    Log.e(\"Error\", \"Unhandled exception\", exception)\n}\n\nviewModelScope.launch(exceptionHandler) {\n    throw Exception(\"Error\")  // Caught by handler\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-16",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is a Concurrent Map and when would you use it?",
+      "answer": "A `ConcurrentHashMap` is a thread-safe map that allows concurrent access without external synchronization.",
+      "whyItMatters": "",
+      "codeExample": "val cache = ConcurrentHashMap<String, User>()\n\n// Thread-safe operations\ncache[\"user1\"] = user1\nval user = cache[\"user1\"]\n\n// Atomic operations\ncache.computeIfAbsent(\"user1\") { repository.getUser(it) }",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-17",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What are Coroutine Scopes and why are they important?",
+      "answer": "Coroutine scopes define the lifecycle of coroutines. They ensure coroutines are cancelled when no longer needed, preventing memory leaks.",
+      "whyItMatters": "",
+      "codeExample": "// ViewModel scope - cancelled when ViewModel cleared\nviewModelScope.launch { /* ... */ }\n\n// Activity scope - cancelled when Activity destroyed\nlifecycleScope.launch { /* ... */ }\n\n// Custom scope\nval customScope = CoroutineScope(Dispatchers.Main + Job())\ncustomScope.launch { /* ... */ }\n// Must cancel manually: customScope.cancel()",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-18",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What are the current recommended options for asynchronous work in Android?",
+      "answer": "The recommended stack is coroutines with structured concurrency as the default, `Flow`/`StateFlow`/`SharedFlow` for reactive streams, and `WorkManager` for guaranteed background jobs. Older patterns like `AsyncTask` are deprecated and should be avoided except for maintaining legacy code.",
+      "whyItMatters": "Shows you are current with modern Android concurrency APIs rather than recommending legacy thread/AsyncTask patterns.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-19",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "Coroutines vs RxJava — which would you choose for a 2026 Android project?",
+      "answer": "Coroutines + Flow are the Jetpack-native default and integrate better with lifecycle-aware collection (`collectAsStateWithLifecycle`, `repeatOnLifecycle`). RxJava remains valid in legacy-heavy codebases and has a richer operator set, but migration to coroutines is recommended for new code. The comparison should cover cancellation model, operators, and learning/maintenance cost.",
+      "whyItMatters": "A senior candidate must articulate the trade-offs and a pragmatic migration path rather than dogmatically picking one.",
+      "codeExample": "// Flow - lifecycle-aware collection is built-in\nviewModel.uiState\n    .flowWithLifecycle(owner.lifecycle, Lifecycle.State.STARTED)\n    .collect { render(it) }\n\n// RxJava - similar via LifecycleReactiveStreams / repeatOnLifecycle equivalents",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-20",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is `runBlocking`, and when should (and shouldn't) you use it in Android?",
+      "answer": "`runBlocking` blocks the calling thread until the coroutine completes. In Android it should generally be avoided (especially on the main thread, where it causes ANRs) and is mainly useful at the \"boundary\" — e.g., unit tests, or bridging blocking callers into coroutines.",
+      "whyItMatters": "Using `runBlocking` on the main thread signals a misunderstanding of coroutines and can block the UI thread.",
+      "codeExample": "// Unit test example - acceptable\n@Test\nfun testUseCase() = runBlocking {\n    val result = useCase.execute()\n    assertEquals(expected, result)\n}\n\n// In production UI code - AVOID runBlocking on the main thread\n// runBlocking { ... } on Dispatchers.Main will freeze the UI",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-21",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "If a parent coroutine is cancelled, what happens to its children, and how do you handle cancel-while-running work?",
+      "answer": "When a parent `Job` is cancelled, all of its children are cancelled recursively (structured concurrency). Child coroutines need to handle `CancellationException` cooperatively — suspend functions are cancellation-checkpointed. To do cleanup on cancellation, use `try/finally` or `invokeOnCompletion`; use `NonCancellable` only for critical cleanup that must not be cancelled.",
+      "whyItMatters": "Tests understanding of structured concurrency and cooperative cancellation, a common real-world Android gotcha (e.g., WorkManager cancelling for a network call).",
+      "codeExample": "val job = viewModelScope.launch {\n    try {\n        fetchData() // cancellable suspend call\n    } finally {\n        withContext(NonCancellable) {\n            persistPartialResult() // still runs even though cancelled\n        }\n    }\n}\n// Later: job.cancel() → propagates to all children",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-22",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "How would you approach joining a project with a very legacy codebase?",
+      "answer": "Start by understanding the architecture, critical flows, and pain points before proposing big refactors. Deliver value incrementally — small safe improvements and tests around risky areas — and respect business constraints. Avoid a \"rewrite everything\" mindset.",
+      "whyItMatters": "Tests pragmatism, empathy with existing systems, and incremental delivery rather than idealistic rewrites.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-23",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "What is your view on experimentation and feature flags for risky deliveries?",
+      "answer": "Use feature flags to reduce blast radius and enable safe progressive rollout. Define success/failure metrics before launch, and have a cleanup plan for stale flags to avoid technical debt.",
+      "whyItMatters": "Shows production-mindedness and awareness of rollout safety and flag hygiene.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-24",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "How would you integrate AI agents into the team workflow (ticket → release)?",
+      "answer": "Use AI for scaffolding, test drafts, and migration assistance. Keep human gates at architecture decisions, security-sensitive changes, and final review. Leave CI quality gates (tests/lint/static analysis) unchanged, and run periodic audits to prevent dependency and technical debt growth.",
+      "whyItMatters": "Shows you can productively adopt AI without lowering engineering quality bars.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-01",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is the main difference between a data class and a regular class in Kotlin?",
+      "answer": "A data class automatically generates useful methods like `equals()`, `hashCode()`, `toString()`, `copy()`, and `componentN()` functions based on the properties declared in the primary constructor. A regular class requires you to implement these manually.",
+      "whyItMatters": "Interviewers want to know if you leverage Kotlin's syntactic sugar to avoid boilerplate code, especially when creating DTOs or UI state models.",
+      "codeExample": "// Data class - auto-generates equals, hashCode, toString, copy, etc.\ndata class User(val name: String, val age: Int)\n\n// Regular class - requires manual implementation\nclass User(val name: String, val age: Int) {\n    override fun equals(other: Any?): Boolean { /* manual */ }\n    override fun hashCode(): Int { /* manual */ }\n    override fun toString(): String { /* manual */ }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-02",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "When would you use a sealed class (or sealed interface) instead of an enum class?",
+      "answer": "Enums are great for a fixed set of constants, but they only allow a single instance of each type. Sealed classes allow multiple instances of their subclasses, and each subclass can hold different types of state or data.",
+      "whyItMatters": "Sealed classes are the backbone of representing UI State (e.g., `Loading`, `Success(data)`, `Error(exception)`) in MVI/MVVM architectures.",
+      "codeExample": "// Enum - single instance per type\nenum class Status { LOADING, SUCCESS, ERROR }\n\n// Sealed class - multiple instances with data\nsealed class UiState<out T> {\n    object Loading : UiState<Nothing>()\n    data class Success<T>(val data: T) : UiState<T>()\n    data class Error(val exception: Throwable) : UiState<Nothing>()\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-03",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "Can you explain how extension functions work under the hood?",
+      "answer": "Under the hood, Kotlin compiles extension functions as static methods in Java. The receiver object (the class you are extending) is passed as the first implicit argument to this static method. They do not actually modify the original class.",
+      "whyItMatters": "Tests your understanding of how Kotlin interoperates with the JVM and whether you know that extensions can't access private members of the class they extend.",
+      "codeExample": "// Kotlin extension function\nfun String.isEmail(): Boolean = contains(\"@\") && contains(\".\")\n\n// Compiled to Java equivalent:\n// public static boolean isEmail(String receiver) {\n//     return receiver.contains(\"@\") && receiver.contains(\".\");\n// }",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-04",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What are Kotlin Scope Functions, and how do you choose between let, apply, run, with, and also?",
+      "answer": "Scope functions execute a block of code within the context of an object. The choice depends on:\n- **`let`**: Use for null-checks (`obj?.let { ... }`), transforms, or when you need `it` reference\n- **`apply`**: Use for object configuration (returns the receiver)\n- **`also`**: Use for side-effects like logging (returns the receiver)\n- **`run`**: Use to operate on an object and return a new result (uses `this`)\n- **`with`**: Use when you want to call multiple methods on an object (uses `this`)",
+      "whyItMatters": "",
+      "codeExample": "// let - transform or null-check\nval result = user?.let { \"User: ${it.name}\" }\n\n// apply - configure object\nval textView = TextView(context).apply {\n    text = \"Hello\"\n    textSize = 16f\n    setTextColor(Color.BLACK)\n}\n\n// also - side effects\nval numbers = mutableListOf(1, 2, 3).also {\n    println(\"Initial list: $it\")\n}\n\n// run - execute with context and return result\nval length = \"Hello\".run {\n    println(\"Length: ${this.length}\")\n    this.length\n}\n\n// with - call multiple methods\nwith(textView) {\n    text = \"Hello\"\n    textSize = 16f\n    setTextColor(Color.BLACK)\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-05",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is the difference between `lateinit var` and `lazy { }`?",
+      "answer": "- **`lateinit`**: Used for `var` (mutable) properties that will be initialized later. Cannot use with primitive types. Throws `UninitializedPropertyAccessException` if accessed before initialization.\n- **`lazy`**: Used for `val` (immutable) properties initialized on first access. Thread-safe by default. Can only be used with `val`.",
+      "whyItMatters": "",
+      "codeExample": "// lateinit - mutable, initialized later\nlateinit var currentUser: User\n\n// lazy - immutable, initialized on first access, thread-safe\nval database: Database by lazy { DatabaseFactory.create() }",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-06",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is Null Safety and how does it prevent NullPointerExceptions?",
+      "answer": "Kotlin's type system distinguishes between references that can hold null and those that cannot. The compiler enforces null checks at compile time, preventing `NullPointerException` at runtime.",
+      "whyItMatters": "",
+      "codeExample": "var name: String? = null\n\n// Safe call\nval length = name?.length  // Returns null if name is null\n\n// Elvis operator\nval length = name?.length ?: 0  // Returns 0 if name is null\n\n// Not-null assertion (use carefully!)\nval length = name!!.length  // Throws NullPointerException if name is null",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-07",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is the difference between `==` and `===`?",
+      "answer": "- **`==`**: Structural equality (calls `equals()` method) - compares values\n- **`===`**: Referential equality - compares if two references point to the same object in memory",
+      "whyItMatters": "",
+      "codeExample": "// Note: avoid String(\"...\") (no such constructor in Kotlin); use a distinct instance\nval a = StringBuilder(\"hello\").toString()\nval b = StringBuilder(\"hello\").toString()\n\na == b   // true (same content, structural equality)\na === b  // false (different objects in memory, referential equality)\n\nval c = a\na === c  // true (same reference)",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-08",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What are Companion Objects in Kotlin?",
+      "answer": "Companion objects are singleton objects tied to a class. They allow you to define members that can be accessed without instantiating the class (similar to static methods in Java).",
+      "whyItMatters": "",
+      "codeExample": "class User(val name: String, val age: Int) {\n    companion object {\n        const val MAX_AGE = 150\n        \n        fun create(name: String): User {\n            return User(name, 0)\n        }\n    }\n}\n\n// Usage\nval user = User.create(\"John\")\nval maxAge = User.MAX_AGE",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-09",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is Delegation in Kotlin?",
+      "answer": "Delegation is a design pattern where you delegate the implementation of an interface to another class using the `by` keyword. This promotes composition over inheritance.",
+      "whyItMatters": "",
+      "codeExample": "interface Logger {\n    fun log(message: String)\n}\n\nclass ConsoleLogger : Logger {\n    override fun log(message: String) = println(message)\n}\n\n// Delegation\nclass UserService(logger: Logger) : Logger by logger\n\n// UserService now has all Logger methods, implemented by ConsoleLogger",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-10",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What are Higher-Order Functions?",
+      "answer": "Higher-order functions are functions that accept other functions as parameters or return a function. They are fundamental to functional programming in Kotlin.",
+      "whyItMatters": "",
+      "codeExample": "// Function that accepts a function as parameter\nfun performOperation(a: Int, b: Int, operation: (Int, Int) -> Int): Int {\n    return operation(a, b)\n}\n\nval sum = performOperation(2, 3) { x, y -> x + y }\n\n// Function that returns a function\nfun getMultiplier(factor: Int): (Int) -> Int {\n    return { number -> number * factor }\n}\n\nval double = getMultiplier(2)\nval result = double(5)  // 10",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-11",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What are Inline Functions and why are they used?",
+      "answer": "Inline functions copy the body of the function to the call site, avoiding the overhead of creating function objects. They are particularly useful with lambda parameters to prevent memory allocation for each lambda.",
+      "whyItMatters": "",
+      "codeExample": "// Without inline - creates Function object for lambda\nfun measureTime(block: () -> Unit) {\n    val start = System.nanoTime()\n    block()\n    val end = System.nanoTime()\n    println(\"Time: ${end - start}ns\")\n}\n\n// With inline - no Function object created\ninline fun measureTime(block: () -> Unit) {\n    val start = System.nanoTime()\n    block()\n    val end = System.nanoTime()\n    println(\"Time: ${end - start}ns\")\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-12",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What are Reified Type Parameters?",
+      "answer": "Reified type parameters allow you to access the type of a generic parameter at runtime. This is only possible in inline functions because the type information is inlined at the call site.",
+      "whyItMatters": "",
+      "codeExample": "// Without reified - cannot access T at runtime\nfun <T> filtering(list: List<Any>): List<T> {\n    return list.filterIsInstance<T>()  // Error: Cannot check for instance of erased type\n}\n\n// With reified - can access T at runtime\ninline fun <reified T> filtering(list: List<Any>): List<T> {\n    return list.filterIsInstance<T>()  // Works!\n}\n\nval integers = filtering<Int>(listOf(1, \"two\", 3, \"four\"))",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-13",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is the difference between `const val`, `val`, `lateinit`, and `lazy`?",
+      "answer": "- **`const val`**: Compile-time constant, must be initialized with a primitive value or string. Becomes a static field in bytecode.\n- **`val`**: Read-only property, can be initialized at runtime. Can only be assigned once.\n- **`lateinit var`**: Mutable property initialized later. Cannot use with primitives. Throws exception if accessed before initialization.\n- **`lazy`**: Property initialized on first access. Thread-safe by default. Only works with `val`.",
+      "whyItMatters": "",
+      "codeExample": "const val MAX_RETRY = 3  // Compile-time constant\nval config = loadConfig()  // Runtime initialization\nlateinit var currentUser: User  // Initialized later\nval database by lazy { DatabaseFactory.create() }  // Initialized on first access",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-14",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is the difference between `open`, `abstract`, and `interface`?",
+      "answer": "- **`open`**: Class can be inherited from (final by default in Kotlin)\n- **`abstract`**: Class cannot be instantiated, may contain abstract methods without implementation\n- **`interface`**: Contract defining methods/properties, can have default implementations",
+      "whyItMatters": "",
+      "codeExample": "// Open - can be inherited\nopen class Animal(val name: String) {\n    open fun speak() = println(\"...\")\n}\n\n// Abstract - cannot be instantiated\nabstract class Shape {\n    abstract fun area(): Double\n}\n\n// Interface - contract with optional implementations\ninterface Drawable {\n    fun draw()\n    fun highlight() { println(\"Highlighted\") }  // Default implementation\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-15",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What are Value Classes and when should you use them?",
+      "answer": "Value classes wrap a single primitive type to avoid the overhead of creating additional objects in memory. They are inlined at runtime, providing type safety without memory cost.",
+      "whyItMatters": "",
+      "codeExample": "@JvmInline\nvalue class Email(val value: String) {\n    init {\n        require(value.contains(\"@\")) { \"Invalid email\" }\n    }\n}\n\n// No runtime overhead - Email is inlined as String\nfun sendEmail(email: Email) {\n    // email.value is just a String at runtime\n}\n\n// Type safety at compile time\nval email = Email(\"test@example.com\")\nsendEmail(email)\n// sendEmail(\"invalid\")  // Compile error",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-16",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What are Function Types in Kotlin?",
+      "answer": "Function types represent the signature of a function, specifying parameter types and return type. They enable first-class functions in Kotlin.",
+      "whyItMatters": "",
+      "codeExample": "// Function type declaration\nval operation: (Int, Int) -> Int = { a, b -> a + b }\n\n// Function with no parameters\nval greeting: () -> Unit = { println(\"Hello\") }\n\n// Function returning a value\nval isEven: (Int) -> Boolean = { it % 2 == 0 }\n\n// Nullable function type\nval callback: ((String) -> Unit)? = null",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-17",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What are Sealed Classes and when should you use them?",
+      "answer": "Sealed classes represent restricted class hierarchies where all subclasses are known at compile time. They are ideal for representing UI states, events, or results.",
+      "whyItMatters": "",
+      "codeExample": "sealed class Result<out T> {\n    object Loading : Result<Nothing>()\n    data class Success<T>(val data: T) : Result<T>()\n    data class Error(val exception: Exception) : Result<Nothing>()\n}\n\n// When exhaustive - compiler ensures all cases are handled\nfun handleResult(result: Result<User>) = when (result) {\n    is Result.Loading -> showLoading()\n    is Result.Success -> showUser(result.data)\n    is Result.Error -> showError(result.exception)\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-18",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is the difference between Sealed Classes and Enums?",
+      "answer": "- **Enums**: Single instance per type, cannot hold different data per instance\n- **Sealed Classes**: Multiple instances allowed, each subclass can hold different data",
+      "whyItMatters": "",
+      "codeExample": "// Enum - one instance per type\nenum class Direction { NORTH, SOUTH, EAST, WEST }\n\n// Sealed class - multiple instances with different data\nsealed class Response {\n    data class Success(val data: Any) : Response()\n    data class Error(val code: Int, val message: String) : Response()\n    object Loading : Response()\n}\n\n// Can create multiple Success instances with different data\nval response1 = Response.Success(\"data1\")\nval response2 = Response.Success(\"data2\")",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-19",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What are Delegated Properties in Kotlin?",
+      "answer": "Delegated properties delegate the get/set logic to another class using the `by` keyword. This enables lazy initialization, observable properties, and custom storage.",
+      "whyItMatters": "",
+      "codeExample": "// Built-in delegates\nval lazyValue: String by lazy { \"Computed once\" }\nvar observed: String by Delegates.observable(\"initial\") { _, old, new ->\n    println(\"Changed from $old to $new\")\n}\n\n// Custom delegate\nclass ValidatedDelegate(private val validator: (String) -> Boolean) {\n    private var field: String = \"\"\n    \n    operator fun getValue(thisRef: Any?, property: KProperty<*>): String = field\n    \n    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {\n        if (validator(value)) field = value\n        else throw IllegalArgumentException(\"Invalid value\")\n    }\n}\n\nvar email: String by ValidatedDelegate { it.contains(\"@\") }",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-20",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is the difference between `List`, `MutableList`, and `Array`?",
+      "answer": "- **`List`**: Read-only collection, immutable reference\n- **`MutableList`**: Read/write collection, mutable reference\n- **`Array`**: Fixed-size collection, can hold primitives",
+      "whyItMatters": "",
+      "codeExample": "val list: List<Int> = listOf(1, 2, 3)  // Immutable\nval mutableList: MutableList<Int> = mutableListOf(1, 2, 3)  // Mutable\nval array: Array<Int> = arrayOf(1, 2, 3)  // Fixed size\n\n// Primitives optimization\nval intArray: IntArray = intArrayOf(1, 2, 3)  // No boxing overhead",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-21",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is the difference between `map`, `flatMap`, and `flatten`?",
+      "answer": "- **`map`**: Transforms each element 1:1\n- **`flatMap`**: Transforms each element to a collection, then flattens\n- **`flatten`**: Flattens a collection of collections",
+      "whyItMatters": "",
+      "codeExample": "val numbers = listOf(1, 2, 3)\n\n// map - 1:1 transformation\nval doubled = numbers.map { it * 2 }  // [2, 4, 6]\n\n// flatMap - 1:N transformation\nval expanded = numbers.flatMap { listOf(it, it * 10) }  // [1, 10, 2, 20, 3, 30]\n\n// flatten - flatten nested collections\nval nested = listOf(listOf(1, 2), listOf(3, 4))\nval flat = nested.flatten()  // [1, 2, 3, 4]",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-22",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is the difference between `List` and `Sequence`?",
+      "answer": "- **`List`**: Eager evaluation - all transformations applied immediately\n- **`Sequence`**: Lazy evaluation - transformations applied on demand",
+      "whyItMatters": "",
+      "codeExample": "val numbers = (1..1000000).toList()\n\n// List - all operations executed\nval result = numbers\n    .filter { it > 500000 }\n    .map { it * 2 }\n    .take(5)  // Still processes entire list\n\n// Sequence - lazy evaluation\nval result = numbers.asSequence()\n    .filter { it > 500000 }\n    .map { it * 2 }\n    .take(5)  // Stops after finding 5 elements\n    .toList()",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-23",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is a Kotlin `object`, and what is the difference between an `object` and a `companion object`?",
+      "answer": "An `object` declaration creates a singleton — a single lazily-initialized instance that is thread-safe by default. It is ideal for stateless helpers, constants, or simple single-instance components. A `companion object` is an `object` nested inside a class, used for class-level (static-like) members and factory methods; an instance is created once when the enclosing class is loaded, not per instance of the class.",
+      "whyItMatters": "Distinguishes true singleton semantics (`object`) from static-like members on a class (`companion object`) — a common Android/Gradle confusion when replacing Java `static` usage.",
+      "codeExample": "// object - a real singleton\nobject NetworkConfig {\n    val baseUrl = \"https://api.example.com\"\n    fun timeoutSeconds() = 30\n}\n\nclass ApiClient {\n    // companion object - class-level members, NOT a singleton of ApiClient\n    companion object {\n        fun create(): ApiClient = ApiClient()\n        const val TAG = \"ApiClient\"\n    }\n}\n\nval a = ApiClient.create()\nval b = ApiClient.create() // a !== b (different instances)\nval x = NetworkConfig\nval y = NetworkConfig     // x === y (same singleton instance)",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-24",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "What is Kotlin Multiplatform (KMP) and when should you adopt it?",
+      "answer": "**KMP** lets you share business logic (and, with **Compose Multiplatform**, UI) written once in Kotlin across Android, iOS, desktop, and web. Shared code lives in `commonMain`; platform-specific code is provided via `expect`/`actual`. It is now the officially recommended approach for sharing logic between Android and iOS, with mature libraries (Ktor, kotlinx.serialization, kotlinx.coroutines, Room/Realm, Koin/Hilt). Adopt it for new apps wanting shared domain/data layers or to reduce dual-native cost — but weigh team KMP experience, iOS toolchain complexity, and where your sharing boundary should be.",
+      "whyItMatters": "KMP strategy is a 2025/2026 staff-level decision topic; candidates should speak to both the benefit and the operational cost.",
+      "codeExample": "// commonMain - shared logic\nexpect fun greetingText(name: String): String\n\n// androidMain\nactual fun greetingText(name: String): String = \"Hello, $name from Android\"\n\n// iosMain\nactual fun greetingText(name: String): String = \"Hello, $name from iOS\"",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-25",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "How do `expect`/`actual` work and how do you decide what goes in shared code vs. platform code?",
+      "answer": "`expect` declares an API contract in `commonMain`; each platform (`androidMain`, `iosMain`, etc.) provides an `actual` implementation. Share pure logic and types that have no platform dependency — models, use cases, repositories, networking (Ktor), serialization, coroutines — and keep platform-specific concerns (UI toolkit specifics, Android `Context`, iOS `NSUserDefaults`, permission APIs) behind an interface so the *implementation* differs per platform. The goal is a thin platform layer so most code lives in `commonMain`.",
+      "whyItMatters": "The hardest KMP design question is drawing the sharing boundary correctly; over-sharing leaks platform assumptions into `commonMain`.",
+      "codeExample": "// commonMain\nexpect fun platformName(): String\nexpect object PlatformClock { fun nowEpochMillis(): Long }\n\n// androidMain\nactual fun platformName(): String = \"Android ${Build.VERSION.SDK_INT}\"\n\n// iosMain\nactual fun platformName(): String = UIDevice.currentDevice.systemName + \" iOS\"",
+      "furtherReading": []
+    },
+    {
+      "id": "kotlin-26",
+      "category": "kotlin",
+      "categoryLabel": "Kotlin Fundamentals",
+      "question": "How do you handle change (requirements, priorities, org/process)?",
+      "answer": "Adapt quickly while keeping alignment with product goals. Re-prioritize transparently, communicate impact to stakeholders, and document decisions. Maintain quality standards even as scope shifts.",
+      "whyItMatters": "Shows resilience and communication under ambiguity, a senior expectation.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-01",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "Describe the Android Activity lifecycle.",
+      "answer": "- **onCreate**: Initialize activity, set up UI\n- **onStart**: Activity becomes visible\n- **onResume**: Activity is in foreground, interactive\n- **onPause**: Activity partially obscured, losing focus\n- **onStop**: Activity no longer visible\n- **onDestroy**: Activity being destroyed\n- **onSaveInstanceState**: Save UI state before destruction",
+      "whyItMatters": "",
+      "codeExample": "class MyActivity : AppCompatActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        // Initialize UI\n    }\n    \n    override fun onSaveInstanceState(outState: Bundle) {\n        super.onSaveInstanceState(outState)\n        outState.putString(\"key\", \"value\")\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-02",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What happens during a configuration change (e.g., screen rotation)?",
+      "answer": "The Activity is destroyed and recreated. `onSaveInstanceState` is called before destruction, and the saved state is passed to `onCreate` or `onRestoreInstanceState`.",
+      "whyItMatters": "",
+      "codeExample": "// Survives configuration changes\nclass MyViewModel : ViewModel() {\n    // ViewModel survives rotation\n}\n\n// Activity saves/restores state\noverride fun onSaveInstanceState(outState: Bundle) {\n    super.onSaveInstanceState(outState)\n    outState.putString(\"input\", editText.text.toString())\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-03",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What is `onSaveInstanceState` used for?",
+      "answer": "Saves UI state (e.g., scroll position, input text) when the system might destroy the activity (e.g., configuration change, process death).",
+      "whyItMatters": "",
+      "codeExample": "override fun onSaveInstanceState(outState: Bundle) {\n    super.onSaveInstanceState(outState)\n    outState.putString(\"searchQuery\", searchEditText.text.toString())\n    outState.putInt(\"scrollPosition\", recyclerView.scrollY)\n}\n\noverride fun onCreate(savedInstanceState: Bundle?) {\n    super.onCreate(savedInstanceState)\n    val query = savedInstanceState?.getString(\"searchQuery\")\n    // Restore state\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-04",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What is a Memory Leak in Android?",
+      "answer": "A memory leak occurs when an object is no longer needed but cannot be garbage collected because it's still referenced. Common causes:\n- Static references to Activity/Context\n- Unregistered listeners\n- Non-closing resources\n- Handler/postDelayed leaks",
+      "whyItMatters": "",
+      "codeExample": "// Memory leak - static reference to Activity\ncompanion object {\n    var activity: Activity? = null  // Never set to null!\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-05",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "Explain the difference between Serializable and Parcelable.",
+      "answer": "- **Serializable**: Java standard, slower, uses reflection\n- **Parcelable**: Android-specific, faster, more verbose",
+      "whyItMatters": "",
+      "codeExample": "// Serializable\ndata class User(val name: String) : Serializable\n\n// Parcelable (recommended)\n@Parcelize\ndata class User(val name: String) : Parcelable\n\n// Passing between components\nintent.putExtra(\"user\", User(\"John\"))\nval user = intent.getParcelableExtra<User>(\"user\")",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-06",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What is a Fragment and why use it?",
+      "answer": "A Fragment represents a reusable portion of an Activity's UI. It helps modularize UI code, handle navigation, and manage lifecycle.",
+      "whyItMatters": "",
+      "codeExample": "class UserFragment : Fragment() {\n    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {\n        return ComposeView(requireContext()).setContent {\n            UserScreen()\n        }\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-07",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What are Intent Filters?",
+      "answer": "Intent Filters declare what types of intents an Activity or Service can respond to. They enable implicit intents to find appropriate components.",
+      "whyItMatters": "",
+      "codeExample": "<activity android:name=\".ShareActivity\">\n    <intent-filter>\n        <action android:name=\"android.intent.action.SEND\" />\n        <category android:name=\"android.intent.category.DEFAULT\" />\n        <data android:mimeType=\"text/plain\" />\n    </intent-filter>\n</activity>",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-08",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How does RecyclerView improve upon ListView?",
+      "answer": "- **ViewHolder pattern**: Required, more efficient\n- **LayoutManager**: Flexible layouts (Linear, Grid, Staggered)\n- **ItemAnimator**: Built-in animations\n- **DiffUtil**: Efficient list updates\n- **Item decorations**: Dividers, spacing\n- **Touch helpers**: Item touch handling",
+      "whyItMatters": "",
+      "codeExample": "class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallback()) {\n    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {\n        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)\n        return UserViewHolder(view)\n    }\n    \n    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {\n        holder.bind(getItem(position))\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-09",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do you handle database security in Android?",
+      "answer": "Encrypt the local database (e.g., Room) using tools like SQLCipher integrated with the Android Keystore. The trade-off is a performance penalty on read/write operations, but it is an absolute requirement for handling sensitive data.",
+      "whyItMatters": "",
+      "codeExample": "// SQLCipher with Room\nval factory = SupportFactory(SQLiteDatabase.getBytes(passphrase.toCharArray()))\nval database = Room.databaseBuilder(context, AppDatabase::class.java, \"database\")\n    .openHelperFactory(factory)\n    .build()",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-10",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do you manage a session token in Android?",
+      "answer": "1. **Store securely**: Use EncryptedSharedPreferences or Android Keystore\n2. **Refresh tokens**: Implement token refresh logic\n3. **Clear on logout**: Remove all tokens\n4. **Use Interceptor**: Attach token to API requests",
+      "whyItMatters": "",
+      "codeExample": "// Secure storage\nval encryptedSharedPreferences = EncryptedSharedPreferences.create(\n    \"auth_prefs\",\n    masterKeyAlias,\n    context,\n    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,\n    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM\n)\n\n// Token interceptor\nclass AuthInterceptor(private val tokenProvider: () -> String?) : Interceptor {\n    override fun intercept(chain: Interceptor.Chain): Response {\n        val token = tokenProvider()\n        val request = chain.request().newBuilder().apply {\n            token?.let { addHeader(\"Authorization\", \"Bearer $it\") }\n        }.build()\n        return chain.proceed(request)\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-11",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What is the difference between an explicit and an implicit Intent?",
+      "answer": "An **explicit intent** names the exact component (class or package) to handle it, used within your app or a known component. An **implicit intent** declares an action/data and lets the system resolve a matching component via intent filters. Security matters: exported components responding to implicit intents must be guarded.",
+      "whyItMatters": "Intent resolution is fundamental to Android component model; candidates should also mention `PendingIntent`, `FLAG_IMMUTABLE`, and checking exported components.",
+      "codeExample": "<!-- Implicit intent resolution uses intent-filter in manifest -->\n<activity android:name=\".ShareActivity\" android:exported=\"true\">\n    <intent-filter>\n        <action android:name=\"android.intent.action.SEND\"/>\n        <category android:name=\"android.intent.category.DEFAULT\"/>\n        <data android:mimeType=\"text/plain\"/>\n    </intent-filter>\n</activity>",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-12",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "Where does the app launcher label come from?",
+      "answer": "The launcher label is usually the `android:label` on the `<application>` element (often pointing to a localized string resource). It can be overridden per-launcher via the `android:label` on the launcher `<activity>` or an activity-alias.",
+      "whyItMatters": "A quick question probing manifest knowledge and resource localization.",
+      "codeExample": "<application android:label=\"@string/app_name\">\n    <!-- launcher activity can override the visible label -->\n    <activity android:name=\".MainActivity\"\n              android:label=\"@string/app_name\"\n              android:exported=\"true\">\n        <intent-filter>\n            <action android:name=\"android.intent.action.MAIN\"/>\n            <category android:name=\"android.intent.category.LAUNCHER\"/>\n        </intent-filter>\n    </activity>\n</application>",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-13",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do you save and restore UI state across configuration changes and process death?",
+      "answer": "Use a lifecycle-aware `ViewModel` + `SavedStateHandle` for UI state that should survive process death. Use `onSaveInstanceState` / `rememberSaveable` for small, parcelable transient state. Distinguish configuration changes (recreated but process alive) from true process death.",
+      "whyItMatters": "Correct state restoration is a core senior Android expectation; conflating config change and process death is a common weakness.",
+      "codeExample": "class CounterViewModel(private val savedState: SavedStateHandle) : ViewModel() {\n    val count = savedState.getStateFlow(\"count\", 0)\n    fun increment() { savedState[\"count\"] = (savedState[\"count\"] ?: 0) + 1 }\n}\n\n// In Compose:\nvar text by rememberSaveable { mutableStateOf(\"\") } // survives rotation & process death",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-14",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do components on the same screen communicate with each other?",
+      "answer": "In the Fragment world: a shared (activity-scoped) `ViewModel`, the Fragment Result API, or callbacks for strictly local communication. In Compose: state hoisting, callback events, and a screen-scoped `ViewModel`. The principle is to avoid tight coupling and direct cross-component mutation.",
+      "whyItMatters": "Tests your understanding of unidirectional data flow and decoupled component communication patterns.",
+      "codeExample": "// Shared ViewModel - both fragments observe the same state\nclass SharedViewModel : ViewModel() {\n    val selection = MutableStateFlow<String?>(null)\n}\n\n// Compose: state hoisted to parent, passed down with callbacks\n@Composable\nfun Parent() {\n    var query by remember { mutableStateOf(\"\") }\n    SearchBar(value = query, onChange = { query = it })\n    ResultsList(query = query)\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-15",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "Background Service vs. Foreground Service vs. WorkManager vs. AlarmManager — when do you use each?",
+      "answer": "A **background service** runs without a persistent notification and is heavily restricted on Android 8+ (better to use WorkManager). A **foreground service** shows a persistent notification and is for user-visible long-running work (music, navigation, tracking). **WorkManager** is for deferrable, guaranteed background work with constraints and retries that survives app restarts. **AlarmManager** is for precise time-based triggers and is often constrained by battery policies (Doze/App Standby).",
+      "whyItMatters": "Interviewers probe whether you pick the right background API rather than defaulting to a foreground service for everything.",
+      "codeExample": "// WorkManager - guaranteed, constraint-based deferred work\nval request = OneTimeWorkRequestBuilder<SyncWorker>()\n    .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())\n    .build()\nWorkManager.getInstance(context).enqueue(request)",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-16",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What is a `PendingIntent` and why does it matter for security?",
+      "answer": "A `PendingIntent` grants another app (or the system) the permission to perform an action on your app's behalf at a later time, e.g., opening an activity after a notification tap or alarm fires. For security you should pass `FLAG_IMMUTABLE` unless you truly need mutability, to prevent the granting app from being able to change its contents.",
+      "whyItMatters": "A common Android security interview question — knowing `PendingIntent.FLAG_IMMUTABLE` vs `FLAG_MUTABLE` is a concrete senior-level differentiator.",
+      "codeExample": "val contentIntent = PendingIntent.getActivity(\n    context,\n    0,\n    Intent(context, MainActivity::class.java),\n    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE\n)",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-17",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do you detect which app or Activity is currently on top of the screen?",
+      "answer": "The modern, reliable approach is a `UsageStatsManager` query (with the `PACKAGE_USAGE_STATS` permission) or `AccessibilityService`, rather than relying on `ActivityManager.getRunningTasks` (restricted since Android 5.0/21). Respect user privacy — this is rarely needed for legitimate use.",
+      "whyItMatters": "Shows awareness of Android's evolving background/task visibility restrictions and privacy posture.",
+      "codeExample": "// UsageStatsManager - foreground package (requires PACKAGE_USAGE_STATS)\nval stats = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager\nval now = System.currentTimeMillis()\nval usage = stats.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, now - 60_000, now)\nval top = usage.maxByOrNull { it.lastTimeUsed }?.packageName",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-18",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "View Binding vs. Data Binding vs. Jetpack Compose — which and when?",
+      "answer": "**View Binding** is type-safe view references with minimal magic. **Data Binding** adds XML expressions and two-way binding but more complexity and tooling overhead. **Compose** is the declarative, preferred modern UI framework. For new screens use Compose; in mixed codebases, Compose can interoperate with View/Data Binding via `AndroidView` and `ComposeView`.",
+      "whyItMatters": "Candidates must articulate an interop strategy for legacy codebases transitioning to Compose.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-19",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do you choose between `StateFlow` and `SharedFlow` (and `MutableList`) for upcoming data & events?",
+      "answer": "Use `StateFlow` for observable state that should hold and replay the latest value (a \"single source of truth\"). Use `SharedFlow` for broadcasting events or streams where you need configurable replay/buffer and no concept of a \"current value\". A plain `MutableList`/list is fine for local in-memory collections not meant to be observed across the UI layer. Choose based on whether you need current-value semantics (State) vs. event/stream semantics (Shared).",
+      "whyItMatters": "Selecting the right stream primitive is a practical senior-level design skill.",
+      "codeExample": "val state: MutableStateFlow<String> = MutableStateFlow(\"initial\") // latest value\nval events: MutableSharedFlow<Int> = MutableSharedFlow(extraBufferCapacity = 1) // broadcast",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-20",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How would you design a CI/CD pipeline for an Android app?",
+      "answer": "1. **Build**: Gradle with caching\n2. **Test**: Unit, integration, UI tests\n3. **Lint**: Code quality checks\n4. **Security**: Dependency scanning\n5. **Deploy**: Play Store internal track\n6. **Monitor**: Crash reporting, performance",
+      "whyItMatters": "",
+      "codeExample": "# GitHub Actions example\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - uses: actions/setup-java@v3\n        with:\n          java-version: '17'\n      - run: ./gradlew build\n      - run: ./gradlew test\n      - run: ./gradlew lint",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-21",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How would you implement analytics in a large-scale Android app?",
+      "answer": "1. **Event tracking**: Define key events\n2. **User properties**: Segment users\n3. **Screens**: Track screen views\n4. **Performance**: App startup, network requests\n5. **Privacy**: GDPR compliance, opt-out",
+      "whyItMatters": "",
+      "codeExample": "// Analytics abstraction\ninterface AnalyticsProvider {\n    fun trackEvent(name: String, params: Map<String, Any> = emptyMap())\n    fun setUserProperty(key: String, value: String)\n}\n\n// Implementation\nclass FirebaseAnalyticsProvider(private val analytics: FirebaseAnalytics) : AnalyticsProvider {\n    override fun trackEvent(name: String, params: Map<String, Any>) {\n        val bundle = Bundle().apply {\n            params.forEach { (key, value) ->\n                when (value) {\n                    is String -> putString(key, value)\n                    is Int -> putInt(key, value)\n                    is Long -> putLong(key, value)\n                    is Double -> putDouble(key, value)\n                }\n            }\n        }\n        analytics.logEvent(name, bundle)\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-22",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How would you handle accessibility in an Android app?",
+      "answer": "1. **Content descriptions**: For images and interactive elements\n2. **Touch targets**: Minimum 48dp\n3. **Color contrast**: WCAG compliance\n4. **Text scaling**: Support large text\n5. **Screen readers**: TalkBack support\n6. **Testing**: Accessibility Scanner",
+      "whyItMatters": "",
+      "codeExample": "// Content descriptions\nImage(\n    painter = painterResource(R.drawable.logo),\n    contentDescription = \"Company logo\"\n)\n\n// Clickable with semantics\nButton(\n    onClick = { /* ... */ },\n    modifier = Modifier.semantics {\n        contentDescription = \"Submit form\"\n    }\n) {\n    Text(\"Submit\")\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-23",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How would you implement internationalization (i18n) in an Android app?",
+      "answer": "1. **String resources**: Use `strings.xml`\n2. **Plurals**: Handle singular/plural\n3. **Date/number formatting**: Use `DateFormat` and `NumberFormat`\n4. **RTL support**: Layout mirroring\n5. **Testing**: Multiple locales",
+      "whyItMatters": "",
+      "codeExample": "<!-- strings.xml -->\n<resources>\n    <string name=\"greeting\">Hello, %s!</string>\n    <plurals name=\"item_count\">\n        <item name=\"one\">%d item</item>\n        <item name=\"other\">%d items</item>\n    </plurals>\n</resources>\n\n<!-- Usage -->\ngetString(R.string.greeting, userName)\nresources.getQuantityString(R.plurals.item_count, count, count)",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-24",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How would you optimize network requests in an Android app?",
+      "answer": "1. **Caching**: OkHttp cache, HTTP headers\n2. **Compression**: Gzip, Brotli\n3. **Pagination**: Load data incrementally\n4. **Batch requests**: Combine API calls\n5. **Connection pooling**: Reuse connections\n6. **Retry logic**: Exponential backoff",
+      "whyItMatters": "",
+      "codeExample": "// OkHttp with caching\nval cache = Cache(cacheDir, 10 * 1024 * 1024) // 10MB\nval client = OkHttpClient.Builder()\n    .cache(cache)\n    .addInterceptor(CacheInterceptor())\n    .build()\n\n// Retry with backoff\nsuspend fun <T> retryWithBackoff(\n    times: Int = 3,\n    initialDelay: Long = 1000,\n    factor: Double = 2.0,\n    block: suspend () -> T\n): T {\n    var currentDelay = initialDelay\n    repeat(times - 1) {\n        try { return block() } catch (e: Exception) { /* ... */ }\n        delay(currentDelay)\n        currentDelay = (currentDelay * factor).toLong()\n    }\n    return block()\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-25",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How would you handle offline support and data synchronization?",
+      "answer": "1. **Local database**: Room as single source of truth\n2. **WorkManager**: Background sync\n3. **Conflict resolution**: Last-write-wins or custom\n4. **Queue**: Store operations when offline\n5. **Sync indicator**: Show sync status",
+      "whyItMatters": "",
+      "codeExample": "// WorkManager sync\nclass SyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {\n    override suspend fun doWork(): Result {\n        return try {\n            repository.syncData()\n            Result.success()\n        } catch (e: Exception) {\n            Result.retry()\n        }\n    }\n}\n\n// Schedule sync\nval syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(1, TimeUnit.HOURS)\n    .build()\nWorkManager.getInstance(context).enqueueUniquePeriodicWork(\n    \"sync\",\n    ExistingPeriodicWorkPolicy.KEEP,\n    syncRequest\n)",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-26",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How would you implement a feature flag system that supports A/B testing?",
+      "answer": "1. **Remote config**: Firebase Remote Config\n2. **Variant assignment**: User-based or device-based\n3. **Analytics**: Track conversions per variant\n4. **Gradual rollout**: Percentage-based exposure\n5. **Kill switch**: Emergency disable",
+      "whyItMatters": "",
+      "codeExample": "class ABTestManager(private val remoteConfig: FirebaseRemoteConfig) {\n    suspend fun getVariant(experimentId: String): String {\n        return remoteConfig.getString(\"experiment_$experimentId\")\n    }\n    \n    suspend fun trackConversion(experimentId: String, event: String) {\n        analytics.logEvent(\"ab_test_conversion\", mapOf(\n            \"experiment\" to experimentId,\n            \"event\" to event,\n            \"variant\" to getVariant(experimentId)\n        ))\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-27",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do you manage dependencies and versions in a modern Android build?",
+      "answer": "The modern convention is a **Gradle Version Catalog** (`gradle/libs.versions.toml`), which centralizes version numbers and library coordinates so they can be shared across modules, upgraded in one place, and checked by tools (e.g., version-catalog sync, dependency-update plugins). Use it with `plugins { alias(libs.plugins.android.application) }` and `implementation(libs.androidx.compose.ui)`. Avoid scattering raw strings and hard-coded versions across module-level `build.gradle.kts` files.",
+      "whyItMatters": "Version management and dependency hygiene are everyday build concerns; catalogs show you follow modern Gradle practice.",
+      "codeExample": "# gradle/libs.versions.toml\n[versions]\nagp = \"8.7.3\"\nkotlin = \"2.1.20\"\ncompose-bom = \"2024.12.01\"\n\n[libraries]\n# The Compose BOM drives Compose artifact versions (e.g. ui 1.7.6)\ncompose-bom = { group = \"androidx.compose\", name = \"compose-bom\", version.ref = \"compose-bom\" }\n# No version here — it is resolved by the BOM via platform(...)\ncompose-ui = { group = \"androidx.compose.ui\", name = \"ui\" }\n\n[plugins]\nandroid-application = { id = \"com.android.application\", version.ref = \"agp\" }\nkotlin-android = { id = \"org.jetbrains.kotlin.android\", version.ref = \"kotlin\" }",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-28",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What strategies reduce Android build times in a large project?",
+      "answer": "Key levers: (1) **modularization** so changes only rebuild affected modules; (2) enable **Gradle build cache** and **configuration cache** (`org.gradle.configuration-cache=true`); (3) keep Gradle/Kotlin/AGP and dependencies up to date (Kotlin 1.9+/2.x and AGP 8.x are far faster); (4) avoid expensive configuration-time work, use `project.properties` sparingly; (5) leverage `R8`/`minify` in release only; (6) use **Build Analyzer**/`--profile` to find hot tasks. Measure before optimizing.",
+      "whyItMatters": "Build speed directly affects developer productivity; staff engineers are expected to own the build experience on their team.",
+      "codeExample": "# gradle.properties\norg.gradle.caching=true\norg.gradle.configuration-cache=true\norg.gradle.parallel=true\norg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-29",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What is R8 and how do you use it for shrinking, obfuscation, and keep rules?",
+      "answer": "**R8** is the default shrinker/optimizer/obfuscator (replacing ProGuard) that runs at release build time: it removes unused code (shrinking), optimizes bytecode, renames/mangles class/member names (obfuscation), and rewrites resources. `minifyEnabled` controls it; you add **keep rules** (`-keep`) to prevent R8 from removing/renaming things that must survive via reflection, JNI, serialization, DataBinding, or `@Keep`-annotated code (e.g., DTOs served from JSON via Gson/Moshi without code-gen). Test the release build because obfuscated stack traces need mapping (use `consumerProguardFiles` and keep the `mapping.txt`).",
+      "whyItMatters": "R8/proguard rules are a frequent source of release-only crashes; a senior must reason about what to keep and why.",
+      "codeExample": "# Keep a model used via reflection\n-keep class com.example.data.** { *; }\n# Keep enum names\n-keepclassmembers enum * { *; }\n# Keep one concrete API impl (referenced by name in services)\n-keep class com.example.FirebaseApi { *; }",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-30",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do you run a staged rollout and promote a release on the Play Store?",
+      "answer": "On Google Play, releases go through **tracks**: `internal` (fast internal testing), `closed` (invite-only), `open`/`beta` (public opt-in), and `production`. Use **staged rollout** (e.g., 5/10/25/50/100%) in production to limit blast radius and monitor crashes/ANRs before full release. **Promotion** means moving the *already-uploaded* release that passed a lower track up to the next track (e.g., internal → open testing → production) rather than uploading or rebuilding — this keeps the tested artifact identical. Use **App signing by Google Play** (upload key only) for secure key management, and keep the upload key / keystore safe.",
+      "whyItMatters": "Release management and safe rollout are core production-operations skills for senior/staff Android roles.",
+      "codeExample": "internal (fast) -> alpha/closed -> open/beta -> production (staged 5% -> 25% -> 100%)",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-31",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What should be verified before shipping an Android release build?",
+      "answer": "A release-ready checklist: (1) run a **release** (minified/obfuscated) build and test it — R8 can strip things that work in debug; (2) verify **ProGuard/R8 keep rules** and keep `mapping.txt`; (3) check target/compile SDK, `minSdk` behavior, and `android:exported`/`PendingIntent.FLAG_IMMUTABLE`; (4) test **deep links**, notifications, and edge-to-edge/insets; (5) review **Play Integrity API** if you gate features or detect tampering; (6) confirm your baseline profile/performance on a representative device; (7) monitor **pre-launch report** and crash-free sessions after staged rollout.",
+      "whyItMatters": "Catch release-only regressions before they hit users — a senior owns the full path from code to production.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-32",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do you handle conflict with a teammate?",
+      "answer": "Focus on facts and outcomes rather than personal positions. Surface disagreement early, align on shared goals, and propose options. Escalate only when necessary, with context and possible solutions.",
+      "whyItMatters": "Conflict resolution maturity is a key senior/leadership trait.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-33",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "Your manager proposes an idea you believe won't work. How do you disagree?",
+      "answer": "Challenge respectfully with data, risks, and alternatives, framed around business impact and user value. If uncertainty remains, propose a cheap experiment or prototype to validate before committing resources.",
+      "whyItMatters": "Shows you push back constructively with evidence, not ego, and keep the door open to being wrong.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-34",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "Do you innovate in your daily work? Why?",
+      "answer": "Innovation is not only \"big ideas\" — it includes process and code improvements with measurable impact. A candidate should give concrete examples (e.g., reducing build time, automating a toil task) and show how they balance innovation with delivery reliability.",
+      "whyItMatters": "Differentiates candidates who make things better vs. those who just execute.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-35",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "Tell me about a mistake you made in the past.",
+      "answer": "Give a real example with context, ownership, and the lesson learned. Explain what you did to correct it and what changed afterward. Avoid blaming others or choosing a trivial \"non-mistake\".",
+      "whyItMatters": "Honest reflection and growth mindset are being evaluated, not perfection.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-36",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What are your short-term goals?",
+      "answer": "Connect goals to role impact — technical depth, ownership, mentoring, or product impact — and make them measurable or time-bound where possible. Show ambition balanced with realism.",
+      "whyItMatters": "Aligns candidate motivation with the team's needs and trajectory.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-37",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What is hardest for you when joining a new company?",
+      "answer": "Give an honest reflection of the ramp-up challenge (domain, context, process) and a concrete strategy — documentation, pairing, stakeholder mapping, and fast feedback loops. Show proactive adaptation, not passive waiting.",
+      "whyItMatters": "Honest self-awareness plus an actionable onboarding plan.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-38",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What tends to stress you most at work?",
+      "answer": "Show self-awareness and healthy coping strategies — prioritization, communication, and asking for help early. Avoid responses that signal poor collaboration or low accountability.",
+      "whyItMatters": "Evaluates emotional intelligence and how you function under pressure.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-01",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "In a real-time app (e.g., currency exchange), how would you handle live rates: HTTP Polling or Server-Sent Events (SSE)?",
+      "answer": "While SSE or WebSockets provide second-by-second updates, they consume significant data and battery. A practical trade-off is HTTP Polling linked to a temporary quote lock (e.g., 30 seconds). This ensures reliability and significantly reduces battery usage, which is critical for mobile devices.",
+      "whyItMatters": "",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-02",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "How would you design a modular Android application?",
+      "answer": "1. **Feature modules**: Independent feature development\n2. **Core modules**: Shared utilities, networking\n3. **Navigation**: Use Navigation component with dynamic features\n4. **Dependency injection**: Hilt for module integration\n5. **Testing**: Each module independently testable",
+      "whyItMatters": "",
+      "codeExample": "app/\n├── core/\n│   ├── network/\n│   ├── database/\n│   └── common/\n├── feature/\n│   ├── home/\n│   ├── profile/\n│   └── settings/\n└── app/",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-03",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "How would you implement offline-first architecture?",
+      "answer": "1. **Local database**: Room as single source of truth\n2. **Repository pattern**: Coordinate local and remote\n3. **WorkManager**: Background sync\n4. **Conflict resolution**: Last-write-wins or custom logic\n5. **UI indicators**: Show sync status",
+      "whyItMatters": "",
+      "codeExample": "class UserRepository(\n    private val api: UserApi,\n    private val dao: UserDao\n) {\n    // Room's DAO flow re-emits whenever the table changes, so it never completes:\n    // do NOT wrap it in emitAll(...) followed by sync code, that code would never run.\n    fun getUsers(): Flow<List<User>> =\n        dao.getUsers().onStart { syncWithRemote() } // reflect cached data, then refresh\n\n    private suspend fun syncWithRemote() {\n        try {\n            val remoteUsers = api.getUsers()\n            dao.insertAll(remoteUsers) // DB update makes the DAO flow re-emit\n        } catch (e: Exception) {\n            // Handle offline or error; cached data is still served\n        }\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-04",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "How would you implement feature flags in an Android app?",
+      "answer": "1. **Remote config**: Firebase Remote Config or similar\n2. **Local flags**: For A/B testing or staged rollouts\n3. **Kill switch**: Emergency disable\n4. **Analytics**: Track flag usage",
+      "whyItMatters": "",
+      "codeExample": "class FeatureFlags(private val remoteConfig: FirebaseRemoteConfig) {\n    suspend fun isNewDesignEnabled(): Boolean {\n        return remoteConfig.getBoolean(\"new_design_enabled\")\n    }\n    \n    suspend fun getMaxRetries(): Int {\n        return remoteConfig.getLong(\"max_retries\").toInt()\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-05",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "How would you handle push notifications in a large-scale Android app?",
+      "answer": "1. **FCM**: Firebase Cloud Messaging\n2. **Topics**: Group notifications\n3. **Priority**: High vs normal priority\n4. **Channels**: Android O+ notification channels\n5. **Deep linking**: Navigate to specific content\n6. **Analytics**: Track delivery and engagement",
+      "whyItMatters": "",
+      "codeExample": "class MyFirebaseMessagingService : FirebaseMessagingService() {\n    override fun onMessageReceived(message: RemoteMessage) {\n        // Handle notification\n        message.notification?.let {\n            showNotification(it.title, it.body)\n        }\n        \n        // Handle data payload\n        if (message.data.isNotEmpty()) {\n            handleDataPayload(message.data)\n        }\n    }\n    \n    override fun onNewToken(token: String) {\n        // Send token to server\n        repository.updateFcmToken(token)\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-06",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "How would you implement app navigation with deep linking?",
+      "answer": "1. **Navigation component**: Define routes with deep links\n2. **Intent filters**: Register in manifest\n3. **Deferred deep links**: Handle install scenarios\n4. **Testing**: Test with adb commands",
+      "whyItMatters": "",
+      "codeExample": "NavHost(navController, startDestination = \"home\") {\n    composable(\n        \"detail/{id}\",\n        deepLinks = listOf(navDeepLink { uriPattern = \"myapp://detail/{id}\" })\n    ) { backStackEntry ->\n        val id = backStackEntry.arguments?.getString(\"id\")\n        DetailScreen(id)\n    }\n}\n\n// Test with adb\n// adb shell am start -a android.intent.action.VIEW -d \"myapp://detail/123\"",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-07",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "How would you optimize app startup time?",
+      "answer": "1. **Baseline profiles**: Pre-compile critical paths\n2. **Lazy initialization**: Defer non-essential work\n3. **App Startup Library**: Manage component initialization\n4. **Splash screen**: Placeholder while loading\n5. **Profiling**: Use Baseline Profiles, Macrobenchmark",
+      "whyItMatters": "",
+      "codeExample": "// Lazy initialization\nclass MyApplication : Application() {\n    override fun onCreate() {\n        super.onCreate()\n        \n        // Critical - initialize immediately\n        initCrashReporting()\n    }\n\n    // Deferred - initialized only on first access (not on app start)\n    private val analytics by lazy { initAnalytics() }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-08",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "How would you handle app security, including data protection and certificate pinning?",
+      "answer": "1. **Encryption**: Encrypt sensitive data at rest\n2. **Network security**: Certificate pinning\n3. **ProGuard/R8**: Code obfuscation\n4. **Root detection**: Warn or exit on rooted devices\n5. **Biometric authentication**: Secure local access",
+      "whyItMatters": "",
+      "codeExample": "// Certificate pinning\nval client = OkHttpClient.Builder()\n    .certificatePinner(\n        CertificatePinner.Builder()\n            .add(\"api.example.com\", \"sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\")\n            .build()\n    )\n    .build()\n\n// EncryptedSharedPreferences\nval masterKey = MasterKey.Builder(context)\n    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)\n    .build()\n\nval securePrefs = EncryptedSharedPreferences.create(\n    context,\n    \"secret_prefs\",\n    masterKey,\n    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,\n    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM\n)",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-09",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "How would you mentor a teammate who has more business context but less technical depth?",
+      "answer": "Use collaborative mentoring — explain technical trade-offs in product language, pair regularly, share practical examples, and build reusable guidelines. Treat them as a partner and exchange knowledge both ways rather than talking down.",
+      "whyItMatters": "Mentoring \"up or sideways\" is a staff-level signal; collaboration beats lecturing.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-10",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "Give a real case where AI improved productivity measurably.",
+      "answer": "Describe a concrete baseline and metric (lead time, review time, defects, rework), the task type where AI helped and where it did not, and the trade-offs and controls used to keep quality.",
+      "whyItMatters": "Requires concrete, quantified examples rather than vague claims about \"using Copilot\".",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-01",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "How do you approach testing in Android?",
+      "answer": "- **Unit Tests**: Test business logic (ViewModel, Use Cases, Repository)\n- **Integration Tests**: Test component interactions\n- **UI Tests**: Test user flows (Espresso, Compose Testing)\n- **Snapshot Tests**: Visual regression testing",
+      "whyItMatters": "",
+      "codeExample": "// Unit Test\nclass UserRepositoryTest {\n    @Test\n    fun `get user returns correct user`() = runTest {\n        val repository = UserRepository(mockApi, mockDao)\n        val user = repository.getUser(\"1\")\n        assertEquals(\"John\", user.name)\n    }\n}\n\n// Compose Test\nclass UserScreenTest {\n    @get:Rule\n    val composeTestRule = createComposeRule()\n    \n    @Test\n    fun displaysUser() {\n        composeTestRule.setContent {\n            UserScreen(user = User(\"John\"))\n        }\n        composeTestRule.onNodeWithText(\"John\").assertIsDisplayed()\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-02",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "What tools would you use to detect recompositions? And in compile time?",
+      "answer": "- **Runtime**: Layout Inspector, Compose Compiler Metrics\n- **Compile-time**: Compose Compiler reports, @Stable/@Immutable analysis\n- **Profiling**: Systrace, Perfetto",
+      "whyItMatters": "",
+      "codeExample": "# Generate Compose compiler metrics/reports\n# (writes reports to build/compose_compiler; no separate Analyze task exists)\n./gradlew assembleRelease -PcomposeCompilerReports=true",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-03",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "Have you used Hilt or Koin? Which would you choose and why?",
+      "answer": "- **Hilt**: Google's recommended DI framework, compile-time safety, better integration with Android components\n- **Koin**: Runtime DI, simpler setup, but less compile-time safety",
+      "whyItMatters": "",
+      "codeExample": "// Hilt\n@Module\n@InstallIn(SingletonComponent::class)\nclass AppModule {\n    @Provides\n    fun provideApi(): ApiService = Retrofit.Builder().build().create(ApiService::class.java)\n}\n\n@HiltViewModel\nclass UserViewModel @Inject constructor(\n    private val getUserUseCase: GetUserUseCase\n) : ViewModel()\n\n// Koin\nval appModule = module {\n    single { Retrofit.Builder().build().create(ApiService::class.java) }\n    viewModel { UserViewModel(get()) }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-04",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "What are some common performance pitfalls in Android?",
+      "answer": "1. **Main thread work**: Network, database, heavy computation\n2. **Memory leaks**: Unreleased resources, static references\n3. **Excessive allocations**: Object creation in loops\n4. **Inefficient layouts**: Deep view hierarchies\n5. **Overdraw**: Drawing same pixels multiple times\n6. **Background work**: Using services instead of WorkManager",
+      "whyItMatters": "",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-05",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "How would you debug ANR (Application Not Responding) issues?",
+      "answer": "1. **Check ANR traces**: `/data/anr/traces.txt`\n2. **Analyze main thread**: What was it doing?\n3. **Use Systrace**: Identify blocking operations\n4. **Check for locks**: Deadlocks or long-held locks\n5. **Review database operations**: Ensure off main thread\n6. **Profile memory**: GC pauses can cause ANRs",
+      "whyItMatters": "",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-06",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "JVM unit tests vs. instrumented tests — where do you draw the line?",
+      "answer": "JVM unit tests run on the host JVM (fast, no device/emulator) and are ideal for pure business logic, ViewModels, and use cases. Instrumented tests run on a device/emulator and cover integration, UI, and framework behavior. Follow the test pyramid: many fast unit tests, fewer integration/UI tests.",
+      "whyItMatters": "Distinguishes an understanding of the Android test pyramid and what belongs in each layer.",
+      "codeExample": "// JVM test (fast, runs on host JVM)\nclass GetUserUseCaseTest {\n    @Test fun `returns mapped user`() = runTest { /* ... */ }\n}\n\n// Instrumented/Compose UI test (runs on device)\n@get:Rule val composeTestRule = createComposeRule()\n@Test fun `shows loading state`() {\n    setContent { MyScreen(uiState = UiState.Loading) }\n    composeTestRule.onNodeWithText(\"Loading…\").assertIsDisplayed()\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-07",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "What does a typical modern Android testing stack look like?",
+      "answer": "Unit: JUnit, `kotlinx-coroutines-test` (TestDispatcher), MockK/Mockito, Turbine (for Flow). UI Compose: `compose-ui-test-junit4` and `createComposeRule`. Integration/E2E: Espresso (legacy views) and Macrobenchmark where relevant. Emphasize deterministic coroutine scheduling and fake-first testing.",
+      "whyItMatters": "Shows you know the current, idiomatic testing libraries rather than outdated or ad-hoc ones.",
+      "codeExample": "// Deterministic coroutine testing\n@OptIn(ExperimentalCoroutinesApi::class)\nclass ViewModelTest {\n    private val dispatcher = StandardTestDispatcher()\n\n    @Test\n    fun `emits loading then success`() = runTest(dispatcher) {\n        val vm = MyViewModel(repo = fakeRepo, dispatcher = dispatcher)\n        vm.load()\n        // Turbine for Flow assertions\n        vm.uiState.test { assertEquals(UiState.Loading, awaitItem()) }\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-08",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "How do you monitor crashes and performance in production?",
+      "answer": "Use crash monitoring (Firebase Crashlytics, Datadog, Sentry) for crashes and ANRs, and performance monitoring for startup time, frame drops/jank, ANR rate, network latency, and custom traces. Establish alerting thresholds, ownership, and an incident-response loop (triaging, fixing, verifying via rollout).",
+      "whyItMatters": "Production observability is a differentiator for senior/staff roles beyond \"it works in my IDE\".",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-09",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "How would you implement a robust error handling strategy?",
+      "answer": "1. **Result type**: Use sealed class for success/error\n2. **Error mapping**: Convert exceptions to user-friendly messages\n3. **Retry logic**: For transient failures\n4. **Fallback**: Graceful degradation\n5. **Reporting**: Log errors for debugging",
+      "whyItMatters": "",
+      "codeExample": "sealed class Result<out T> {\n    data class Success<T>(val data: T) : Result<T>()\n    data class Error(val exception: Exception) : Result<Nothing>()\n}\n\nsuspend fun <T> safeCall(block: suspend () -> T): Result<T> {\n    return try {\n        Result.Success(block())\n    } catch (e: Exception) {\n        Result.Error(e)\n    }\n}\n\n// Usage\nwhen (val result = safeCall { repository.getData() }) {\n    is Result.Success -> showData(result.data)\n    is Result.Error -> showError(result.exception.message)\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-10",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "How do you ensure your daily work meets a high quality bar?",
+      "answer": "Use clear acceptance criteria, tests, lint/static checks, and self-review before opening a PR. Keep changes small and incremental, write readable code, and explicitly handle edge cases. Validate behavior with metrics or logs where relevant.",
+      "whyItMatters": "Distinct ownership of quality, not just \"I test sometimes\".",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-11",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "What are your no-go's when reviewing a new task or ticket?",
+      "answer": "Undefined scope or acceptance criteria, unclear ownership, hidden dependencies, security/privacy risks, missing rollback strategy on risky changes, and lack of testability or a way to verify success. I escalate these before starting.",
+      "whyItMatters": "Shows you can push back productively on genuinely dangerous work.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-12",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "What would you do if a feature you shipped has bugs in production?",
+      "answer": "Own the issue, communicate impact quickly, and mitigate (hotfix, rollback, or feature-flag off). Then run a blameless postmortem, identify root cause, and add preventive measures such as better tests, monitoring, or checklists.",
+      "whyItMatters": "Ownership and incident response without blame-shifting are core senior behaviors.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-13",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "What guardrails would you define for using AI in production code?",
+      "answer": "- Scope limits (no blind large refactors).\n- Mandatory code review and tests.\n- Security/privacy constraints (no secrets or PII in prompts).\n- Versioned prompts/playbooks for repeatability.\n- Traceability of AI-assisted changes in PRs.",
+      "whyItMatters": "AI usage in production teams is now an active interview topic; candidates need a thoughtful policy stance.",
+      "codeExample": "",
+      "furtherReading": []
+    }
+  ]
+}

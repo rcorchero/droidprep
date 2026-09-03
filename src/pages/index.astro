@@ -1,0 +1,328 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CategoryCard from '../components/CategoryCard.astro';
+import { categories } from '../../data/categories.json';
+
+const cats = categories;
+const totalQuestions = cats.reduce((sum, c) => sum + c.questionCount, 0);
+---
+
+<BaseLayout title="DroidPrep" description="Master Android technical interviews with 173 curated questions across 8 core topics.">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <span class="badge badge-basic">Free &amp; Open Source</span>
+      </div>
+      <h1 class="hero-title">
+        Master your <span class="highlight">Android</span><br />
+        technical interview
+      </h1>
+      <p class="hero-subtitle">
+        {totalQuestions} curated questions across 8 core topics — from Kotlin fundamentals to system design.
+        Search, study, and test yourself with multiple choice quizzes.
+      </p>
+      <div class="hero-actions">
+        <a href="/browse" class="btn btn-primary">Start Browsing</a>
+        <a href="/quiz" class="btn btn-secondary">Take a Quiz</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value">{totalQuestions}</span>
+          <span class="stat-label">Questions</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{cats.length}</span>
+          <span class="stat-label">Categories</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">100%</span>
+          <span class="stat-label">Free</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="categories-section">
+    <div class="container">
+      <h2 class="section-title">Browse by category</h2>
+      <p class="section-subtitle">Pick a topic and start studying</p>
+      <div class="categories-grid">
+        {cats.map(cat => (
+          <CategoryCard
+            id={cat.id}
+            name={cat.name}
+            icon={cat.icon}
+            description={cat.description}
+            color={cat.color}
+            questionCount={cat.questionCount}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features-section">
+    <div class="container">
+      <h2 class="section-title">Everything you need to prepare</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon gradient-green">&#x1F50E;</div>
+          <h3>Full-text search</h3>
+          <p>Find exactly what you need across all 173 questions with instant client-side search.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon gradient-blue">&#x2705;</div>
+          <h3>Multiple choice quizzes</h3>
+          <p>Test yourself with quality MCQ options targeting real interview misconceptions.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon gradient-purple">&#x1F4CC;</div>
+          <h3>Bookmark & track progress</h3>
+          <p>Save questions for later and track your quiz scores over time — all stored locally.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon gradient-orange">&#x1F4DA;</div>
+          <h3>Code examples</h3>
+          <p>Every answer includes real Kotlin code examples with syntax highlighting.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container cta-content">
+      <h2>Ready to ace your interview?</h2>
+      <p>Start with a quiz in your weakest category, or browse everything first.</p>
+      <div class="cta-actions">
+        <a href="/quiz" class="btn btn-primary">Take a Quiz</a>
+        <a href="/browse" class="btn btn-ghost">Browse Questions</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: var(--space-3xl) 0;
+    text-align: center;
+    background:
+      radial-gradient(ellipse at top, rgba(61, 220, 132, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(66, 133, 244, 0.05), transparent 50%);
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-lg);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .hero-badge {
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .highlight {
+    color: var(--accent);
+  }
+
+  .hero-subtitle {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    max-width: 560px;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: var(--space-2xl);
+    margin-top: var(--space-xl);
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .stat-value {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .stat-label {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Categories */
+  .categories-section {
+    padding: var(--space-3xl) 0;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-sm);
+  }
+
+  .section-subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  /* Features */
+  .features-section {
+    padding: var(--space-3xl) 0;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .features-section .section-title {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .feature-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-xl);
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+  }
+
+  .feature-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .feature-card h3 {
+    font-size: var(--text-lg);
+  }
+
+  .feature-card p {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    font-size: 1.4em;
+  }
+
+  .gradient-green {
+    background: rgba(61, 220, 132, 0.15);
+  }
+
+  .gradient-blue {
+    background: rgba(66, 133, 244, 0.15);
+  }
+
+  .gradient-purple {
+    background: rgba(127, 82, 255, 0.15);
+  }
+
+  .gradient-orange {
+    background: rgba(255, 109, 0, 0.15);
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: var(--space-3xl) 0;
+    text-align: center;
+  }
+
+  .cta-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-lg);
+    padding: var(--space-2xl);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    max-width: 720px;
+  }
+
+  .cta-content h2 {
+    font-size: var(--text-2xl);
+  }
+
+  .cta-content p {
+    color: var(--text-secondary);
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  @media (max-width: 640px) {
+    .hero-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .hero-actions .btn {
+      justify-content: center;
+      width: 100%;
+    }
+
+    .hero-stats {
+      gap: var(--space-lg);
+    }
+
+    .cta-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .cta-actions .btn {
+      justify-content: center;
+    }
+  }
+</style>

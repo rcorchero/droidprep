@@ -1,0 +1,69 @@
+{
+  "version": "1.0",
+  "categories": [
+    {
+      "id": "kotlin",
+      "name": "Kotlin Fundamentals",
+      "icon": "🧠",
+      "description": "Core language features, null safety, generics, and idioms.",
+      "color": "#8B5CF6",
+      "questionCount": 26
+    },
+    {
+      "id": "compose",
+      "name": "Jetpack Compose",
+      "icon": "🎨",
+      "description": "Declarative UI, recomposition, state management, and theming.",
+      "color": "#4285F4",
+      "questionCount": 30
+    },
+    {
+      "id": "coroutines",
+      "name": "Coroutines & Flow",
+      "icon": "⚡",
+      "description": "Structured concurrency, StateFlow, SharedFlow, and Flow operators.",
+      "color": "#3DDC84",
+      "questionCount": 24
+    },
+    {
+      "id": "architecture",
+      "name": "Architecture",
+      "icon": "🏗️",
+      "description": "MVVM, MVI, clean architecture, dependency injection, and modularization.",
+      "color": "#FFB300",
+      "questionCount": 14
+    },
+    {
+      "id": "platform",
+      "name": "Android Platform",
+      "icon": "📱",
+      "description": "Activity lifecycle, Services, WorkManager, permissions, and system APIs.",
+      "color": "#26C6DA",
+      "questionCount": 38
+    },
+    {
+      "id": "testing",
+      "name": "Testing & Debugging",
+      "icon": "🐞",
+      "description": "Unit tests, UI tests, Compose testing, and debugging techniques.",
+      "color": "#F06292",
+      "questionCount": 13
+    },
+    {
+      "id": "systemdesign",
+      "name": "System Design",
+      "icon": "🌐",
+      "description": "Architecture at scale, trade-offs, and technical decision-making.",
+      "color": "#BA68C8",
+      "questionCount": 10
+    },
+    {
+      "id": "algorithms",
+      "name": "Data Structures & Algorithms",
+      "icon": "🔢",
+      "description": "Complexity analysis, common patterns, and problem-solving strategies.",
+      "color": "#FF7043",
+      "questionCount": 18
+    }
+  ]
+}

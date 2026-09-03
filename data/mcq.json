@@ -1,0 +1,344 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-09-03",
+  "questions": [
+    {
+      "id": "kotlin-01",
+      "category": "kotlin",
+      "question": "What is the main difference between a data class and a regular class in Kotlin?",
+      "options": [
+        "Data classes automatically generate equals(), hashCode(), toString(), and copy()",
+        "Data classes are thread-safe by default",
+        "Data classes cannot have mutable properties",
+        "Data classes are faster at runtime due to compiler optimizations"
+      ],
+      "correctIndex": 0,
+      "explanation": "Data classes auto-generate structural equality and utility methods based on primary constructor properties. Thread safety and mutability are unrelated to the data class distinction."
+    },
+    {
+      "id": "kotlin-02",
+      "category": "kotlin",
+      "question": "When would you use a sealed class (or sealed interface) instead of an enum class?",
+      "options": [
+        "When you need a restricted hierarchy where subclasses can hold different data",
+        "When you need better performance than enums",
+        "When you want to avoid using the 'when' expression",
+        "When you need more than 256 constants"
+      ],
+      "correctIndex": 0,
+      "explanation": "Sealed classes allow each subclass to hold different state/data, unlike enums which are singletons. They're ideal for representing UI states like Loading, Success(data), Error(exception)."
+    },
+    {
+      "id": "kotlin-03",
+      "category": "kotlin",
+      "question": "How do Kotlin extension functions work under the hood?",
+      "options": [
+        "They are compiled as static methods with the receiver as the first parameter",
+        "They modify the original class bytecode at compile time",
+        "They use reflection to inject methods at runtime",
+        "They create wrapper subclasses dynamically"
+      ],
+      "correctIndex": 0,
+      "explanation": "Extension functions are syntactic sugar — the compiler generates a static Java method where the receiver object becomes the first parameter. They cannot access private members of the extended class."
+    },
+    {
+      "id": "kotlin-04",
+      "category": "kotlin",
+      "question": "Which scope function should you use for object configuration (setting multiple properties)?",
+      "options": [
+        "apply — it returns the receiver and uses 'this' context",
+        "let — it provides 'it' reference to the object",
+        "also — it's designed for side effects like logging",
+        "run — it returns a different value from the block"
+      ],
+      "correctIndex": 0,
+      "explanation": "apply returns the receiver object and uses 'this' as context, making it ideal for configuring objects. let/also use 'it', and run returns the lambda result rather than the receiver."
+    },
+    {
+      "id": "kotlin-05",
+      "category": "kotlin",
+      "question": "What is the key difference between lateinit and lazy initialization?",
+      "options": [
+        "lateinit is for mutable vars initialized later; lazy is for val computed on first access",
+        "lateinit is thread-safe; lazy is not",
+        "lazy can be used with primitives; lateinit cannot",
+        "There is no difference — they are interchangeable"
+      ],
+      "correctIndex": 0,
+      "explanation": "lateinit is for var properties initialized after construction (throws if accessed before init). lazy computes the value on first access and caches it (thread-safe by default for val)."
+    },
+    {
+      "id": "kotlin-06",
+      "category": "kotlin",
+      "question": "What does the ? operator do in Kotlin's null safety system?",
+      "options": [
+        "Makes a type nullable, allowing it to hold null values",
+        "Forces a non-null assertion at runtime",
+        "Catches NullPointerExceptions automatically",
+        "Converts null to a default value"
+      ],
+      "correctIndex": 0,
+      "explanation": "The ? suffix on a type (e.g., String?) declares it as nullable. Kotlin's type system then forces null checks before use, preventing NullPointerExceptions at compile time."
+    },
+    {
+      "id": "kotlin-07",
+      "category": "kotlin",
+      "question": "What is the difference between == and === in Kotlin?",
+      "options": [
+        "== checks structural equality (equals()); === checks referential equality",
+        "== checks referential equality; === checks structural equality",
+        "== only works on primitives; === works on objects",
+        "They are identical — === is just an alias"
+      ],
+      "correctIndex": 0,
+      "explanation": "== calls equals() for value comparison (structural). === checks if two references point to the exact same object in memory (referential)."
+    },
+    {
+      "id": "kotlin-08",
+      "category": "kotlin",
+      "question": "What is a companion object in Kotlin?",
+      "options": [
+        "A singleton tied to a class that provides class-level members without static keyword",
+        "A second instance of the class that mirrors its state",
+        "A base class that all inner classes must extend",
+        "A thread-safe wrapper for lazy initialization"
+      ],
+      "correctIndex": 0,
+      "explanation": "Companion objects are singletons associated with a class. They can be accessed via ClassName.memberName, similar to Java's static methods, but are actual objects with full Kotlin capabilities."
+    },
+    {
+      "id": "kotlin-09",
+      "category": "kotlin",
+      "question": "What does the 'by' keyword do in class delegation?",
+      "options": [
+        "Delegates implementation of an interface to another class instance",
+        "Creates a new thread for the class",
+        "Makes the class abstract",
+        "Enables lazy initialization of properties"
+      ],
+      "correctIndex": 0,
+      "explanation": "The 'by' keyword in class headers delegates interface implementation to another object, promoting composition over inheritance. The delegating class automatically forwards interface calls."
+    },
+    {
+      "id": "kotlin-10",
+      "category": "kotlin",
+      "question": "What is a higher-order function in Kotlin?",
+      "options": [
+        "A function that takes other functions as parameters or returns a function",
+        "A function that runs on a higher thread priority",
+        "A function with more than two parameters",
+        "A function that accesses private class members"
+      ],
+      "correctIndex": 0,
+      "explanation": "Higher-order functions accept functions as parameters or return them. They're fundamental to functional programming patterns like map, filter, and fold."
+    },
+    {
+      "id": "kotlin-11",
+      "category": "kotlin",
+      "question": "Why would you use the inline keyword on a function?",
+      "options": [
+        "To avoid creating lambda objects by copying the function body to the call site",
+        "To make the function run faster on multiple threads",
+        "To allow the function to be overridden in subclasses",
+        "To make the function accessible from Java code"
+      ],
+      "correctIndex": 0,
+      "explanation": "inline copies the function body to the call site, eliminating lambda object allocation overhead. It's especially important for functions taking lambda parameters to avoid performance penalties."
+    },
+    {
+      "id": "kotlin-12",
+      "category": "kotlin",
+      "question": "What are reified type parameters used for?",
+      "options": [
+        "Accessing generic type information at runtime in inline functions",
+        "Making generics perform better at compile time",
+        "Converting any type to a String at runtime",
+        "Enabling reflection on sealed classes"
+      ],
+      "correctIndex": 0,
+      "explanation": "Reified types let you use the actual type argument at runtime (e.g., T::class.java). This is only possible in inline functions because the type is inlined at the call site."
+    },
+    {
+      "id": "kotlin-13",
+      "category": "kotlin",
+      "question": "What is the difference between const val and regular val?",
+      "options": [
+        "const val is a compile-time constant; val is initialized at runtime",
+        "const val is mutable; val is immutable",
+        "const val uses less memory; val uses more",
+        "There is no difference — they are interchangeable"
+      ],
+      "correctIndex": 0,
+      "explanation": "const val must be initialized with a primitive or string literal and is resolved at compile time (becomes a static final field). val is a runtime constant that can be initialized from any expression."
+    },
+    {
+      "id": "kotlin-14",
+      "category": "kotlin",
+      "question": "What does the 'open' keyword do in Kotlin?",
+      "options": [
+        "Allows a class to be inherited from (classes are final by default)",
+        "Makes a class abstract",
+        "Opens a class for extension functions",
+        "Makes all methods public"
+      ],
+      "correctIndex": 0,
+      "explanation": "In Kotlin, classes are final by default. The 'open' modifier allows inheritance. Abstract classes are implicitly open. Interface methods are open by default."
+    },
+    {
+      "id": "kotlin-15",
+      "category": "kotlin",
+      "question": "When should you use a value class?",
+      "options": [
+        "When wrapping a single type to get type safety without runtime object overhead",
+        "When you need a class that only holds constants",
+        "When you want to create immutable collections",
+        "When you need faster serialization"
+      ],
+      "correctIndex": 0,
+      "explanation": "Value classes wrap a single value for type safety (e.g., UserId wrapping String) but are inlined at runtime, avoiding the allocation overhead of a wrapper object."
+    },
+    {
+      "id": "kotlin-16",
+      "category": "kotlin",
+      "question": "What is a function type in Kotlin?",
+      "options": [
+        "A type that represents a function signature with parameter and return types",
+        "A class that must implement the Function interface",
+        "A type alias for lambda expressions only",
+        "A way to make functions generic"
+      ],
+      "correctIndex": 0,
+      "explanation": "Function types like (String, Int) -> Boolean specify parameter types and return type. They enable first-class functions, letting you pass functions as variables."
+    },
+    {
+      "id": "kotlin-17",
+      "category": "kotlin",
+      "question": "What is the primary use case for sealed classes?",
+      "options": [
+        "Representing restricted hierarchies like UI states or events",
+        "Creating performance-optimized singletons",
+        "Implementing dependency injection",
+        "Defining constant values"
+      ],
+      "correctIndex": 0,
+      "explanation": "Sealed classes restrict class hierarchies to a known set of subclasses, making them ideal for modeling UI states (Loading, Success, Error) with exhaustive when expressions."
+    },
+    {
+      "id": "kotlin-18",
+      "category": "kotlin",
+      "question": "What is a key difference between sealed classes and enums?",
+      "options": [
+        "Enums are singletons; sealed class subclasses can have multiple instances with different data",
+        "Enums support inheritance; sealed classes do not",
+        "Sealed classes are faster than enums",
+        "Enums can hold complex data; sealed classes cannot"
+      ],
+      "correctIndex": 0,
+      "explanation": "Enums allow only one instance per type with limited data. Sealed class subclasses can be data classes with multiple instances, each holding different state."
+    },
+    {
+      "id": "kotlin-19",
+      "category": "kotlin",
+      "question": "What do delegated properties enable in Kotlin?",
+      "options": [
+        "Custom get/set logic delegated to another class via the 'by' keyword",
+        "Faster property access through bytecode optimization",
+        "Automatic serialization of properties to JSON",
+        "Thread-local storage for each property"
+      ],
+      "correctIndex": 0,
+      "explanation": "Delegated properties (by lazy, by Delegates.observable, etc.) let you delegate property access logic to a helper class, enabling lazy init, observation, and validation patterns."
+    },
+    {
+      "id": "kotlin-20",
+      "category": "kotlin",
+      "question": "What is the difference between List and MutableList in Kotlin?",
+      "options": [
+        "List is read-only (immutable reference); MutableList allows add/remove operations",
+        "List uses more memory; MutableList is optimized",
+        "MutableList is thread-safe; List is not",
+        "They have identical performance characteristics"
+      ],
+      "correctIndex": 0,
+      "explanation": "List<T> only exposes read operations. MutableList<T> adds add, remove, and set. Both refer to the same underlying collection — List is just a read-only view."
+    },
+    {
+      "id": "kotlin-21",
+      "category": "kotlin",
+      "question": "What does flatMap do compared to map?",
+      "options": [
+        "flatMap transforms each element to a collection then flattens; map transforms 1:1",
+        "flatMap is faster than map for large collections",
+        "flatMap preserves order; map does not",
+        "flatMap can only be used on nullable types"
+      ],
+      "correctIndex": 0,
+      "explanation": "map transforms each element individually. flatMap transforms each element into a collection, then flattens all collections into a single result."
+    },
+    {
+      "id": "kotlin-22",
+      "category": "kotlin",
+      "question": "What is the key difference between List and Sequence?",
+      "options": [
+        "List evaluates eagerly (all at once); Sequence evaluates lazily (on demand)",
+        "Sequence is always faster than List",
+        "List is thread-safe; Sequence is not",
+        "Sequence can only hold primitive types"
+      ],
+      "correctIndex": 0,
+      "explanation": "List processes all transformations immediately. Sequence applies transformations one element at a time on demand, which can be more memory-efficient for large datasets with many operations."
+    },
+    {
+      "id": "kotlin-23",
+      "category": "kotlin",
+      "question": "What is the difference between an object declaration and a companion object?",
+      "options": [
+        "Object creates a standalone singleton; companion object is tied to a specific class",
+        "Companion objects are faster; objects are slower",
+        "Object can be generic; companion objects cannot",
+        "They are identical — companion is just syntax sugar"
+      ],
+      "correctIndex": 0,
+      "explanation": "An object declaration creates an independent singleton. A companion object is associated with a class and its members can be accessed via ClassName.member, like static members in Java."
+    },
+    {
+      "id": "kotlin-24",
+      "category": "kotlin",
+      "question": "What does Kotlin Multiplatform (KMP) share across platforms?",
+      "options": [
+        "Business logic, data models, and networking code",
+        "The entire UI layer including layouts",
+        "Native platform APIs directly",
+        "Build configuration and CI/CD pipelines"
+      ],
+      "correctIndex": 0,
+      "explanation": "KMP shares business logic (networking, data, business rules) across Android, iOS, desktop, and web. UI remains platform-specific unless using Compose Multiplatform."
+    },
+    {
+      "id": "kotlin-25",
+      "category": "kotlin",
+      "question": "How do expect/actual declarations work in Kotlin Multiplatform?",
+      "options": [
+        "expect declares an API in common code; actual provides platform-specific implementations",
+        "expect creates a copy of the function on each platform",
+        "actual is optional — the compiler generates a default implementation",
+        "expect/actual only work for classes, not functions"
+      ],
+      "correctIndex": 0,
+      "explanation": "expect declares an API contract in commonMain. Each platform (androidMain, iosMain) provides an actual implementation. This lets you share interfaces while customizing platform-specific behavior."
+    },
+    {
+      "id": "kotlin-26",
+      "category": "kotlin",
+      "question": "What is the benefit of using named arguments in Kotlin function calls?",
+      "options": [
+        "Improved readability and the ability to skip default parameters in any order",
+        "Faster execution speed",
+        "Automatic null safety checks",
+        "Memory optimization for large parameter lists"
+      ],
+      "correctIndex": 0,
+      "explanation": "Named arguments make calls self-documenting and let you skip default parameters regardless of order. This is especially useful for functions with many boolean flags or optional parameters."
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import categoriesData from '../../data/categories.json';
+import questionsData from '../../data/questions.json';
+
+const categories = categoriesData.categories;
+const questions = questionsData.questions;
+const totalQuestions = questions.length;
+---
+
+<BaseLayout title="About">
+  <div class="about-page container">
+    <h1>About DroidPrep</h1>
+
+    <section class="about-section">
+      <h2>What is DroidPrep?</h2>
+      <p>
+        DroidPrep is a free, open-source resource for Android engineers preparing for technical interviews.
+        It contains a curated database of {totalQuestions} questions spanning 8 core Android topics,
+        from Kotlin fundamentals to system design.
+      </p>
+    </section>
+
+    <section class="about-section">
+      <h2>What's included</h2>
+      <div class="include-grid">
+        {categories.map(cat => (
+          <div class="include-item">
+            <span class="include-icon" style={`background: ${cat.color}`}>{cat.icon}</span>
+            <div>
+              <strong>{cat.name}</strong>
+              <span>{cat.questionCount} questions</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h2>How to use it</h2>
+      <ol class="steps">
+        <li>
+          <strong>Browse</strong> — explore the full question database with instant search and filtering by category or difficulty.
+        </li>
+        <li>
+          <strong>Study</strong> — click any question to reveal a detailed answer, why it matters, and Kotlin code examples.
+        </li>
+        <li>
+          <strong>Test yourself</strong> — take multiple choice quizzes to reinforce your knowledge and track your progress.
+        </li>
+      </ol>
+    </section>
+
+    <section class="about-section">
+      <h2>Open source</h2>
+      <p>
+        DroidPrep is built and maintained by the community. Everything runs entirely in your browser
+        (static site, no backend) so it's fast, private, and free forever.
+      </p>
+      <p>
+        Want to add a question or fix an answer? Contributions are welcome via pull requests.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding: var(--space-3xl) 0;
+    max-width: 760px;
+  }
+
+  .about-page h1 {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .about-section {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .about-section h2 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-md);
+    color: var(--accent);
+  }
+
+  .about-section p {
+    margin-bottom: var(--space-md);
+    line-height: 1.7;
+  }
+
+  .include-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .include-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  .include-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    font-size: 1.2em;
+    flex-shrink: 0;
+  }
+
+  .include-item strong {
+    display: block;
+    font-size: var(--text-sm);
+  }
+
+  .include-item span:not(.include-icon) {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  .steps {
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .steps li {
+    counter-increment: step;
+    padding: var(--space-sm) 0 var(--space-sm) 3rem;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-dim);
+    color: var(--accent);
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: var(--text-sm);
+  }
+</style>

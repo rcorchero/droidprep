@@ -1,0 +1,591 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import categoriesData from '../../data/categories.json';
+import { questions as mcqQuestions } from '../../data/mcq.json';
+
+const categories = categoriesData.categories;
+const kotlinCategory = categories.find(c => c.id === 'kotlin');
+---
+
+<BaseLayout title="Quiz">
+  <div class="quiz-page container">
+    <div class="quiz-header">
+      <h1>Test Yourself</h1>
+      <p>Answer multiple choice questions and track your score.</p>
+    </div>
+
+    <!-- Setup -->
+    <section id="quiz-setup" class="quiz-panel">
+      <div class="panel-card card">
+        <h2>Quiz setup</h2>
+        <p class="setup-hint">
+          {mcqQuestions.length} questions available in the {kotlinCategory?.name || 'Kotlin'} category.
+          Pick the number of questions to start.
+        </p>
+
+        <div class="form-group">
+          <label for="quiz-count">Number of questions</label>
+          <input type="range" id="quiz-count" min="1" max="10" value="5" />
+          <span id="quiz-count-display">5 questions</span>
+        </div>
+
+        <button id="quiz-start" class="btn btn-primary">Start Quiz</button>
+      </div>
+    </section>
+
+    <!-- Session -->
+    <section id="quiz-session" class="quiz-panel" hidden>
+      <div class="panel-card card">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar">
+            <div id="quiz-progress-fill" class="quiz-progress-fill"></div>
+          </div>
+          <span id="quiz-progress-text">0 / 0</span>
+        </div>
+
+        <div id="quiz-question" class="quiz-question"></div>
+        <div id="quiz-options" class="quiz-options"></div>
+        <p id="quiz-feedback" class="quiz-feedback" hidden></p>
+
+        <div class="quiz-nav">
+          <span></span>
+          <button id="quiz-next-btn" class="btn btn-primary">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section id="quiz-results" class="quiz-panel" hidden>
+      <div class="panel-card card results-card">
+        <div id="results-score" class="results-score"></div>
+        <div id="results-breakdown" class="results-breakdown"></div>
+        <div class="quiz-nav">
+          <button id="quiz-retry" class="btn btn-ghost">Retry</button>
+          <button id="quiz-home" class="btn btn-primary">New Quiz</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+<script define:vars={{ mcqQuestions }}>/* eslint-enable */
+  (function () {
+    var questionsAll = mcqQuestions || [];
+    var questions = [];
+    var current = 0;
+    var answers = {};
+    var answered = {};
+
+    var setup = document.getElementById('quiz-setup');
+    var session = document.getElementById('quiz-session');
+    var results = document.getElementById('quiz-results');
+    var startBtn = document.getElementById('quiz-start');
+    var nextBtn = document.getElementById('quiz-next-btn');
+    var retryBtn = document.getElementById('quiz-retry');
+    var homeBtn = document.getElementById('quiz-home');
+    var countSlider = document.getElementById('quiz-count');
+    var countDisplay = document.getElementById('quiz-count-display');
+    var progressFill = document.getElementById('quiz-progress-fill');
+    var progressText = document.getElementById('quiz-progress-text');
+    var questionEl = document.getElementById('quiz-question');
+    var optionsEl = document.getElementById('quiz-options');
+    var feedbackEl = document.getElementById('quiz-feedback');
+
+    if (!startBtn || !questionsAll.length) return;
+
+    countSlider.addEventListener('input', function () {
+      countDisplay.textContent = countSlider.value + ' question' + (countSlider.value === '1' ? '' : 's');
+    });
+
+    function shuffle(arr) {
+      for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+      }
+      return arr;
+    }
+
+    function startQuiz() {
+      var count = parseInt(countSlider.value, 10);
+      questions = shuffle(questionsAll.slice()).slice(0, count);
+      current = 0;
+      answers = {};
+      answered = {};
+
+      setup.hidden = true;
+      results.hidden = true;
+      session.hidden = false;
+      render();
+    }
+
+    function render() {
+      var q = questions[current];
+      var total = questions.length;
+
+      progressFill.style.width = (((current + 1) / total) * 100) + '%';
+      progressText.textContent = (current + 1) + ' / ' + total;
+      questionEl.textContent = q.question;
+
+      optionsEl.innerHTML = '';
+      q.options.forEach(function (opt, i) {
+        var btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.setAttribute('data-index', i);
+
+        btn.innerHTML =
+          '<span class="option-radio" aria-hidden="true"><span class="option-radio-dot"></span></span>' +
+          '<span class="option-text"></span>' +
+          '<span class="option-mark" aria-hidden="true"></span>';
+        btn.querySelector('.option-text').textContent = opt;
+
+        btn.addEventListener('click', function () {
+          selectOption(q.id, i);
+        });
+        optionsEl.appendChild(btn);
+      });
+
+      // Client copy of inlineMarkdown (define:vars can't serialize the imported
+    // function, so keep a self-contained renderer as the primary path).
+    function renderInline(value) {
+      var safe = String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      var segments = safe.split('`');
+      var out = '';
+      for (var i = 0; i < segments.length; i++) {
+        out += (i % 2 === 1)
+          ? '<code class="inline-code">' + segments[i] + '</code>'
+          : segments[i];
+      }
+      out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      out = out.replace(/(^|[^*])\*([^*\s][^*]*?)\*(?![*])/g, '$1<em>$2</em>');
+      return out;
+    }
+
+    // Lock options and show feedback once answered
+      if (answered[q.id]) {
+        var isCorrect = answers[q.id] === q.correctIndex;
+        feedbackEl.hidden = false;
+        feedbackEl.innerHTML =
+          '<span class="quiz-feedback-head">' + (isCorrect ? 'Correct!' : 'Incorrect') + '</span> ' +
+          renderInline(q.explanation || '');
+        feedbackEl.style.background = isCorrect
+          ? 'rgba(61,220,132,0.12)' : 'rgba(255,82,82,0.12)';
+        feedbackEl.style.color = isCorrect ? 'var(--success)' : 'var(--error)';
+
+        var btns = optionsEl.querySelectorAll('.quiz-option');
+        btns.forEach(function (b) {
+          b.classList.add('disabled');
+          var idx = parseInt(b.getAttribute('data-index'), 10);
+          var mark = b.querySelector('.option-mark');
+          if (idx === q.correctIndex) {
+            b.classList.add('correct');
+            if (mark) mark.textContent = '\u2713';
+          } else if (idx === answers[q.id]) {
+            b.classList.add('incorrect');
+            if (mark) mark.textContent = '\u2717';
+          }
+        });
+
+        if (current === total - 1) {
+          nextBtn.textContent = 'See Results';
+        }
+      } else {
+        feedbackEl.hidden = true;
+        nextBtn.textContent = 'Next';
+      }
+    }
+
+    function selectOption(qid, index) {
+      if (answered[qid]) return;
+      answered[qid] = true;
+      answers[qid] = index;
+      render();
+    }
+
+    function goNext() {
+      if (!answered[questions[current].id]) return;
+      if (current < questions.length - 1) {
+        current++;
+        render();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      session.hidden = true;
+      results.hidden = false;
+
+      var total = questions.length;
+      var correct = 0;
+      questions.forEach(function (q) {
+        if (answers[q.id] === q.correctIndex) correct++;
+      });
+
+      var pct = Math.round((correct / total) * 100);
+      document.getElementById('results-score').innerHTML =
+        '<span class="score-num">' + pct + '%</span>' +
+        '<span class="score-detail">' + correct + ' of ' + total + ' correct</span>';
+
+      var breakdown = document.getElementById('results-breakdown');
+      breakdown.innerHTML = '';
+      questions.forEach(function (q, i) {
+        var isCorrect = answers[q.id] === q.correctIndex;
+        var div = document.createElement('div');
+        div.className = 'result-item' + (isCorrect ? ' correct' : ' incorrect');
+        var qSpan = document.createElement('span');
+        qSpan.className = 'result-q';
+        qSpan.textContent = (i + 1) + '. ' + q.question;
+        var badge = document.createElement('span');
+        badge.className = 'result-badge';
+        badge.textContent = isCorrect ? 'Correct' : 'Wrong';
+        div.appendChild(qSpan);
+        div.appendChild(badge);
+        breakdown.appendChild(div);
+      });
+
+      try {
+        var scores = JSON.parse(localStorage.getItem('quiz_scores') || '[]');
+        scores.push({ date: new Date().toISOString(), category: 'kotlin', total: total, correct: correct, pct: pct });
+        localStorage.setItem('quiz_scores', JSON.stringify(scores.slice(-20)));
+      } catch (e) {}
+    }
+
+    startBtn.addEventListener('click', startQuiz);
+    nextBtn.addEventListener('click', goNext);
+    retryBtn.addEventListener('click', function () {
+      results.hidden = true;
+      setup.hidden = false;
+    });
+    homeBtn.addEventListener('click', function () {
+      results.hidden = true;
+      setup.hidden = false;
+    });
+  })();
+</script>
+
+<style is:global>
+  .quiz-page {
+    padding: var(--space-3xl) 0;
+    max-width: 720px;
+    min-height: 60vh;
+  }
+
+  .quiz-header {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .quiz-header h1 {
+    margin-bottom: var(--space-sm);
+  }
+
+  .quiz-header p {
+    color: var(--text-secondary);
+  }
+
+  .panel-card {
+    max-width: 640px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .form-group {
+    margin-bottom: var(--space-md);
+  }
+
+  .form-group label {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .form-group input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+  }
+
+  #quiz-count-display {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    display: block;
+    margin-top: var(--space-xs);
+  }
+
+  .setup-hint {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+
+  .quiz-progress {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .quiz-progress-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--border);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+
+  .quiz-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-base);
+  }
+
+  #quiz-progress-text {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .quiz-question {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: var(--space-lg);
+    padding: var(--space-md) 0;
+  }
+
+  .quiz-options {
+    display: grid;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+  }
+
+  .quiz-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    width: 100%;
+    padding: var(--space-md) var(--space-lg);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    text-align: left;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    transition: border-color var(--transition-fast),
+      background var(--transition-fast),
+      box-shadow var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .quiz-option:hover:not(.disabled) {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
+  }
+
+  .quiz-option:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .option-radio {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius-full);
+    border: 2px solid var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color var(--transition-fast), background var(--transition-fast);
+  }
+
+  .option-radio-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    background: var(--accent);
+    transform: scale(0);
+    transition: transform var(--transition-fast);
+  }
+
+  .quiz-option:hover:not(.disabled) .option-radio {
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    border-color: var(--success);
+    background: rgba(61, 220, 132, 0.1);
+  }
+
+  .quiz-option.incorrect {
+    border-color: var(--error);
+    background: rgba(255, 82, 82, 0.1);
+  }
+
+  .quiz-option.correct .option-radio,
+  .quiz-option.incorrect .option-radio {
+    border-color: currentColor;
+  }
+
+  .quiz-option.correct .option-radio-dot {
+    background: var(--success);
+    transform: scale(1);
+  }
+
+  .quiz-option.incorrect .option-radio-dot {
+    background: var(--error);
+    transform: scale(1);
+  }
+
+  .quiz-option.correct {
+    color: var(--success);
+  }
+
+  .quiz-option.incorrect {
+    color: var(--error);
+  }
+
+  .quiz-option.correct .option-text,
+  .quiz-option.incorrect .option-text {
+    color: var(--text-primary);
+  }
+
+  .option-mark {
+    flex-shrink: 0;
+    display: none;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .quiz-option.correct .option-mark {
+    display: inline-flex;
+  }
+
+  .quiz-option.incorrect .option-mark {
+    display: inline-flex;
+  }
+
+  .quiz-option.disabled {
+    cursor: default;
+  }
+
+  .option-text {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.5;
+  }
+
+  .quiz-feedback {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    margin-bottom: var(--space-md);
+  }
+
+  .quiz-feedback-head {
+    font-weight: 700;
+  }
+
+  .quiz-feedback .inline-code {
+    color: var(--text-primary);
+    background: rgba(0, 0, 0, 0.25);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .quiz-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .results-card {
+    text-align: center;
+    min-height: 40vh;
+  }
+
+  .results-score {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    align-items: center;
+  }
+
+  .score-num {
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-detail {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+  }
+
+  .results-breakdown {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-lg) 0;
+  }
+
+  .result-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    background: var(--bg-input);
+    border-left: 3px solid var(--border);
+  }
+
+  .result-item.correct {
+    border-left-color: var(--success);
+  }
+
+  .result-item.incorrect {
+    border-left-color: var(--error);
+  }
+
+  .result-q {
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    flex: 1;
+    line-height: 1.4;
+  }
+
+  .result-badge {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 0.2em 0.6em;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+  }
+
+  .result-item.correct .result-badge {
+    background: rgba(61, 220, 132, 0.15);
+    color: var(--success);
+  }
+
+  .result-item.incorrect .result-badge {
+    background: rgba(255, 82, 82, 0.15);
+    color: var(--error);
+  }
+</style>

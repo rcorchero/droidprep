@@ -1,0 +1,84 @@
+---
+interface Props {
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
+  color: string;
+  questionCount: number;
+}
+
+const { id, name, icon, description, color, questionCount } = Astro.props;
+---
+
+<a href={`/browse?category=${id}`} class="category-card card">
+  <div class="category-icon" style={`--cat-color: ${color}`}>
+    <span class="category-emoji">{icon}</span>
+  </div>
+  <div class="category-info">
+    <h3>{name}</h3>
+    <p>{description}</p>
+  </div>
+  <div class="category-footer">
+    <span class="count">{questionCount} questions</span>
+    <span class="arrow">&rarr;</span>
+  </div>
+</a>
+
+<style>
+  .category-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-xl);
+    text-decoration: none;
+    animation: fadeIn var(--transition-base);
+  }
+
+  .category-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    font-size: 1.6em;
+    background: color-mix(in srgb, var(--cat-color) 18%, var(--bg-primary));
+  }
+
+  .category-info h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-sm);
+  }
+
+  .category-info p {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .category-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border);
+  }
+
+  .count {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .arrow {
+    color: var(--accent);
+    font-size: var(--text-lg);
+    transition: transform var(--transition-fast);
+  }
+
+  .category-card:hover .arrow {
+    transform: translateX(4px);
+  }
+</style>
