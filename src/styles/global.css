@@ -171,6 +171,7 @@ p {
 .btn-primary:hover {
   background: var(--accent-hover);
   box-shadow: var(--shadow-glow);
+  color: var(--android-dark);
 }
 
 .btn-secondary {

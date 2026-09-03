@@ -80,14 +80,16 @@ mcqQuestions.forEach((q) => {
   </div>
 </BaseLayout>
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-<script define:vars={{ mcqQuestions, diffByQid }}>/* eslint-enable */
+<script define:vars={{ mcqQuestions, diffByQid }}>
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  /* eslint-enable */
   (function () {
     var questionsAll = mcqQuestions || [];
     var questions = [];
     var current = 0;
     var answers = {};
     var answered = {};
+    var orderCache = {};
 
     var setup = document.getElementById('quiz-setup');
     var session = document.getElementById('quiz-session');
@@ -131,6 +133,7 @@ mcqQuestions.forEach((q) => {
       current = 0;
       answers = {};
       answered = {};
+      orderCache = {};
 
       setup.hidden = true;
       results.hidden = true;
@@ -147,11 +150,26 @@ mcqQuestions.forEach((q) => {
       questionEl.textContent = q.question;
 
       optionsEl.innerHTML = '';
-      q.options.forEach(function (opt, i) {
+      // Shuffle the display order once per question so options don't jump
+      // around when feedback is rendered after answering. Each button keeps
+      // its original index so correctness checks stay valid.
+      var order = orderCache[q.id];
+      if (!order) {
+        order = [];
+        for (var oi = 0; oi < q.options.length; oi++) order.push(oi);
+        for (var oi = order.length - 1; oi > 0; oi--) {
+          var oj = Math.floor(Math.random() * (oi + 1));
+          var ot = order[oi]; order[oi] = order[oj]; order[oj] = ot;
+        }
+        orderCache[q.id] = order;
+      }
+
+      order.forEach(function (origIndex) {
         var btn = document.createElement('button');
         btn.className = 'quiz-option';
-        btn.setAttribute('data-index', i);
+        btn.setAttribute('data-index', origIndex);
 
+        var opt = q.options[origIndex];
         btn.innerHTML =
           '<span class="option-radio" aria-hidden="true"><span class="option-radio-dot"></span></span>' +
           '<span class="option-text"></span>' +
@@ -159,7 +177,7 @@ mcqQuestions.forEach((q) => {
         btn.querySelector('.option-text').textContent = opt;
 
         btn.addEventListener('click', function () {
-          selectOption(q.id, i);
+          selectOption(q.id, origIndex);
         });
         optionsEl.appendChild(btn);
       });
