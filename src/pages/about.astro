@@ -26,7 +26,7 @@ const totalQuestions = questions.length;
       <div class="include-grid">
         {categories.map(cat => (
           <div class="include-item">
-            <span class="include-icon" style={`background: ${cat.color}`}>{cat.icon}</span>
+            <span class="include-icon" style={`--cat-color: ${cat.color}`}>{cat.icon}</span>
             <div>
               <strong>{cat.name}</strong>
               <span>{cat.questionCount} questions</span>
@@ -114,6 +114,7 @@ const totalQuestions = questions.length;
     border-radius: var(--radius-sm);
     font-size: 1.2em;
     flex-shrink: 0;
+    background: color-mix(in srgb, var(--cat-color) 18%, var(--bg-primary));
   }
 
   .include-item strong {
