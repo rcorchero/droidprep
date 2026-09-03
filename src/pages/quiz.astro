@@ -1,6 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { questions as mcqQuestions } from '../../data/mcq.json';
+import { difficulties } from '../../data/difficulty.json';
+
+const diffByQid: Record<string, string> = {};
+mcqQuestions.forEach((q) => {
+  diffByQid[q.id] = (difficulties as Record<string, string>)[q.id] ?? 'basic';
+});
 ---
 
 <BaseLayout title="Quiz">
@@ -23,6 +29,16 @@ import { questions as mcqQuestions } from '../../data/mcq.json';
           <label for="quiz-count">Number of questions</label>
           <input type="range" id="quiz-count" min="1" max="10" value="5" />
           <span id="quiz-count-display">5 questions</span>
+        </div>
+
+        <div class="form-group">
+          <label for="quiz-difficulty">Difficulty (mix across categories)</label>
+          <select id="quiz-difficulty">
+            <option value="all" selected>All difficulties</option>
+            <option value="basic">Basic</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="senior">Senior</option>
+          </select>
         </div>
 
         <button id="quiz-start" class="btn btn-primary">Start Quiz</button>
@@ -65,7 +81,7 @@ import { questions as mcqQuestions } from '../../data/mcq.json';
 </BaseLayout>
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
-<script define:vars={{ mcqQuestions }}>/* eslint-enable */
+<script define:vars={{ mcqQuestions, diffByQid }}>/* eslint-enable */
   (function () {
     var questionsAll = mcqQuestions || [];
     var questions = [];
@@ -82,6 +98,7 @@ import { questions as mcqQuestions } from '../../data/mcq.json';
     var homeBtn = document.getElementById('quiz-home');
     var countSlider = document.getElementById('quiz-count');
     var countDisplay = document.getElementById('quiz-count-display');
+    var difficultySelect = document.getElementById('quiz-difficulty');
     var progressFill = document.getElementById('quiz-progress-fill');
     var progressText = document.getElementById('quiz-progress-text');
     var questionEl = document.getElementById('quiz-question');
@@ -104,7 +121,13 @@ import { questions as mcqQuestions } from '../../data/mcq.json';
 
     function startQuiz() {
       var count = parseInt(countSlider.value, 10);
-      questions = shuffle(questionsAll.slice()).slice(0, count);
+      var level = difficultySelect ? difficultySelect.value : 'all';
+      var pool = questionsAll.slice();
+      if (level !== 'all' && diffByQid) {
+        pool = pool.filter(function (q) { return diffByQid[q.id] === level; });
+        if (!pool.length) pool = questionsAll.slice();
+      }
+      questions = shuffle(pool).slice(0, count);
       current = 0;
       answers = {};
       answered = {};
@@ -308,6 +331,17 @@ import { questions as mcqQuestions } from '../../data/mcq.json';
   .form-group input[type="range"] {
     width: 100%;
     accent-color: var(--accent);
+  }
+
+  .form-group select {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
   }
 
   #quiz-count-display {

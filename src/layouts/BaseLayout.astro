@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 interface Props {
@@ -22,15 +23,13 @@ const { title, description = 'Technical interview prep for Android engineers —
   <script is:inline>
     (function() {
       const stored = localStorage.getItem('theme');
-      if (stored === 'light') {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-      } else {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-      }
+      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      const isLight = stored ? stored === 'light' : prefersLight;
+      document.documentElement.classList.toggle('dark', !isLight);
+      document.documentElement.classList.toggle('light', isLight);
     })();
   </script>
+  <ClientRouter />
 </head>
 <body>
   <Header />
