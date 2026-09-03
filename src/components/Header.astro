@@ -1,10 +1,12 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
 
+const base = import.meta.env.BASE_URL;
+
 const navLinks = [
-  { href: '/browse', label: 'Browse' },
-  { href: '/quiz', label: 'Quiz' },
-  { href: '/about', label: 'About' },
+  { href: `${base}browse`, label: 'Browse' },
+  { href: `${base}quiz`, label: 'Quiz' },
+  { href: `${base}about`, label: 'About' },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -12,7 +14,7 @@ const currentPath = Astro.url.pathname;
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="/" class="logo">
+    <a href={base} class="logo">
       <span class="logo-icon">&#x1F4F1;</span>
       <span class="logo-text">DroidPrep</span>
     </a>

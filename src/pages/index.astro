@@ -5,6 +5,7 @@ import { categories } from '../../data/categories.json';
 import { questions } from '../../data/questions.json';
 import { inlineMarkdown } from '../lib/markdown';
 
+const base = import.meta.env.BASE_URL;
 const cats = categories;
 const totalQuestions = cats.reduce((sum, c) => sum + c.questionCount, 0);
 
@@ -32,8 +33,8 @@ const qotd = questions[Math.abs(hash) % questions.length];
         Search, study, and test yourself with multiple choice quizzes.
       </p>
       <div class="hero-actions">
-        <a href="/browse" class="btn btn-primary">Start Browsing</a>
-        <a href="/quiz" class="btn btn-secondary">Take a Quiz</a>
+        <a href="${base}browse" class="btn btn-primary">Start Browsing</a>
+        <a href="${base}quiz" class="btn btn-secondary">Take a Quiz</a>
       </div>
       <div class="hero-stats">
         <div class="stat">
@@ -62,7 +63,7 @@ const qotd = questions[Math.abs(hash) % questions.length];
         </div>
         <h2 class="qotd-question">{qotd.question}</h2>
         <p class="qotd-answer" set:html={inlineMarkdown(qotd.answer)}></p>
-        <a href={`/browse?category=${qotd.category}`} class="btn btn-secondary">Practice this category</a>
+        <a href={`${base}browse?category=${qotd.category}`} class="btn btn-secondary">Practice this category</a>
       </div>
     </div>
   </section>
@@ -122,8 +123,8 @@ const qotd = questions[Math.abs(hash) % questions.length];
       <h2>Ready to ace your interview?</h2>
       <p>Start with a quiz in your weakest category, or browse everything first.</p>
       <div class="cta-actions">
-        <a href="/quiz" class="btn btn-primary">Take a Quiz</a>
-        <a href="/browse" class="btn btn-ghost">Browse Questions</a>
+        <a href="${base}quiz" class="btn btn-primary">Take a Quiz</a>
+        <a href="${base}browse" class="btn btn-ghost">Browse Questions</a>
       </div>
     </div>
   </section>
