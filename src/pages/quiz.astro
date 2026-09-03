@@ -1,10 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import categoriesData from '../../data/categories.json';
 import { questions as mcqQuestions } from '../../data/mcq.json';
-
-const categories = categoriesData.categories;
-const kotlinCategory = categories.find(c => c.id === 'kotlin');
 ---
 
 <BaseLayout title="Quiz">
@@ -19,7 +15,7 @@ const kotlinCategory = categories.find(c => c.id === 'kotlin');
       <div class="panel-card card">
         <h2>Quiz setup</h2>
         <p class="setup-hint">
-          {mcqQuestions.length} questions available in the {kotlinCategory?.name || 'Kotlin'} category.
+          {mcqQuestions.length} questions available across multiple categories.
           Pick the number of questions to start.
         </p>
 
@@ -246,8 +242,12 @@ const kotlinCategory = categories.find(c => c.id === 'kotlin');
       });
 
       try {
+        var catSet = [];
+        questions.forEach(function (q) {
+          if (catSet.indexOf(q.category) === -1) catSet.push(q.category);
+        });
         var scores = JSON.parse(localStorage.getItem('quiz_scores') || '[]');
-        scores.push({ date: new Date().toISOString(), category: 'kotlin', total: total, correct: correct, pct: pct });
+        scores.push({ date: new Date().toISOString(), category: catSet.join(','), total: total, correct: correct, pct: pct });
         localStorage.setItem('quiz_scores', JSON.stringify(scores.slice(-20)));
       } catch (e) {}
     }
