@@ -7,7 +7,7 @@
       "icon": "🧠",
       "description": "Core language features, null safety, generics, and idioms.",
       "color": "#8B5CF6",
-      "questionCount": 26
+      "questionCount": 25
     },
     {
       "id": "compose",
@@ -23,7 +23,7 @@
       "icon": "⚡",
       "description": "Structured concurrency, StateFlow, SharedFlow, and Flow operators.",
       "color": "#3DDC84",
-      "questionCount": 24
+      "questionCount": 21
     },
     {
       "id": "architecture",
@@ -31,7 +31,7 @@
       "icon": "🏗️",
       "description": "MVVM, MVI, clean architecture, dependency injection, and modularization.",
       "color": "#FFB300",
-      "questionCount": 14
+      "questionCount": 13
     },
     {
       "id": "platform",
@@ -39,7 +39,7 @@
       "icon": "📱",
       "description": "Activity lifecycle, Services, WorkManager, permissions, and system APIs.",
       "color": "#26C6DA",
-      "questionCount": 38
+      "questionCount": 31
     },
     {
       "id": "testing",
@@ -47,7 +47,7 @@
       "icon": "🐞",
       "description": "Unit tests, UI tests, Compose testing, and debugging techniques.",
       "color": "#F06292",
-      "questionCount": 13
+      "questionCount": 9
     },
     {
       "id": "systemdesign",
@@ -55,7 +55,7 @@
       "icon": "🌐",
       "description": "Architecture at scale, trade-offs, and technical decision-making.",
       "color": "#BA68C8",
-      "questionCount": 10
+      "questionCount": 9
     },
     {
       "id": "algorithms",

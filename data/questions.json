@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "generatedAt": "2026-09-03T13:09:28.702Z",
-  "totalQuestions": 173,
+  "totalQuestions": 156,
   "questions": [
     {
       "id": "algorithms-01",
@@ -231,16 +231,6 @@
       "answer": "1. Use `DiffUtil` for efficient updates\n2. Use `ViewHolder` pattern (though less relevant with Compose)\n3. Avoid heavy operations in `onBindViewHolder`\n4. Use `setHasStableIds(true)` with unique IDs\n5. Implement pagination\n6. Use `ConstraintLayout` for complex item layouts\n7. Profile with Layout Inspector and Systrace",
       "whyItMatters": "",
       "codeExample": "class UserDiffCallback : DiffUtil.ItemCallback<User>() {\n    override fun areItemsTheSame(old: User, new: User) = old.id == new.id\n    override fun areContentsTheSame(old: User, new: User) = old == new\n}",
-      "furtherReading": []
-    },
-    {
-      "id": "architecture-06",
-      "category": "architecture",
-      "categoryLabel": "Architecture",
-      "question": "Describe your thought process when approaching a complex problem or edge case crash.",
-      "answer": "1. **Reproduce**: Try to reproduce the issue consistently\n2. **Analyze**: Check logs, stack traces, and device state\n3. **Hypothesize**: Form hypotheses about the root cause\n4. **Test**: Create minimal reproducible case\n5. **Fix**: Implement targeted fix\n6. **Verify**: Test fix across different scenarios\n7. **Document**: Document the issue and solution\n8. **Prevent**: Add tests to prevent regression",
-      "whyItMatters": "",
-      "codeExample": "",
       "furtherReading": []
     },
     {
@@ -834,36 +824,6 @@
       "furtherReading": []
     },
     {
-      "id": "coroutines-22",
-      "category": "coroutines",
-      "categoryLabel": "Coroutines & Flow",
-      "question": "How would you approach joining a project with a very legacy codebase?",
-      "answer": "Start by understanding the architecture, critical flows, and pain points before proposing big refactors. Deliver value incrementally — small safe improvements and tests around risky areas — and respect business constraints. Avoid a \"rewrite everything\" mindset.",
-      "whyItMatters": "Tests pragmatism, empathy with existing systems, and incremental delivery rather than idealistic rewrites.",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
-      "id": "coroutines-23",
-      "category": "coroutines",
-      "categoryLabel": "Coroutines & Flow",
-      "question": "What is your view on experimentation and feature flags for risky deliveries?",
-      "answer": "Use feature flags to reduce blast radius and enable safe progressive rollout. Define success/failure metrics before launch, and have a cleanup plan for stale flags to avoid technical debt.",
-      "whyItMatters": "Shows production-mindedness and awareness of rollout safety and flag hygiene.",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
-      "id": "coroutines-24",
-      "category": "coroutines",
-      "categoryLabel": "Coroutines & Flow",
-      "question": "How would you integrate AI agents into the team workflow (ticket → release)?",
-      "answer": "Use AI for scaffolding, test drafts, and migration assistance. Keep human gates at architecture decisions, security-sensitive changes, and final review. Leave CI quality gates (tests/lint/static analysis) unchanged, and run periodic audits to prevent dependency and technical debt growth.",
-      "whyItMatters": "Shows you can productively adopt AI without lowering engineering quality bars.",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
       "id": "kotlin-01",
       "category": "kotlin",
       "categoryLabel": "Kotlin Fundamentals",
@@ -1111,16 +1071,6 @@
       "answer": "`expect` declares an API contract in `commonMain`; each platform (`androidMain`, `iosMain`, etc.) provides an `actual` implementation. Share pure logic and types that have no platform dependency — models, use cases, repositories, networking (Ktor), serialization, coroutines — and keep platform-specific concerns (UI toolkit specifics, Android `Context`, iOS `NSUserDefaults`, permission APIs) behind an interface so the *implementation* differs per platform. The goal is a thin platform layer so most code lives in `commonMain`.",
       "whyItMatters": "The hardest KMP design question is drawing the sharing boundary correctly; over-sharing leaks platform assumptions into `commonMain`.",
       "codeExample": "// commonMain\nexpect fun platformName(): String\nexpect object PlatformClock { fun nowEpochMillis(): Long }\n\n// androidMain\nactual fun platformName(): String = \"Android ${Build.VERSION.SDK_INT}\"\n\n// iosMain\nactual fun platformName(): String = UIDevice.currentDevice.systemName + \" iOS\"",
-      "furtherReading": []
-    },
-    {
-      "id": "kotlin-26",
-      "category": "kotlin",
-      "categoryLabel": "Kotlin Fundamentals",
-      "question": "How do you handle change (requirements, priorities, org/process)?",
-      "answer": "Adapt quickly while keeping alignment with product goals. Re-prioritize transparently, communicate impact to stakeholders, and document decisions. Maintain quality standards even as scope shifts.",
-      "whyItMatters": "Shows resilience and communication under ambiguity, a senior expectation.",
-      "codeExample": "",
       "furtherReading": []
     },
     {
@@ -1434,76 +1384,6 @@
       "furtherReading": []
     },
     {
-      "id": "platform-32",
-      "category": "platform",
-      "categoryLabel": "Android Platform",
-      "question": "How do you handle conflict with a teammate?",
-      "answer": "Focus on facts and outcomes rather than personal positions. Surface disagreement early, align on shared goals, and propose options. Escalate only when necessary, with context and possible solutions.",
-      "whyItMatters": "Conflict resolution maturity is a key senior/leadership trait.",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
-      "id": "platform-33",
-      "category": "platform",
-      "categoryLabel": "Android Platform",
-      "question": "Your manager proposes an idea you believe won't work. How do you disagree?",
-      "answer": "Challenge respectfully with data, risks, and alternatives, framed around business impact and user value. If uncertainty remains, propose a cheap experiment or prototype to validate before committing resources.",
-      "whyItMatters": "Shows you push back constructively with evidence, not ego, and keep the door open to being wrong.",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
-      "id": "platform-34",
-      "category": "platform",
-      "categoryLabel": "Android Platform",
-      "question": "Do you innovate in your daily work? Why?",
-      "answer": "Innovation is not only \"big ideas\" — it includes process and code improvements with measurable impact. A candidate should give concrete examples (e.g., reducing build time, automating a toil task) and show how they balance innovation with delivery reliability.",
-      "whyItMatters": "Differentiates candidates who make things better vs. those who just execute.",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
-      "id": "platform-35",
-      "category": "platform",
-      "categoryLabel": "Android Platform",
-      "question": "Tell me about a mistake you made in the past.",
-      "answer": "Give a real example with context, ownership, and the lesson learned. Explain what you did to correct it and what changed afterward. Avoid blaming others or choosing a trivial \"non-mistake\".",
-      "whyItMatters": "Honest reflection and growth mindset are being evaluated, not perfection.",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
-      "id": "platform-36",
-      "category": "platform",
-      "categoryLabel": "Android Platform",
-      "question": "What are your short-term goals?",
-      "answer": "Connect goals to role impact — technical depth, ownership, mentoring, or product impact — and make them measurable or time-bound where possible. Show ambition balanced with realism.",
-      "whyItMatters": "Aligns candidate motivation with the team's needs and trajectory.",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
-      "id": "platform-37",
-      "category": "platform",
-      "categoryLabel": "Android Platform",
-      "question": "What is hardest for you when joining a new company?",
-      "answer": "Give an honest reflection of the ramp-up challenge (domain, context, process) and a concrete strategy — documentation, pairing, stakeholder mapping, and fast feedback loops. Show proactive adaptation, not passive waiting.",
-      "whyItMatters": "Honest self-awareness plus an actionable onboarding plan.",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
-      "id": "platform-38",
-      "category": "platform",
-      "categoryLabel": "Android Platform",
-      "question": "What tends to stress you most at work?",
-      "answer": "Show self-awareness and healthy coping strategies — prioritization, communication, and asking for help early. Avoid responses that signal poor collaboration or low accountability.",
-      "whyItMatters": "Evaluates emotional intelligence and how you function under pressure.",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
       "id": "systemdesign-01",
       "category": "systemdesign",
       "categoryLabel": "System Design",
@@ -1581,16 +1461,6 @@
       "answer": "1. **Encryption**: Encrypt sensitive data at rest\n2. **Network security**: Certificate pinning\n3. **ProGuard/R8**: Code obfuscation\n4. **Root detection**: Warn or exit on rooted devices\n5. **Biometric authentication**: Secure local access",
       "whyItMatters": "",
       "codeExample": "// Certificate pinning\nval client = OkHttpClient.Builder()\n    .certificatePinner(\n        CertificatePinner.Builder()\n            .add(\"api.example.com\", \"sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\")\n            .build()\n    )\n    .build()\n\n// EncryptedSharedPreferences\nval masterKey = MasterKey.Builder(context)\n    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)\n    .build()\n\nval securePrefs = EncryptedSharedPreferences.create(\n    context,\n    \"secret_prefs\",\n    masterKey,\n    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,\n    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM\n)",
-      "furtherReading": []
-    },
-    {
-      "id": "systemdesign-09",
-      "category": "systemdesign",
-      "categoryLabel": "System Design",
-      "question": "How would you mentor a teammate who has more business context but less technical depth?",
-      "answer": "Use collaborative mentoring — explain technical trade-offs in product language, pair regularly, share practical examples, and build reusable guidelines. Treat them as a partner and exchange knowledge both ways rather than talking down.",
-      "whyItMatters": "Mentoring \"up or sideways\" is a staff-level signal; collaboration beats lecturing.",
-      "codeExample": "",
       "furtherReading": []
     },
     {
@@ -1691,46 +1561,6 @@
       "answer": "1. **Result type**: Use sealed class for success/error\n2. **Error mapping**: Convert exceptions to user-friendly messages\n3. **Retry logic**: For transient failures\n4. **Fallback**: Graceful degradation\n5. **Reporting**: Log errors for debugging",
       "whyItMatters": "",
       "codeExample": "sealed class Result<out T> {\n    data class Success<T>(val data: T) : Result<T>()\n    data class Error(val exception: Exception) : Result<Nothing>()\n}\n\nsuspend fun <T> safeCall(block: suspend () -> T): Result<T> {\n    return try {\n        Result.Success(block())\n    } catch (e: Exception) {\n        Result.Error(e)\n    }\n}\n\n// Usage\nwhen (val result = safeCall { repository.getData() }) {\n    is Result.Success -> showData(result.data)\n    is Result.Error -> showError(result.exception.message)\n}",
-      "furtherReading": []
-    },
-    {
-      "id": "testing-10",
-      "category": "testing",
-      "categoryLabel": "Testing & Debugging",
-      "question": "How do you ensure your daily work meets a high quality bar?",
-      "answer": "Use clear acceptance criteria, tests, lint/static checks, and self-review before opening a PR. Keep changes small and incremental, write readable code, and explicitly handle edge cases. Validate behavior with metrics or logs where relevant.",
-      "whyItMatters": "Distinct ownership of quality, not just \"I test sometimes\".",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
-      "id": "testing-11",
-      "category": "testing",
-      "categoryLabel": "Testing & Debugging",
-      "question": "What are your no-go's when reviewing a new task or ticket?",
-      "answer": "Undefined scope or acceptance criteria, unclear ownership, hidden dependencies, security/privacy risks, missing rollback strategy on risky changes, and lack of testability or a way to verify success. I escalate these before starting.",
-      "whyItMatters": "Shows you can push back productively on genuinely dangerous work.",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
-      "id": "testing-12",
-      "category": "testing",
-      "categoryLabel": "Testing & Debugging",
-      "question": "What would you do if a feature you shipped has bugs in production?",
-      "answer": "Own the issue, communicate impact quickly, and mitigate (hotfix, rollback, or feature-flag off). Then run a blameless postmortem, identify root cause, and add preventive measures such as better tests, monitoring, or checklists.",
-      "whyItMatters": "Ownership and incident response without blame-shifting are core senior behaviors.",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
-      "id": "testing-13",
-      "category": "testing",
-      "categoryLabel": "Testing & Debugging",
-      "question": "What guardrails would you define for using AI in production code?",
-      "answer": "- Scope limits (no blind large refactors).\n- Mandatory code review and tests.\n- Security/privacy constraints (no secrets or PII in prompts).\n- Versioned prompts/playbooks for repeatability.\n- Traceability of AI-assisted changes in PRs.",
-      "whyItMatters": "AI usage in production teams is now an active interview topic; candidates need a thoughtful policy stance.",
-      "codeExample": "",
       "furtherReading": []
     }
   ]

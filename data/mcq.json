@@ -20,12 +20,12 @@
       "category": "kotlin",
       "question": "When would you use a sealed class (or sealed interface) instead of an enum class?",
       "options": [
-        "When you need a restricted hierarchy where subclasses can hold different data",
         "When you need better performance than enums",
+        "When you need a restricted hierarchy where subclasses can hold different data",
         "When you want to avoid using the 'when' expression",
         "When you need more than 256 constants"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Sealed classes allow each subclass to hold different state/data, unlike enums which are singletons. They're ideal for representing UI states like Loading, Success(data), Error(exception)."
     },
     {
@@ -33,12 +33,12 @@
       "category": "kotlin",
       "question": "How do Kotlin extension functions work under the hood?",
       "options": [
-        "They are compiled as static methods with the receiver as the first parameter",
-        "They modify the original class bytecode at compile time",
         "They use reflection to inject methods at runtime",
+        "They modify the original class bytecode at compile time",
+        "They are compiled as static methods with the receiver as the first parameter",
         "They create wrapper subclasses dynamically"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Extension functions are syntactic sugar — the compiler generates a static Java method where the receiver object becomes the first parameter. They cannot access private members of the extended class."
     },
     {
@@ -46,12 +46,12 @@
       "category": "kotlin",
       "question": "Which scope function should you use for object configuration (setting multiple properties)?",
       "options": [
-        "apply — it returns the receiver and uses 'this' context",
+        "run — it returns a different value from the block",
         "let — it provides 'it' reference to the object",
         "also — it's designed for side effects like logging",
-        "run — it returns a different value from the block"
+        "apply — it returns the receiver and uses 'this' context"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "apply returns the receiver object and uses 'this' as context, making it ideal for configuring objects. let/also use 'it', and run returns the lambda result rather than the receiver."
     },
     {
@@ -72,12 +72,12 @@
       "category": "kotlin",
       "question": "What does the ? operator do in Kotlin's null safety system?",
       "options": [
-        "Makes a type nullable, allowing it to hold null values",
         "Forces a non-null assertion at runtime",
+        "Makes a type nullable, allowing it to hold null values",
         "Catches NullPointerExceptions automatically",
         "Converts null to a default value"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "The ? suffix on a type (e.g., String?) declares it as nullable. Kotlin's type system then forces null checks before use, preventing NullPointerExceptions at compile time."
     },
     {
@@ -85,12 +85,12 @@
       "category": "kotlin",
       "question": "What is the difference between == and === in Kotlin?",
       "options": [
-        "== checks structural equality (equals()); === checks referential equality",
-        "== checks referential equality; === checks structural equality",
         "== only works on primitives; === works on objects",
+        "== checks referential equality; === checks structural equality",
+        "== checks structural equality (equals()); === checks referential equality",
         "They are identical — === is just an alias"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "== calls equals() for value comparison (structural). === checks if two references point to the exact same object in memory (referential)."
     },
     {
@@ -98,12 +98,12 @@
       "category": "kotlin",
       "question": "What is a companion object in Kotlin?",
       "options": [
-        "A singleton tied to a class that provides class-level members without static keyword",
+        "A thread-safe wrapper for lazy initialization",
         "A second instance of the class that mirrors its state",
         "A base class that all inner classes must extend",
-        "A thread-safe wrapper for lazy initialization"
+        "A singleton tied to a class that provides class-level members without static keyword"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Companion objects are singletons associated with a class. They can be accessed via ClassName.memberName, similar to Java's static methods, but are actual objects with full Kotlin capabilities."
     },
     {
@@ -137,12 +137,12 @@
       "category": "kotlin",
       "question": "Why would you use the inline keyword on a function?",
       "options": [
-        "To avoid creating lambda objects by copying the function body to the call site",
         "To make the function run faster on multiple threads",
+        "To avoid creating lambda objects by copying the function body to the call site",
         "To allow the function to be overridden in subclasses",
         "To make the function accessible from Java code"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "inline copies the function body to the call site, eliminating lambda object allocation overhead. It's especially important for functions taking lambda parameters to avoid performance penalties."
     },
     {
@@ -150,12 +150,12 @@
       "category": "kotlin",
       "question": "What are reified type parameters used for?",
       "options": [
-        "Accessing generic type information at runtime in inline functions",
-        "Making generics perform better at compile time",
         "Converting any type to a String at runtime",
+        "Making generics perform better at compile time",
+        "Accessing generic type information at runtime in inline functions",
         "Enabling reflection on sealed classes"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Reified types let you use the actual type argument at runtime (e.g., T::class.java). This is only possible in inline functions because the type is inlined at the call site."
     },
     {
@@ -163,12 +163,12 @@
       "category": "kotlin",
       "question": "What is the difference between const val and regular val?",
       "options": [
-        "const val is a compile-time constant; val is initialized at runtime",
+        "There is no difference — they are interchangeable",
         "const val is mutable; val is immutable",
         "const val uses less memory; val uses more",
-        "There is no difference — they are interchangeable"
+        "const val is a compile-time constant; val is initialized at runtime"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "const val must be initialized with a primitive or string literal and is resolved at compile time (becomes a static final field). val is a runtime constant that can be initialized from any expression."
     },
     {
@@ -189,12 +189,12 @@
       "category": "kotlin",
       "question": "When should you use a value class?",
       "options": [
-        "When wrapping a single type to get type safety without runtime object overhead",
         "When you need a class that only holds constants",
+        "When wrapping a single type to get type safety without runtime object overhead",
         "When you want to create immutable collections",
         "When you need faster serialization"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Value classes wrap a single value for type safety (e.g., UserId wrapping String) but are inlined at runtime, avoiding the allocation overhead of a wrapper object."
     },
     {
@@ -202,12 +202,12 @@
       "category": "kotlin",
       "question": "What is a function type in Kotlin?",
       "options": [
-        "A type that represents a function signature with parameter and return types",
-        "A class that must implement the Function interface",
         "A type alias for lambda expressions only",
+        "A class that must implement the Function interface",
+        "A type that represents a function signature with parameter and return types",
         "A way to make functions generic"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Function types like (String, Int) -> Boolean specify parameter types and return type. They enable first-class functions, letting you pass functions as variables."
     },
     {
@@ -215,12 +215,12 @@
       "category": "kotlin",
       "question": "What is the primary use case for sealed classes?",
       "options": [
-        "Representing restricted hierarchies like UI states or events",
+        "Defining constant values",
         "Creating performance-optimized singletons",
         "Implementing dependency injection",
-        "Defining constant values"
+        "Representing restricted hierarchies like UI states or events"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Sealed classes restrict class hierarchies to a known set of subclasses, making them ideal for modeling UI states (Loading, Success, Error) with exhaustive when expressions."
     },
     {
@@ -241,12 +241,12 @@
       "category": "kotlin",
       "question": "What do delegated properties enable in Kotlin?",
       "options": [
-        "Custom get/set logic delegated to another class via the 'by' keyword",
         "Faster property access through bytecode optimization",
+        "Custom get/set logic delegated to another class via the 'by' keyword",
         "Automatic serialization of properties to JSON",
         "Thread-local storage for each property"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Delegated properties (by lazy, by Delegates.observable, etc.) let you delegate property access logic to a helper class, enabling lazy init, observation, and validation patterns."
     },
     {
@@ -254,12 +254,12 @@
       "category": "kotlin",
       "question": "What is the difference between List and MutableList in Kotlin?",
       "options": [
-        "List is read-only (immutable reference); MutableList allows add/remove operations",
         "List uses more memory; MutableList is optimized",
+        "List is read-only (immutable reference); MutableList allows add/remove operations",
         "MutableList is thread-safe; List is not",
         "They have identical performance characteristics"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "List<T> only exposes read operations. MutableList<T> adds add, remove, and set. Both refer to the same underlying collection — List is just a read-only view."
     },
     {
@@ -267,12 +267,12 @@
       "category": "kotlin",
       "question": "What does flatMap do compared to map?",
       "options": [
-        "flatMap transforms each element to a collection then flattens; map transforms 1:1",
-        "flatMap is faster than map for large collections",
         "flatMap preserves order; map does not",
+        "flatMap is faster than map for large collections",
+        "flatMap transforms each element to a collection then flattens; map transforms 1:1",
         "flatMap can only be used on nullable types"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "map transforms each element individually. flatMap transforms each element into a collection, then flattens all collections into a single result."
     },
     {
@@ -280,12 +280,12 @@
       "category": "kotlin",
       "question": "What is the key difference between List and Sequence?",
       "options": [
-        "List evaluates eagerly (all at once); Sequence evaluates lazily (on demand)",
+        "Sequence can only hold primitive types",
         "Sequence is always faster than List",
         "List is thread-safe; Sequence is not",
-        "Sequence can only hold primitive types"
+        "List evaluates eagerly (all at once); Sequence evaluates lazily (on demand)"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "List processes all transformations immediately. Sequence applies transformations one element at a time on demand, which can be more memory-efficient for large datasets with many operations."
     },
     {
@@ -306,12 +306,12 @@
       "category": "kotlin",
       "question": "What does Kotlin Multiplatform (KMP) share across platforms?",
       "options": [
-        "Business logic, data models, and networking code",
         "The entire UI layer including layouts",
+        "Business logic, data models, and networking code",
         "Native platform APIs directly",
         "Build configuration and CI/CD pipelines"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "KMP shares business logic (networking, data, business rules) across Android, iOS, desktop, and web. UI remains platform-specific unless using Compose Multiplatform."
     },
     {
@@ -319,38 +319,25 @@
       "category": "kotlin",
       "question": "How do expect/actual declarations work in Kotlin Multiplatform?",
       "options": [
-        "expect declares an API in common code; actual provides platform-specific implementations",
-        "expect creates a copy of the function on each platform",
         "actual is optional — the compiler generates a default implementation",
+        "expect creates a copy of the function on each platform",
+        "expect declares an API in common code; actual provides platform-specific implementations",
         "expect/actual only work for classes, not functions"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "expect declares an API contract in commonMain. Each platform (androidMain, iosMain) provides an actual implementation. This lets you share interfaces while customizing platform-specific behavior."
-    },
-    {
-      "id": "kotlin-26",
-      "category": "kotlin",
-      "question": "What is the benefit of using named arguments in Kotlin function calls?",
-      "options": [
-        "Improved readability and the ability to skip default parameters in any order",
-        "Faster execution speed",
-        "Automatic null safety checks",
-        "Memory optimization for large parameter lists"
-      ],
-      "correctIndex": 0,
-      "explanation": "Named arguments make calls self-documenting and let you skip default parameters regardless of order. This is especially useful for functions with many boolean flags or optional parameters."
     },
     {
       "id": "compose-01",
       "category": "compose",
       "question": "What is Recomposition in Jetpack Compose?",
       "options": [
-        "Re-running a composable function when its inputs change to update the UI",
         "Re-executing the entire Activity lifecycle after a configuration change",
+        "Re-running a composable function when its inputs change to update the UI",
         "Reinstantiating the composable from scratch each frame",
         "Recomputing only the layout of a node without running any code"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Recomposition calls the composable function again whenever the state it reads changes, so the UI reflects the new values. Compose skips recomposing functions whose parameters haven't changed."
     },
     {
@@ -358,12 +345,12 @@
       "category": "compose",
       "question": "What triggers Recomposition in Jetpack Compose?",
       "options": [
-        "Changing the value of a State object that a composable reads",
-        "Recompiling the application code",
         "Any change to the device theme",
+        "Recompiling the application code",
+        "Changing the value of a State object that a composable reads",
         "Calling the composable function manually from a callback"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Recomposition is triggered when a snapshot state (like MutableState) that the composable reads is changed. Compose skips recomposing any functions that don't read the changed state."
     },
     {
@@ -371,12 +358,12 @@
       "category": "compose",
       "question": "How can you prevent unnecessary recomposition?",
       "options": [
-        "Hoist state so composables that don't read it aren't recomposed, and keep lambdas stable",
+        "Wrap every composable in a remember block",
         "Restart the Activity on every state change",
         "Use only immutable top-level values with no State",
-        "Wrap every composable in a remember block"
+        "Hoist state so composables that don't read it aren't recomposed, and keep lambdas stable"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Keeping state reads as local as possible and passing stable lambdas/precomputed values limits recomposition scope. Compose also skips recomposing a function whose parameters are equal (unstable ones are checked more aggressively)."
     },
     {
@@ -397,12 +384,12 @@
       "category": "compose",
       "question": "What is State Hoisting in Jetpack Compose?",
       "options": [
-        "Moving state up to a common parent so multiple composables can share and control it",
         "Storing all state in a singleton object",
+        "Moving state up to a common parent so multiple composables can share and control it",
         "Converting state to static variables",
         "Removing state entirely from composables"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "State hoisting moves state (and callbacks to change it) to a caller/parent so the child becomes stateless and reusable, and multiple children can share the same source of truth."
     },
     {
@@ -410,12 +397,12 @@
       "category": "compose",
       "question": "What is the difference between mutableStateOf and StateFlow?",
       "options": [
-        "mutableStateOf is Compose's snapshot state; StateFlow is a Kotlin Flow used outside Compose or collected into composition",
-        "mutableStateOf is always async, StateFlow is synchronous",
         "They are identical concepts",
+        "mutableStateOf is always async, StateFlow is synchronous",
+        "mutableStateOf is Compose's snapshot state; StateFlow is a Kotlin Flow used outside Compose or collected into composition",
         "mutableStateOf can only hold primitives"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "mutableStateOf is Compose's observable UI state. StateFlow is a Flow-based, cold/hot data container that Compose can collect via APIs like collectAsState, useful when the source is a ViewModel or a data layer that already emits Flows."
     },
     {
@@ -423,12 +410,12 @@
       "category": "compose",
       "question": "What is derivedStateOf and when should you use it?",
       "options": [
-        "A way to derive a new state by transforming other state, recomputed only when inputs change",
+        "A coroutine scope for background work",
         "A way to cache a value forever",
         "A unit test assertion helper",
-        "A coroutine scope for background work"
+        "A way to derive a new state by transforming other state, recomputed only when inputs change"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "derivedStateOf computes a value from existing state and only recalculates when the inputs actually change. It's ideal for expensive derivations, e.g., showing 'X items selected' based on a large list."
     },
     {
@@ -449,12 +436,12 @@
       "category": "compose",
       "question": "What is SideEffect and when is it useful?",
       "options": [
-        "Runs a callback after every successful recomposition to sync observables outside Compose",
         "Runs exactly once before the first frame",
+        "Runs a callback after every successful recomposition to sync observables outside Compose",
         "Blocks recomposition until it finishes",
         "Creates a new coroutine scope"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "SideEffect executes its block after each successfully committed recomposition. It's for publishing Compose state to non-Compose observers, like updating a ViewModel with the current UI state."
     },
     {
@@ -462,12 +449,12 @@
       "category": "compose",
       "question": "What is CompositionLocal and how does it work?",
       "options": [
-        "A way to implicitly pass values down the composition tree without threading them through parameters",
         "A way to store values in the database",
+        "A way to implicitly pass values down the composition tree without threading them through parameters",
         "A global mutable singleton readable anywhere",
         "A replacement for ViewModel"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "CompositionLocal provides values implicitly to composables in a subtree via CompositionLocalProvider. It's used for theming and commonly-scoped values, but overusing it hurts readability and recomposition performance."
     },
     {
@@ -475,12 +462,12 @@
       "category": "compose",
       "question": "What is the difference between Column and LazyColumn?",
       "options": [
-        "Column composes all children eagerly; LazyColumn only composes visible items lazily for large lists",
-        "LazyColumn can only contain text",
         "Column supports scrolling automatically",
+        "LazyColumn can only contain text",
+        "Column composes all children eagerly; LazyColumn only composes visible items lazily for large lists",
         "LazyColumn cannot be scrolled"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Column places all children in composition and layout at once, fine for small content. LazyColumn composes only what's visible, making it efficient for large or unbounded lists by reusing views."
     },
     {
@@ -488,12 +475,12 @@
       "category": "compose",
       "question": "Why use the key parameter in LazyColumn?",
       "options": [
-        "To give each item a stable identity so Compose preserves state across reordering",
+        "To limit the number of items",
         "To encrypt item content",
         "To change the column background color",
-        "To limit the number of items"
+        "To give each item a stable identity so Compose preserves state across reordering"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Providing a stable key lets Compose associate the item's state (scroll position, remember values) with the data item, so on reorder or deletion the state follows the item instead of resetting or leaking."
     },
     {
@@ -514,12 +501,12 @@
       "category": "compose",
       "question": "How do you collect a Flow in Compose?",
       "options": [
-        "Using collectAsState or collectAsStateWithLifecycle inside composable scope",
         "Using Thread.sleep in a while loop",
+        "Using collectAsState or collectAsStateWithLifecycle inside composable scope",
         "Using a global variable",
         "Flows cannot be observed in Compose"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Compose offers collectors such as collectAsState (simple) and collectAsStateWithLifecycle (lifecycle-aware, from androidx.lifecycle:lifecycle-runtime-compose). Collecting a Flow from a ViewModel exposes its emissions as Compose state."
     },
     {
@@ -527,12 +514,12 @@
       "category": "compose",
       "question": "What is collectAsStateWithLifecycle and why is it preferred?",
       "options": [
-        "Collects a Flow respecting the composable's lifecycle, pausing when not in STARTED state to save resources",
-        "It is faster than all other collectors",
         "It automatically caches in a database",
+        "It is faster than all other collectors",
+        "Collects a Flow respecting the composable's lifecycle, pausing when not in STARTED state to save resources",
         "It converts Flow to a list"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "collectAsStateWithLifecycle (lifecycle-runtime-compose) stops upstream collection when the composable leaves the STARTED lifecycle state, avoiding wasted work and potential leaks. This makes it the recommended collector for production apps."
     },
     {
@@ -540,12 +527,12 @@
       "category": "compose",
       "question": "How does navigation work in Jetpack Compose?",
       "options": [
-        "Using the Navigation Compose library with a NavHost mapping routes to composable destinations",
+        "Navigation is not supported in Compose",
         "Using Android Intents for every screen",
         "Using the BackStack of Fragments",
-        "Navigation is not supported in Compose"
+        "Using the Navigation Compose library with a NavHost mapping routes to composable destinations"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Navigation Compose uses a NavController and NavHost where you declare routes/destinations as composables. You navigate via controller.navigate(route) and arguments are passed through routes or saved state."
     },
     {
@@ -566,12 +553,12 @@
       "category": "compose",
       "question": "How do you handle configuration changes (like rotation) in Compose?",
       "options": [
-        "Compose recomposes automatically; use rememberSaveable for UI state and ViewModel for survived state",
         "By restarting the process",
+        "Compose recomposes automatically; use rememberSaveable for UI state and ViewModel for survived state",
         "By freezing the UI during rotation",
         "Configuration changes are ignored"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "On a configuration change, the Activity is recreated and composition is discarded. rememberSaveable preserves UI state in the saved instance state Bundle, while a ViewModel survives recreation for business state — the recomposed UI restores automatically."
     },
     {
@@ -579,12 +566,12 @@
       "category": "compose",
       "question": "What are @Stable and @Immutable annotations?",
       "options": [
-        "Compiler hints that let Compose skip recomposition when the annotated object's values don't change",
-        "Runtime annotations that add animations",
         "Way to make a class extend Activity",
+        "Runtime annotations that add animations",
+        "Compiler hints that let Compose skip recomposition when the annotated object's values don't change",
         "They disable recomposition entirely"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "@Immutable and @Stable mark types as having a stable identity/equality, helping the Compose compiler prove that unchanged parameters can be skipped during recomposition. They're performance annotations, not behavioral ones."
     },
     {
@@ -592,12 +579,12 @@
       "category": "compose",
       "question": "How do you optimize performance in large Compose apps?",
       "options": [
-        "Use lazy lists, stable state, derivedStateOf, and avoid recomposing large subtrees",
-        "Rebuild the UI on every frame from scratch",
         "Store all state in one top-level MutableState",
+        "Rebuild the UI on every frame from scratch",
+        "Use lazy lists, stable state, derivedStateOf, and avoid recomposing large subtrees",
         "Disable the Compose compiler"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Performance comes from reducing recomposition scope and cost: LazyColumn for lists, hoisting state, @Immutable/@Stable models, derivedStateOf for derived values, and Coil/Glide companions for efficient image loading."
     },
     {
@@ -605,12 +592,12 @@
       "category": "compose",
       "question": "What is a Modifier, and why does modifier order matter?",
       "options": [
-        "Modifier chains UI behavior/layout/decoration; order changes the order of application, so padding, clickable, and size behave differently",
+        "Modifier replaces the need for layout",
         "Modifier is only for styling text color",
         "Modifier order never affects behavior",
-        "Modifier replaces the need for layout"
+        "Modifier chains UI behavior/layout/decoration; order changes the order of application, so padding, clickable, and size behave differently"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "A Modifier wraps/orders elements: e.g., Modifier.padding() applies padding to its content, and whether clickable or padding comes first changes what area is clickable and how it's laid out — so order genuinely matters."
     },
     {
@@ -631,12 +618,12 @@
       "category": "compose",
       "question": "What problem does rememberUpdatedState solve?",
       "options": [
-        "Keeps a long-running effect using the latest callback value without restarting the effect",
         "Caches network responses",
+        "Keeps a long-running effect using the latest callback value without restarting the effect",
         "Saves data to disk",
         "Prevents all recomposition"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "rememberUpdatedState lets a long-lived coroutine/effect (e.g., in LaunchedEffect) read the most recent value of a parameter without restarting when the parameter changes — useful for callbacks in animations or indefinite processes."
     },
     {
@@ -644,12 +631,12 @@
       "category": "compose",
       "question": "How do you model one-shot events (navigation, snackbars) so they are not repeated on recomposition?",
       "options": [
-        "Consume the event once using Channels or one-shot event wrappers that are cleared after handling",
-        "Replay the event on every recomposition",
         "Store events in a persistent database",
+        "Replay the event on every recomposition",
+        "Consume the event once using Channels or one-shot event wrappers that are cleared after handling",
         "Use a plain State that never clears"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Ui events sent as one-shot (e.g., through a Channel or a SharedFlow with replay=0, or a dedicated wrapper) are consumed by the UI once. If modeled as plain State/SharedFlow with old values, a recomposition or re-subscribe can re-trigger navigation or repeated snackbars."
     },
     {
@@ -657,12 +644,12 @@
       "category": "coroutines",
       "question": "What are the main Coroutine Dispatchers in Android?",
       "options": [
-        "Dispatchers.Main, Dispatchers.IO, Dispatchers.Default, and Dispatchers.Unconfined",
-        "CPU, GPU, Network, and Disk dispatchers",
         "Main, Background, and UiThread dispatchers only",
+        "CPU, GPU, Network, and Disk dispatchers",
+        "Dispatchers.Main, Dispatchers.IO, Dispatchers.Default, and Dispatchers.Unconfined",
         "Confinement, Parallel, and Serial dispatchers"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Dispatchers.Main runs on the UI thread, IO is for blocking I/O, Default for CPU-bound work, and Unconfined is not confined to a fixed thread. Choosing the right dispatcher controls where each block of work executes."
     },
     {
@@ -670,12 +657,12 @@
       "category": "coroutines",
       "question": "What is the difference between viewModelScope and lifecycleScope?",
       "options": [
-        "viewModelScope is cancelled when the ViewModel is cleared; lifecycleScope is cancelled when the Lifecycle is destroyed",
+        "They are the same scope",
         "lifecycleScope survives process death",
         "viewModelScope only supports Dispatchers.Main",
-        "They are the same scope"
+        "viewModelScope is cancelled when the ViewModel is cleared; lifecycleScope is cancelled when the Lifecycle is destroyed"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "viewModelScope is tied to the ViewModel's onCleared(), while lifecycleScope (lifecycle-runtime-ktx) is tied to a LifecycleOwner and cancels on destroy. Pick the scope whose lifecycle matches the work's owner."
     },
     {
@@ -696,12 +683,12 @@
       "category": "coroutines",
       "question": "What is a Suspend Function?",
       "options": [
-        "A function that can pause and resume on a thread without blocking it, callable only from a coroutine",
         "A function that always blocks the calling thread",
+        "A function that can pause and resume on a thread without blocking it, callable only from a coroutine",
         "A synchronous function declared final",
         "A function that runs automatically in parallel"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "A suspend function can suspend the coroutine (releasing the thread) and resume later. Suspend functions may only be called from a coroutine or another suspend function."
     },
     {
@@ -709,12 +696,12 @@
       "category": "coroutines",
       "question": "What is the difference between launch and async?",
       "options": [
-        "launch returns a Job with no result; async returns a Deferred you await() for the value",
-        "launch is sequential and async is always parallel",
         "async can only run on the main thread",
+        "launch is sequential and async is always parallel",
+        "launch returns a Job with no result; async returns a Deferred you await() for the value",
         "launch returns a result and async returns a Job"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "launch runs a fire-and-forget coroutine returning Job. async computes a value wrapped in Deferred, retrieved with await(), which suspends until the result is ready. Use async only when you need the result."
     },
     {
@@ -722,12 +709,12 @@
       "category": "coroutines",
       "question": "What is Structured Concurrency?",
       "options": [
-        "Children share the parent scope's lifetime so cancellation or failure of the parent cancels the subtree",
+        "Disallowing nested coroutines",
         "Forcing every coroutine onto the same thread",
         "Running each coroutine in its own process",
-        "Disallowing nested coroutines"
+        "Children share the parent scope's lifetime so cancellation or failure of the parent cancels the subtree"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Structured concurrency scopes children to their parent: the parent waits for children, and cancelling/failing the parent cancels all children, preventing leaks and orphaned work."
     },
     {
@@ -748,12 +735,12 @@
       "category": "coroutines",
       "question": "What is the difference between Flow and LiveData?",
       "options": [
-        "Flow is a cold stream with rich operators; LiveData is a lifecycle-aware value holder for the UI",
         "Flow only works with Room",
+        "Flow is a cold stream with rich operators; LiveData is a lifecycle-aware value holder for the UI",
         "LiveData supports backpressure internally",
         "Flow automatically survives configuration changes"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Flow is cold — each collector starts the source — and offers transform/combine/catch and flowOn. LiveData is lifecycle-aware, caches one value, and is primarily a UI abstraction. In modern architecture Flow tends to be used at the data/domain layers."
     },
     {
@@ -761,12 +748,12 @@
       "category": "coroutines",
       "question": "What is a cold Flow, and what is a hot Flow?",
       "options": [
-        "Cold: produced fresh for each collector; Hot: emits independently, collectors share the emissions",
-        "Cold always runs on IO; hot on Main",
         "Cold flows are synchronous only",
+        "Cold always runs on IO; hot on Main",
+        "Cold: produced fresh for each collector; Hot: emits independently, collectors share the emissions",
         "They refer to the flow's cache temperature"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "A cold flow (e.g., flow {}) runs its producer for every new collector, replaying from the start. A hot flow (SharedFlow/StateFlow) has its own independent emission lifetime; late subscribers only see new (or replayed) values."
     },
     {
@@ -774,12 +761,12 @@
       "category": "coroutines",
       "question": "Explain StateFlow and SharedFlow.",
       "options": [
-        "StateFlow holds one state and conflates to the latest; SharedFlow emits many events with configurable replay and buffer options",
-        "StateFlow emits every value and SharedFlow only the first",
         "StateFlow is synchronous only",
+        "StateFlow emits every value and SharedFlow only the first",
+        "StateFlow holds one state and conflates to the latest; SharedFlow emits many events with configurable replay and buffer options",
         "They are aliases"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "StateFlow always has a value (data), merges concurrent updates to the latest, and is hot. SharedFlow supports many real-time events with a replay buffer and onBufferOverflow policy, making it suited for one-shot event streams."
     },
     {
@@ -787,12 +774,12 @@
       "category": "coroutines",
       "question": "How do you handle thread safety in Coroutines?",
       "options": [
-        "Restrict mutable state to a single thread/context or use atomic/thread-safe structures for cross-thread access",
+        "Force every coroutine onto Dispatchers.Main",
         "Rely on runBlocking to serialize everything",
         "Never allow sharing state between coroutines",
-        "Force every coroutine onto Dispatchers.Main"
+        "Restrict mutable state to a single thread/context or use atomic/thread-safe structures for cross-thread access"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Mutable state read/written from multiple dispatchers must be protected: confine it to one context, use Mutex/Actors/Channels for single-writer access, or use atomics and concurrent collections — matching the access pattern."
     },
     {
@@ -813,12 +800,12 @@
       "category": "coroutines",
       "question": "What does withContext do?",
       "options": [
-        "Suspends the current coroutine, runs the block on the specified dispatcher, then resumes on the original one",
         "Spins up a coroutine that runs forever",
+        "Suspends the current coroutine, runs the block on the specified dispatcher, then resumes on the original one",
         "Cancels the current scope",
         "Blocks the thread without suspending"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "withContext switches execution to another dispatcher (e.g., Dispatchers.IO) for the block, suspending rather than blocking, then restores the original dispatcher. It's the idiomatic way to do off-main work inside a suspend function."
     },
     {
@@ -826,12 +813,12 @@
       "category": "coroutines",
       "question": "What is the difference between collect and collectLatest?",
       "options": [
-        "collect handles emissions in order; collectLatest cancels the current block when a new value arrives",
-        "collectLatest is always dramatically faster",
         "collect is deprecated",
+        "collectLatest is always dramatically faster",
+        "collect handles emissions in order; collectLatest cancels the current block when a new value arrives",
         "collectLatest preserves order strictly"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "collect processes each value to completion before the next. collectLatest cancels the ongoing collection block as soon as the next value arrives, dropping slow stale processing — ideal when only the newest value matters."
     },
     {
@@ -839,12 +826,12 @@
       "category": "coroutines",
       "question": "How does CoroutineExceptionHandler work?",
       "options": [
-        "It catches uncaught exceptions routed through the context, but is not used with SupervisorJob where each child handles its own failures",
+        "It prevents exceptions from ever propagating",
         "It automatically fixes any exception",
         "It only works inside runBlocking",
-        "It prevents exceptions from ever propagating"
+        "It catches uncaught exceptions routed through the context, but is not used with SupervisorJob where each child handles its own failures"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "A CoroutineExceptionHandler catches uncaught exceptions delivered to it via the coroutine context. With a SupervisorJob, each child has its own handler, and it never sees CancellationException."
     },
     {
@@ -865,12 +852,12 @@
       "category": "coroutines",
       "question": "What are Coroutine Scopes and why are they important?",
       "options": [
-        "They define the lifetime and structured-concurrency rules of the coroutines they launch, preventing leaks",
         "They optimize thread-pool sizes automatically",
+        "They define the lifetime and structured-concurrency rules of the coroutines they launch, preventing leaks",
         "They replace the Android Lifecycle",
         "They add runtime security permissions"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "A scope ties its coroutines to a lifecycle; when the scope is cancelled (e.g., onCleared), all its jobs cancel. Component-lifecycle scopes like viewModelScope and lifecycleScope ensure background work never outlives its owner."
     },
     {
@@ -878,12 +865,12 @@
       "category": "coroutines",
       "question": "What are the current recommended options for asynchronous work in Android?",
       "options": [
-        "Kotlin Coroutines and Flow, plus WorkManager for guaranteed or expedited background work",
-        "Raw Threads and Handler for everything",
         "RxJava as the sole standard",
+        "Raw Threads and Handler for everything",
+        "Kotlin Coroutines and Flow, plus WorkManager for guaranteed or expedited background work",
         "AsyncTask"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "The modern standard is Coroutines + Flow for composable concurrency and WorkManager for deferrable/guaranteed background jobs (e.g., sync, uploads). RxJava is legacy, and AsyncTask/raw threads are discouraged."
     },
     {
@@ -891,12 +878,12 @@
       "category": "coroutines",
       "question": "Coroutines vs RxJava — which would you choose for a 2026 Android project?",
       "options": [
-        "Coroutines/Flow, as they are the native, lower-boilerplate, fully supported path forward",
+        "Both are mandatory for a greenfield app",
         "RxJava, because it has more operators",
         "Raw threads, for the most control",
-        "Both are mandatory for a greenfield app"
+        "Coroutines/Flow, as they are the native, lower-boilerplate, fully supported path forward"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Coroutines + Flow are first-class Kotlin, integrate with lifecycle scopes, avoid the reactive operator learning curve, and are Google-recommended. RxJava is heavier, legacy, and unnecessary for new projects."
     },
     {
@@ -904,12 +891,12 @@
       "category": "coroutines",
       "question": "What is runBlocking, and when should you use it in Android?",
       "options": [
-        "It blocks the calling thread to run coroutines to completion; use it in tests or main() bridging, never in UI code",
+        "It is identical to launch",
         "It runs coroutines asynchronously without blocking",
         "It must wrap every coroutine call",
-        "It is identical to launch"
+        "It blocks the calling thread to run coroutines to completion; use it in tests or main() bridging, never in UI code"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "runBlocking blocks the current thread until its coroutines finish, fine for tests and top-level bridging but catastrophic on the UI/Main thread since it freezes rendering. Use suspend functions and scopes in production instead."
     },
     {
@@ -930,12 +917,12 @@
       "category": "architecture",
       "question": "Why favor Composition over Inheritance in Android?",
       "options": [
-        "Composition offers flexible, testable behavior by assembling objects, avoiding tight coupling to a rigid base hierarchy",
-        "Composition is always faster at runtime",
         "Inheritance cannot express code reuse",
+        "Composition is always faster at runtime",
+        "Composition offers flexible, testable behavior by assembling objects, avoiding tight coupling to a rigid base hierarchy",
         "Composition removes the need for interfaces"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Composition lets you build varied behavior by combining small pieces (interfaces + delegates), is easier to mock/test, and avoids deep, fragile class hierarchies. Inheritance is kept for clear is-a relationships where it's genuinely appropriate."
     },
     {
@@ -943,12 +930,12 @@
       "category": "architecture",
       "question": "What is the difference between MVVM and MVI?",
       "options": [
-        "MVVM exposes separate state + events to the View; MVI treats UI state as immutable and drives it from explicit intents/actions",
+        "MVI is the same as MVC",
         "MVI has no ViewModel",
         "MVVM requires RxJava",
-        "MVI is the same as MVC"
+        "MVVM exposes separate state + events to the View; MVI treats UI state as immutable and drives it from explicit intents/actions"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "In MVVM the ViewModel exposes StateFlow/LiveData plus separate one-shot events. In MVI the UI renders from a single immutable UiState and user actions become intents that the reducer folds into that state, making it easier to reason about."
     },
     {
@@ -969,12 +956,12 @@
       "category": "architecture",
       "question": "How would you unit test a ViewModel that depends on an asynchronous Use Case using Mockito?",
       "options": [
-        "Mock the Use Case's suspending result and drive the coroutine scope with a test dispatcher, then assert on emitted state",
         "Call the real database in the test",
+        "Mock the Use Case's suspending result and drive the coroutine scope with a test dispatcher, then assert on emitted state",
         "Run the ViewModel on the main thread without instrumentation",
         "Assert only on the time the method takes"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "You stub the Use Case to return a known result and control coroutine execution via a test dispatcher (and a rule for Dispatchers.Main). Then you observe the ViewModel's state/events and assert. No real I/O is needed."
     },
     {
@@ -982,38 +969,25 @@
       "category": "architecture",
       "question": "What concrete improvements would you apply to improve RecyclerView performance?",
       "options": [
-        "setHasFixedSize, DiffUtil, stable IDs, enabling add/remove animations, and avoiding heavy binding work on every bind",
-        "Recreate the adapter on every scroll",
         "Load images synchronously on the main thread",
+        "Recreate the adapter on every scroll",
+        "setHasFixedSize, DiffUtil, stable IDs, enabling add/remove animations, and avoiding heavy binding work on every bind",
         "Use findViewByid for each item in onBindViewHolder"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "RecyclerView performance comes from stable IDs + DiffUtil to minimize changes, setHasFixedSize(true) to skip measurement, recycling via ViewHolders, and doing image/network work off-thread so binding is cheap."
-    },
-    {
-      "id": "architecture-06",
-      "category": "architecture",
-      "question": "What are common design patterns in Android and when to use them?",
-      "options": [
-        "Repository (data), ViewModel (UI state), Adapter (list binding), Singleton/DI (shared instances), Strategy (replaceable algorithms)",
-        "Only the Singleton is valid in Android",
-        "Patterns are never needed because Android handles everything",
-        "Observer is the only pattern used"
-      ],
-      "correctIndex": 0,
-      "explanation": "Android idioms map a few core patterns: Repository abstracts data sources, ViewModel exposes state, Adapter/ViewHolder binds lists, DI provides instances, and Strategy/Facade/Observer solve particular coupling needs. Choose patterns for the coupling they solve, not ritual."
     },
     {
       "id": "architecture-08",
       "category": "architecture",
       "question": "When does it make more sense to use Room, DataStore, or other caching strategies?",
       "options": [
-        "Room for relational, queryable data; DataStore for simple key-value/preferences; in-memory or API caches for ephemeral data",
         "Always use Room even for one bool",
+        "Room for relational, queryable data; DataStore for simple key-value/preferences; in-memory or API caches for ephemeral data",
         "DataStore for everything",
         "Caching is never worth the complexity"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Room suits structured relational data with queries (entities, DAOs). DataStore (Preferences/Proto) fits small typed or key-value state. For short-lived UI or network data, in-memory or disk caches avoid premature persistence. Match the store to the data's shape and access pattern."
     },
     {
@@ -1021,12 +995,12 @@
       "category": "architecture",
       "question": "How would you manage a bug that only occurs in production on a specific device?",
       "options": [
-        "Reproduce with the reported device/profile + logs, add targeted logging, and inspect crash analytics before changing the minimal code path",
-        "Reproduce on an emulator blindly",
         "Push a broad rewrite to fix it",
+        "Reproduce on an emulator blindly",
+        "Reproduce with the reported device/profile + logs, add targeted logging, and inspect crash analytics before changing the minimal code path",
         "Ask users to reinstall the OS"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "For device-specific production bugs you lean on crash analytics, logs, and device profiles, reproduce with the same conditions (Samsung-specific behavior, regional settings), add instrumentation, and isolate the smallest affected path before shipping a fix."
     },
     {
@@ -1034,12 +1008,12 @@
       "category": "architecture",
       "question": "What are the trade-offs between modularized architecture and a monolith?",
       "options": [
-        "Modules give cleaner boundaries, better build caching and parallelization, but add overhead; a monolith is simpler but harder to scale sustainably",
-        "Modules always reduce build time with no cost",
         "A monolith can never be tested",
+        "Modules always reduce build time with no cost",
+        "Modules give cleaner boundaries, better build caching and parallelization, but add overhead; a monolith is simpler but harder to scale sustainably",
         "Modularization always increases binary size permanently"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Modularization improves separation of concerns and Gradle build caching, but adds complexity around inter-module APIs, ownership, and dependency graphs. A monolith is quicker to start and refactor within, but coupling grows. Choose based on team size and app scale."
     },
     {
@@ -1047,12 +1021,12 @@
       "category": "architecture",
       "question": "Explain the Dependency Inversion Principle (DIP) and why it matters for Android architecture.",
       "options": [
-        "High-level modules should depend on abstractions, not concrete low-level details, so implementations can be swapped/tested",
+        "DIP requires inheritance everywhere",
         "Depend only on concrete classes",
         "DIP means using only the highest-level layer",
-        "DIP requires inheritance everywhere"
+        "High-level modules should depend on abstractions, not concrete low-level details, so implementations can be swapped/tested"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "DIP says depend on abstractions (interfaces) rather than details, inverting the direction of dependency. In Android this lets you swap implementations (e.g., fake vs. real repository) and unit test without real I/O."
     },
     {
@@ -1073,12 +1047,12 @@
       "category": "architecture",
       "question": "What is Assisted Injection and when would you need it?",
       "options": [
-        "Injection where some runtime arguments (e.g., an ID) are passed at creation while the rest come from the graph, useful for factories",
         "Injecting only string values",
+        "Injection where some runtime arguments (e.g., an ID) are passed at creation while the rest come from the graph, useful for factories",
         "A way to disable dependency injection",
         "Compile-time-only resource injection"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Assisted injection mixes DI-provided dependencies with runtime arguments needed per instance. It's used where objects require context-specific values (e.g., a repository built for a specific item ID) via generated factories, which Hilt/Dagger support."
     },
     {
@@ -1086,12 +1060,12 @@
       "category": "architecture",
       "question": "How would you design a scalable architecture for a multi-module Android app?",
       "options": [
-        "Layered modules (app/core/feature and shared data/domain) with clear interfaces and compile-time boundaries via dependency constraints",
-        "Put everything in one giant module in a single layer",
         "Circular dependency between all modules",
+        "Put everything in one giant module in a single layer",
+        "Layered modules (app/core/feature and shared data/domain) with clear interfaces and compile-time boundaries via dependency constraints",
         "Never use interfaces across modules"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "A scalable setup separates app (composition) from features and core, with shallow layers (presentation/domain/data) per feature, expresses modules via APIs, and defines explicit boundaries (avoiding circular deps) so teams can build and test modules independently, with feature discovery by navigation and dependency graphs 'inward only'."
     },
     {
@@ -1112,12 +1086,12 @@
       "category": "platform",
       "question": "What happens during a configuration change such as screen rotation?",
       "options": [
-        "The Activity is destroyed and recreated, losing the instance unless state is preserved via ViewModel/SavedInstanceState",
         "The Activity is kept forever",
+        "The Activity is destroyed and recreated, losing the instance unless state is preserved via ViewModel/SavedInstanceState",
         "Only the layout inflates again, nothing else",
         "The process is killed every time"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Rotation recreates the Activity: onSaveInstanceState captures transient UI state into a Bundle, onDestroy/onCreate run, and a ViewModel survives it. Compose recomposes with the new layout using saved/recall state."
     },
     {
@@ -1125,12 +1099,12 @@
       "category": "platform",
       "question": "What is onSaveInstanceState used for?",
       "options": [
-        "To save transient UI state into a Bundle before the Activity may be destroyed, restoring it in onCreate",
-        "To persist large user databases",
         "To upload files to the cloud",
+        "To persist large user databases",
+        "To save transient UI state into a Bundle before the Activity may be destroyed, restoring it in onCreate",
         "To cache network images"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "onSaveInstanceState captures small, transient UI state (scroll position, entered text) into a Bundle before destruction. Restore it in onCreate or onRestoreInstanceState. It is not for large or permanent data — that belongs in persistence/ViewModel."
     },
     {
@@ -1138,12 +1112,12 @@
       "category": "platform",
       "question": "What is a Memory Leak in Android?",
       "options": [
-        "Objects that outlive their lifecycle and hold references, preventing the GC from reclaiming them",
+        "Storing data on disk",
         "An app that uses too much battery",
         "A crash caused by a null pointer",
-        "Storing data on disk"
+        "Objects that outlive their lifecycle and hold references, preventing the GC from reclaiming them"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "A leak occurs when a live object (e.g., an Activity/View) is strongly referenced after it should be able to be freed — such as via static references, anonymous inner classes, or long-lived scope closures — so the GC cannot collect it, slowly growing memory."
     },
     {
@@ -1164,12 +1138,12 @@
       "category": "platform",
       "question": "What is a Fragment and why use it?",
       "options": [
-        "A lifecycle-aware UI/behavior container hosted by an Activity, reusable across screens and back stacks",
         "A background thread",
+        "A lifecycle-aware UI/behavior container hosted by an Activity, reusable across screens and back stacks",
         "A way to store key-value pairs",
         "A database table"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Fragments provide reusable UI and behavior with their own lifecycle within an Activity, aiding modular building blocks, back-stack navigation, and multi-pane layouts on larger screens. (Historically also used for configuration survival, now handled better by ViewModel.)"
     },
     {
@@ -1177,12 +1151,12 @@
       "category": "platform",
       "question": "What are Intent Filters?",
       "options": [
-        "Manifest-declared rules that match implicit Intents so the system can route them to a capable component",
-        "A way to filter emails",
         "Rules applied only to explicit Intents",
+        "A way to filter emails",
+        "Manifest-declared rules that match implicit Intents so the system can route them to a capable component",
         "A permission checker"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "In the manifest you declare intent filters with actions/categories/data that a component handles. The system matches implicit Intents against these filters to pick the target component, enabling deep links and component interoperability."
     },
     {
@@ -1190,12 +1164,12 @@
       "category": "platform",
       "question": "How does RecyclerView improve upon ListView?",
       "options": [
-        "ViewHolder recycling, adapter-driven layout with LayoutManagers, DiffUtil, and per-view access patterns",
+        "It replaces the need for adapters",
         "It renders every item always, so there is no reuse",
         "It can only show one item",
-        "It replaces the need for adapters"
+        "ViewHolder recycling, adapter-driven layout with LayoutManagers, DiffUtil, and per-view access patterns"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "RecyclerView decouples view creation/positioning, enforces ViewHolder recycling so widgets are reused instead of inflated, and pairs with LayoutManagers and DiffUtil for efficient updates. Progress/scroll responsibility are moved into adapters and item decorations."
     },
     {
@@ -1203,12 +1177,12 @@
       "category": "platform",
       "question": "What is the difference between an explicit and an implicit Intent?",
       "options": [
-        "Explicit specifies a component class; implicit specifies an action and lets the system resolve a matching component",
         "Implicit always targets a specific class",
+        "Explicit specifies a component class; implicit specifies an action and lets the system resolve a matching component",
         "Explicit requires a broadcast receiver",
         "They are the same"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Explicit Intents name the exact target component (e.g., startActivity(Intent(context, DetailActivity::class.java))). Implicit Intents describe an action/data, and the platform resolves which app/component can handle it (e.g., share or open a URL)."
     },
     {
@@ -1216,12 +1190,12 @@
       "category": "platform",
       "question": "Where does the app launcher label come from?",
       "options": [
-        "The android:label of the activity with MAIN/LAUNCHER intent filter, falling back to the application label/project name",
-        "from the keystore alias",
         "from a build-time environment variable",
+        "from the keystore alias",
+        "The android:label of the activity with MAIN/LAUNCHER intent filter, falling back to the application label/project name",
         "randomly chosen by the OS"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "The launcher reads the label on the launcher activity (the one with the MAIN + LAUNCHER intent filter). If absent, it falls back to the label on the <application> and finally the project/app name."
     },
     {
@@ -1242,12 +1216,12 @@
       "category": "platform",
       "question": "Background Service vs. Foreground Service vs. WorkManager vs. AlarmManager — when do you use each?",
       "options": [
-        "Foreground Service for user-visible ongoing work; WorkManager for deferrable/guaranteed jobs; AlarmManager for exact reminders; background services are limited by the system",
         "Use Background Service for everything",
+        "Foreground Service for user-visible ongoing work; WorkManager for deferrable/guaranteed jobs; AlarmManager for exact reminders; background services are limited by the system",
         "AlarmManager for long downloads",
         "WorkManager for real-time streaming"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Foreground services show a persistent notification for ongoing tasks (e.g., media/upload). WorkManager handles guaranteed, deferrable background work with constraints and retries. AlarmManager triggers exact/inexact alarms/reminders. Plain background services are restricted by background execution limits."
     },
     {
@@ -1255,12 +1229,12 @@
       "category": "platform",
       "question": "What is a PendingIntent and why does it matter for security?",
       "options": [
-        "A token that grants another component the permission to perform an Intent on your app later; if misused it can be exploited",
-        "An Intent that is never sent",
         "A way to skip the activity stack",
+        "An Intent that is never sent",
+        "A token that grants another component the permission to perform an Intent on your app later; if misused it can be exploited",
         "A encrypted copy of the Intent"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "A PendingIntent grants a third party (e.g., NotificationManager, AlarmManager) the authority to execute an Intent as your app at a later time. Because of that delegated permission, explicit intents, immutable FLAG updating, and unique request codes matter to avoid hijacking/mutation attacks."
     },
     {
@@ -1281,12 +1255,12 @@
       "category": "platform",
       "question": "How do you choose between StateFlow and SharedFlow (and MutableList) for upcoming data and events?",
       "options": [
-        "StateFlow for single-value UI state; SharedFlow (with appropriate replay/buffer) for one-shot events; plain MutableList when state is local and not observed concurrently",
         "Always use MutableList everywhere",
+        "StateFlow for single-value UI state; SharedFlow (with appropriate replay/buffer) for one-shot events; plain MutableList when state is local and not observed concurrently",
         "SharedFlow for everything, including data",
         "StateFlow cannot emit at all"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "StateFlow is ideal to represent a single current value that the UI reflects (conflated). SharedFlow is a good fit for distinct events the UI must react to without missing them (choose replay and onBufferOverflow accordingly). Plain mutable collections suffice when nothing needs observing across scope."
     },
     {
@@ -1294,12 +1268,12 @@
       "category": "platform",
       "question": "How would you implement analytics in a large-scale Android app?",
       "options": [
-        "A thin tracking interface behind the app, fired from use-case/ViewModel events, with sampling, batched events, and no PII in logs",
-        "Call analytics directly from every View onClick",
         "Send events on the main thread synchronously",
+        "Call analytics directly from every View onClick",
+        "A thin tracking interface behind the app, fired from use-case/ViewModel events, with sampling, batched events, and no PII in logs",
         "Log every keystroke to a file"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Analytics should sit behind a small interface (e.g., an AnalyticsTracker) injected and invoked from meaningful events, buffered/async, with stable event names and property schemas, privacy annotations, and no hard-blocking work on the main thread."
     },
     {
@@ -1307,12 +1281,12 @@
       "category": "platform",
       "question": "How would you handle offline support and data synchronization?",
       "options": [
-        "Combine a local-first repository (Room) with a network worker, a sync policy, and conflict resolution (e.g., last-write-wins or versioning)",
-        "Load from the network every screen visit",
         "Cache only the last screenshot",
+        "Load from the network every screen visit",
+        "Combine a local-first repository (Room) with a network worker, a sync policy, and conflict resolution (e.g., last-write-wins or versioning)",
         "Ignore offline entirely"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Offline-first usually means the UI reads from a local Room cache immediately, the repository pulls updates from the network, Write-Ahead/queue for mutations, and WorkManager retries sync with dedup/conflict resolution and observable status so the UI reflects sync progress."
     },
     {
@@ -1333,12 +1307,12 @@
       "category": "platform",
       "question": "What is R8 and how do you use it for shrinking, obfuscation, and keep rules?",
       "options": [
-        "R8 removes unused code/resources and obfuscates names; you define keep rules for code relied on via reflection or APIs",
-        "R8 adds new features to the app",
         "R8 only obfuscates without shrinking",
+        "R8 adds new features to the app",
+        "R8 removes unused code/resources and obfuscates names; you define keep rules for code relied on via reflection or APIs",
         "R8 is a database migration tool"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "R8 runs at release build to strip unused classes/methods and shrink/obfuscate the app, boosting security and size. Keep rules (proguard/consumer rules for libraries) preserve code that must not be changed — e.g., reflection targets, serialization, DataStore, or the Gson models."
     },
     {
@@ -1346,12 +1320,12 @@
       "category": "testing",
       "question": "How do you approach testing in Android?",
       "options": [
-        "A test pyramid: many fast unit tests for logic, fewer instrumented/integration tests for UI and platform behavior",
         "Only UI tests, no unit tests",
+        "A test pyramid: many fast unit tests for logic, fewer instrumented/integration tests for UI and platform behavior",
         "Only instrumented tests on real devices",
         "Testing after every release only"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "The pyramid favors many fast, cheap unit tests for business/domain logic, a middle layer of integration tests, and fewer UI/instrumented tests. This balances coverage and speed and keeps CI fast."
     },
     {
@@ -1359,12 +1333,12 @@
       "category": "testing",
       "question": "What tools would you use to detect recompositions, and at compile time?",
       "options": [
-        "Runtime: Layout Inspector / Compose surveyors; compile time: Compose compiler metrics and stability reports",
-        "Only logcat string prints",
         "There is no way to detect recompositions",
+        "Only logcat string prints",
+        "Runtime: Layout Inspector / Compose surveyors; compile time: Compose compiler metrics and stability reports",
         "Use the Garbage Collector logs"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "At runtime, Layout Inspector and tooling shows recomposition counts; compile-time, the Compose compiler's metrics report functions/class stability so you can spot unstable params that prevent skipping and drive @Immutable/@Stable decisions."
     },
     {
@@ -1372,12 +1346,12 @@
       "category": "testing",
       "question": "Have you used Hilt or Koin? Which would you choose and why?",
       "options": [
-        "Hilt for compile-time safety and Google support; Koin when a lightweight runtime DI with no kapt/ksp and simpler setup wins",
+        "Neither can be used in production",
         "Koin is always the safest choice",
         "Hilt never supports Android",
-        "Neither can be used in production"
+        "Hilt for compile-time safety and Google support; Koin when a lightweight runtime DI with no kapt/ksp and simpler setup wins"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Hilt (Dagger-based) provides compile-time graph validation and scoped Android components, favored in large teams for correctness. Koin is a pragmatic runtime DI with less boilerplate and no codegen, chosen when startup/simplicity matters more than compile-time enforcement."
     },
     {
@@ -1398,12 +1372,12 @@
       "category": "testing",
       "question": "How would you debug ANR (Application Not Responding) issues?",
       "options": [
-        "Read the ANR's stack trace (/data/anr or logcat), identify blocking calls on the main thread, and remove or offload them",
         "Reboot the device and hope it clears",
+        "Read the ANR's stack trace (/data/anr or logcat), identify blocking calls on the main thread, and remove or offload them",
         "Increase the timeout arbitrarily",
         "Ignore the trace and rewrite everything"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "ANRs come from main-thread blocking (I/O, waits, heavy work) or stuck broadcasts. The ANR trace shows the main-thread stack; you pinpoint the blocking call, offload it (withContext(IO), WorkManager) or make it non-blocking, then verify no main-thread work blocks input for > a few seconds."
     },
     {
@@ -1411,12 +1385,12 @@
       "category": "testing",
       "question": "JVM unit tests vs. instrumented tests — where do you draw the line?",
       "options": [
-        "Put pure logic in fast JVM tests; reserve instrumented tests for real Android framework/UI behavior that needs an emulator or device",
-        "Everything must be instrumented",
         "Only JVM tests exist",
+        "Everything must be instrumented",
+        "Put pure logic in fast JVM tests; reserve instrumented tests for real Android framework/UI behavior that needs an emulator or device",
         "Instrumented tests never require an emulator"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "JVM (Robolectric/test) tests give fast feedback for business logic and state. Instrumented tests on a device validate real framework APIs/compose UI/parcelables/androidX where JVM fakes diverge — use them sparingly yet deliberately for platform-dependent behavior."
     },
     {
@@ -1424,12 +1398,12 @@
       "category": "testing",
       "question": "What does a typical modern Android testing stack look like?",
       "options": [
-        "JUnit + Truth/AssertJ, MockK/Mockito, Turbine for Flow, Compose UI testing, Room in-memory, and Coil/network fakes for instrumented",
+        "Instrumentation that only logs",
         "Manual QA only",
         "A single massive integration class",
-        "Instrumentation that only logs"
+        "JUnit + Truth/AssertJ, MockK/Mockito, Turbine for Flow, Compose UI testing, Room in-memory, and Coil/network fakes for instrumented"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Modern teams combine JUnit/Kotlin test for unit tests, MockK or Mockito for stubbing, Turbine to assert Flow emissions, Compose UI + androidx test for UI, Robolectric for JVM android, and fake/architecture components (e.g., in-memory Room) for fast, deterministic tests."
     },
     {
@@ -1450,12 +1424,12 @@
       "category": "systemdesign",
       "question": "For live rates in a real-time app (e.g., currency exchange), HTTP Polling or Server-Sent Events (SSE)?",
       "options": [
-        "SSE for low-latency one-way server→client updates; HTTP polling when simple, low-frequency, or cost-sensitive data suffices",
-        "Always use HTTP polling for all rates",
         "SSE only works offline",
+        "Always use HTTP polling for all rates",
+        "SSE for low-latency one-way server→client updates; HTTP polling when simple, low-frequency, or cost-sensitive data suffices",
         "WebSockets are the only option"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "SSE streams server→client updates efficiently for frequent, low-latency one-way data, reconnecting automatically. HTTP polling is simpler and acceptable for infrequent updates but wastes resources and adds latency at high frequencies. WebSockets are for full-duplex needs."
     },
     {
@@ -1463,12 +1437,12 @@
       "category": "systemdesign",
       "question": "How would you design a modular Android application?",
       "options": [
-        "Split into feature and core modules with explicit APIs, enforced boundaries, and shared navigation/DI, favoring compile-time safety",
+        "Avoid interfaces between modules",
         "Put all screens in a single giant module",
         "Make every module fully depend on every other",
-        "Avoid interfaces between modules"
+        "Split into feature and core modules with explicit APIs, enforced boundaries, and shared navigation/DI, favoring compile-time safety"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Modularization groups code by feature and shared building blocks, gives each module a public API, maintains acyclic dependency rules, and centralizes navigation/DI. This improves build caching, parallel ownership, and testability at the cost of added coordination."
     },
     {
@@ -1489,12 +1463,12 @@
       "category": "systemdesign",
       "question": "How do you implement feature flags in an Android app?",
       "options": [
-        "Remote config served per variant/experiment, cached locally, applied without restart, with kill-switches and analytics hooks",
         "Hardcode if(true) everywhere",
+        "Remote config served per variant/experiment, cached locally, applied without restart, with kill-switches and analytics hooks",
         "A value in strings.xml edited per release",
         "Compile-time flags that require a release"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Feature flags come from a remote config with caching and defaults, support overrides per user/experiment, and can toggle behavior without a new build. They enable staged rollout, A/B experimentation, and rolling back risk quickly, tracked via analytics."
     },
     {
@@ -1502,12 +1476,12 @@
       "category": "systemdesign",
       "question": "How would you handle push notifications in a large-scale Android app?",
       "options": [
-        "Firebase Cloud Messaging (or similar), with notification channels, tag/dedup, payload-driven navigation, high-priority for user-critical, and DND awareness",
-        "Poll the server every second for updates",
         "Use one generic channel for every notification",
+        "Poll the server every second for updates",
+        "Firebase Cloud Messaging (or similar), with notification channels, tag/dedup, payload-driven navigation, high-priority for user-critical, and DND awareness",
         "Ignore notification permissions entirely"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Layered approach: FCM to deliver messages, notification channels responsive to user prefs, dedup by tag/content, payloads controlling deep-link navigation, and data messages for silent syncing; foreground vs background handling differs."
     },
     {
@@ -1515,12 +1489,12 @@
       "category": "systemdesign",
       "question": "How do you implement app navigation with deep linking?",
       "options": [
-        "Map URIs/routes to destinations in the navigation graph, declare deep-link filters, and parse args to pass to the target screen",
+        "Deep linking is not possible on Android",
         "Deep links require a separate app binary",
         "Only HTTP links are supported",
-        "Deep linking is not possible on Android"
+        "Map URIs/routes to destinations in the navigation graph, declare deep-link filters, and parse args to pass to the target screen"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Deep links (http/custom scheme) are registered as intent-filter data in the manifest and mapped to navigation graph args. On entry the system routes the URI, you parse the arguments (e.g., ids), and navigate, handling unknown/backup screens gracefully."
     },
     {
@@ -1541,12 +1515,12 @@
       "category": "systemdesign",
       "question": "How would you handle app security, including data protection and certificate pinning?",
       "options": [
-        "Encrypt data at rest and in transit (TLS + optional certificate pinning), enforce scoped storage/Keystore, validate inputs, and apply least-privilege permissions",
         "Skip encryption to keep things simple",
+        "Encrypt data at rest and in transit (TLS + optional certificate pinning), enforce scoped storage/Keystore, validate inputs, and apply least-privilege permissions",
         "Store tokens in plain SharedPreferences",
         "Disable TLS verification in production"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Security defends in depth: strong TLS (with certificate pinning evaluated for its own risks), encrypted at-rest data via Keystore, minimal/least-privilege permissions, input validation, and never embedding secrets. Pinning sharpens MITM defense but must be managed carefully."
     },
     {
@@ -1554,12 +1528,12 @@
       "category": "algorithms",
       "question": "What is Big O notation and why is it important?",
       "options": [
-        "It describes how an algorithm's runtime/space grows with input size, ignoring constants, to compare scalability",
         "It measures exact milliseconds of execution",
+        "It describes how an algorithm's runtime/space grows with input size, ignoring constants, to compare scalability",
         "It is a type of sorting algorithm",
         "It only applies to databases"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Big O gives the asymptotic upper bound of time/space growth as input size grows, dropping constants and lower-order terms. It lets you reason about how solutions scale before implementing — e.g., O(n²) vs O(n log n)."
     },
     {
@@ -1567,12 +1541,12 @@
       "category": "algorithms",
       "question": "What are Arrays and what are their time/space complexities?",
       "options": [
-        "O(1) random access by index, O(n) search/worst insert/delete, contiguous memory of size n",
-        "O(n) access by index",
         "O(1) for all operations",
+        "O(n) access by index",
+        "O(1) random access by index, O(n) search/worst insert/delete, contiguous memory of size n",
         "No random access possible"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Arrays store elements contiguously, giving O(1) access by index. Searching an unsorted array is O(n); inserting/deleting in the middle is O(n) (shifting); the array uses O(n) space. Trade-offs with linked structures follow from contiguity."
     },
     {
@@ -1580,12 +1554,12 @@
       "category": "algorithms",
       "question": "What is a Hash Table, and how are collisions handled?",
       "options": [
-        "It maps keys to buckets via a hash function; collisions are handled by chaining or open addressing",
+        "It never needs a hash function",
         "It stores keys in sorted order always",
         "It allocates one slot per key only",
-        "It never needs a hash function"
+        "It maps keys to buckets via a hash function; collisions are handled by chaining or open addressing"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "A hash table applies a hash function to keys to index buckets, achieving O(1) average lookup. Collisions are managed via chaining (linked lists per bucket) or open addressing (probing), and good hash spread + resizing keep the load factor low."
     },
     {
@@ -1606,12 +1580,12 @@
       "category": "algorithms",
       "question": "Stacks vs. Queues — how are they different?",
       "options": [
-        "Stack is LIFO (last-in-first-out); queue is FIFO (first-in-first-out)",
         "Stack is FIFO and queue is LIFO",
+        "Stack is LIFO (last-in-first-out); queue is FIFO (first-in-first-out)",
         "They both use the same order",
         "Queues only store numbers"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "A stack pushes and pops from the same end (LIFO), used for undo, call stacks, and parentheses matching. A queue adds at the tail and removes at the head (FIFO), used for breadth-first search, buffers, and task scheduling."
     },
     {
@@ -1619,12 +1593,12 @@
       "category": "algorithms",
       "question": "What is a Priority Queue and how is it different from a normal Queue?",
       "options": [
-        "It dequeues by priority (often max/min-heap) rather than arrival order",
-        "It has no order at all",
         "It can only store integers",
+        "It has no order at all",
+        "It dequeues by priority (often max/min-heap) rather than arrival order",
         "It is always sorted ascending"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "A priority queue removes the highest (or lowest) priority element regardless of insertion time, typically backed by a binary heap with O(log n) insert/remove. A plain queue is FIFO regardless of priority."
     },
     {
@@ -1632,12 +1606,12 @@
       "category": "algorithms",
       "question": "What are the different types of binary trees (full, perfect, complete)?",
       "options": [
-        "Full: every node has 0 or 2 children; perfect: all internal nodes have 2 children and all leaves at same level; complete: all levels filled except possibly the last, filled left-to-right",
+        "Perfect trees are unbalanced",
         "Full and perfect mean the same",
         "Complete trees cannot store data",
-        "Perfect trees are unbalanced"
+        "Full: every node has 0 or 2 children; perfect: all internal nodes have 2 children and all leaves at same level; complete: all levels filled except possibly the last, filled left-to-right"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "These classify structure: full (each node 0 or 2 children), perfect (full + all leaves on the same level), and complete (level-order filled except potentially the last, left-packed). Complete is what heaps require."
     },
     {
@@ -1658,12 +1632,12 @@
       "category": "algorithms",
       "question": "What are AVL and Red-Black trees, and how do they differ?",
       "options": [
-        "Both are self-balancing BSTs; AVL is strictly more balanced (slower updates), Red-Black has looser balance with faster insert/delete",
         "AVL is not a BST",
+        "Both are self-balancing BSTs; AVL is strictly more balanced (slower updates), Red-Black has looser balance with faster insert/delete",
         "Red-Black trees cannot search",
         "They store data unsorted"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "AVL maintains a stricter height balance via rotations, giving better lookup but more rotations on writes. Red-Black balances less strictly (fewer rotations), making inserts/deletes faster with slightly taller trees — a common implementation for Maps/Sets."
     },
     {
@@ -1671,12 +1645,12 @@
       "category": "algorithms",
       "question": "What is a Binary Heap and when would you use it?",
       "options": [
-        "A complete binary tree satisfying heap order (parent ≤ children for min-heap), used for priority queues with O(log n) insert/remove and O(1) peek",
         "A sorted array replacement only",
+        "A complete binary tree satisfying heap order (parent ≤ children for min-heap), used for priority queues with O(log n) insert/remove and O(1) peek",
         "A tree with no ordering guarantee",
         "A hash-table structure"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "A binary heap is a complete tree where each parent is at least as small (min-heap) as its children, enabling an efficient priority queue: peek O(1), insert and extract-min/max O(log n), with no extra pointers using array indexing."
     },
     {
@@ -1684,12 +1658,12 @@
       "category": "algorithms",
       "question": "What is a Trie (prefix tree) and when is it useful?",
       "options": [
-        "A tree storing strings by shared prefixes, enabling fast prefix search/autocomplete in O(key-length)",
-        "A balanced BST for numbers",
         "A hash table",
+        "A balanced BST for numbers",
+        "A tree storing strings by shared prefixes, enabling fast prefix search/autocomplete in O(key-length)",
         "A sorting network"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "A trie stores sequences by edges labelled with characters, sharing common prefixes. Lookups, prefix queries, and autocomplete are O(key length), making it ideal for dictionaries, IP routing, and typed-ahead suggestions."
     },
     {
@@ -1697,12 +1671,12 @@
       "category": "algorithms",
       "question": "How do you represent a graph (adjacency matrix vs. list vs. edge list)?",
       "options": [
-        "Matrix: O(V²) dense/quick edge checks; list: O(V+E) sparse; edge list: compact list of edges with O(E) queries",
+        "All are identical in memory",
         "Adjacency matrix is always denser than list",
         "Edge list gives O(1) adjacency queries",
-        "All are identical in memory"
+        "Matrix: O(V²) dense/quick edge checks; list: O(V+E) sparse; edge list: compact list of edges with O(E) queries"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "An adjacency matrix uses V² booleans — great for dense graphs and fast edge checks. An adjacency list stores edges per vertex, ideal for sparse graphs and traversal in O(V+E). An edge list is a compact set of edges suited to Kruskal-style algorithms."
     },
     {
@@ -1723,12 +1697,12 @@
       "category": "algorithms",
       "question": "Dijkstra vs. Bellman-Ford — how do you choose a shortest-path algorithm?",
       "options": [
-        "Dijkstra is faster (O(E log V)) but fails on negative edges; Bellman-Ford handles negative weights and detects negative cycles at O(VE)",
         "Dijkstra handles negative weights",
+        "Dijkstra is faster (O(E log V)) but fails on negative edges; Bellman-Ford handles negative weights and detects negative cycles at O(VE)",
         "Bellman-Ford is always faster",
         "Both can take zero-weight-only graphs"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Dijkstra's greedy relaxation is O(E log V) but assumes non-negative weights. Bellman-Ford relaxes edges V-1 times, so it handles negative weights and can detect negative cycles, at the higher O(VE) cost — choose it for graphs that may contain negatives."
     },
     {
@@ -1736,12 +1710,12 @@
       "category": "algorithms",
       "question": "Recursion vs. iteration — what are the trade-offs, and how do you avoid stack overflow?",
       "options": [
-        "Recursion is elegant for divide-and-conquer but uses the call stack (risk of overflow); iteration is explicit and constant-space — use tail recursion or convert deep recursion to iteration",
-        "Recursion always uses constant stack",
         "Iteration can never be recursive",
+        "Recursion always uses constant stack",
+        "Recursion is elegant for divide-and-conquer but uses the call stack (risk of overflow); iteration is explicit and constant-space — use tail recursion or convert deep recursion to iteration",
         "Stack overflow only happens in Java"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explanation": "Recursion mirrors divide-and-conquer structures cleanly but each call consumes stack frames, risking overflow for deep recursion. Iteration avoids that but is more verbose. Techniques include tail recursion (if optimized), memoized recursion for DP, or rewriting deep recursion iteratively with an explicit stack."
     },
     {
@@ -1749,12 +1723,12 @@
       "category": "algorithms",
       "question": "Compare the common sorting algorithms — which do you pick and why?",
       "options": [
-        "Quicksort/merge sort/heapsort are comparisons with O(n log n) typical; linear sorts (counting/radix) are O(n+k) for restricted inputs; choose by stability, in-place, and data shape",
+        "Radix sort works on arbitrary doubles",
         "Bubble sort is always optimal",
         "Merge sort is never stable",
-        "Radix sort works on arbitrary doubles"
+        "Quicksort/merge sort/heapsort are comparisons with O(n log n) typical; linear sorts (counting/radix) are O(n+k) for restricted inputs; choose by stability, in-place, and data shape"
       ],
-      "correctIndex": 0,
+      "correctIndex": 3,
       "explanation": "Comparison sorts (merge, quicksort, heap) hit O(n log n); merge is stable and guaranteed O(n log n) using extra memory; quicksort is fast in place but worst-case O(n²); heapsort in place O(n log n) but unstable. Counting/radix sort hit O(n) for integer/limited keys. Pick by data and requirements (stability, in-place, worst-case)."
     },
     {
@@ -1775,12 +1749,12 @@
       "category": "algorithms",
       "question": "What is dynamic programming and memoization?",
       "options": [
-        "Solving problems by combining optimal subproblems and caching overlapping results (memoization) to avoid recomputation",
         "A way to write recursive programs that never cache",
+        "Solving problems by combining optimal subproblems and caching overlapping results (memoization) to avoid recomputation",
         "Sorting in sublinear time",
         "Looping without any state"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explanation": "Dynamic programming solves problems with optimal substructure and overlapping subproblems, storing partial results in a table (bottom-up) or memoizing recursion (top-down) so each subproblem is computed once — reducing exponential brute force to polynomial."
     }
   ]
