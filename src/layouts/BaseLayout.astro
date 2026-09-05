@@ -24,11 +24,23 @@ const base = import.meta.env.BASE_URL;
   <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
   <script is:inline>
     (function() {
-      const stored = localStorage.getItem('theme');
-      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-      const isLight = stored ? stored === 'light' : prefersLight;
-      document.documentElement.classList.toggle('dark', !isLight);
-      document.documentElement.classList.toggle('light', isLight);
+      const mql = window.matchMedia('(prefers-color-scheme: light)');
+      function applyTheme(force) {
+        const stored = localStorage.getItem('theme');
+        const isLight = force != null ? force : (stored ? stored === 'light' : mql.matches);
+        document.documentElement.classList.toggle('dark', !isLight);
+        document.documentElement.classList.toggle('light', isLight);
+      }
+      // Expose globally so the toggle can reuse it across view-transition swaps
+      window.applyTheme = applyTheme;
+      applyTheme();
+      // Re-apply after Astro client-side navigation swaps the document
+      document.addEventListener('astro:after-swap', function() {
+        applyTheme();
+      });
+      mql.addEventListener('change', function() {
+        if (!localStorage.getItem('theme')) applyTheme();
+      });
     })();
   </script>
   <ClientRouter />

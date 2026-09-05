@@ -40,22 +40,19 @@
 
 <script is:inline>
   (function() {
-    const mql = window.matchMedia('(prefers-color-scheme: light)');
-    const onChange = function() {
-      if (!localStorage.getItem('theme')) applyTheme();
-    };
-    function applyTheme(force) {
-      const stored = localStorage.getItem('theme');
-      const isLight = force != null ? force : (stored ? stored === 'light' : mql.matches);
-      document.documentElement.classList.toggle('dark', !isLight);
-      document.documentElement.classList.toggle('light', isLight);
-    }
-    mql.addEventListener('change', onChange);
-
-    document.getElementById('theme-toggle')?.addEventListener('click', function() {
+    // Event delegation: the button is re-rendered on each Astro view-transition
+    // swap, so bind once on document and let clicks bubble up.
+    document.addEventListener('click', function(e) {
+      const btn = e.target.closest('#theme-toggle');
+      if (!btn) return;
       const isLight = document.documentElement.classList.contains('light');
       localStorage.setItem('theme', isLight ? 'dark' : 'light');
-      applyTheme(!isLight);
+      if (window.applyTheme) {
+        window.applyTheme(!isLight);
+      } else {
+        document.documentElement.classList.toggle('dark', isLight);
+        document.documentElement.classList.toggle('light', !isLight);
+      }
     });
   })();
 </script>
