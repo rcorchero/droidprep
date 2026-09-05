@@ -62,7 +62,7 @@ for (const [id, level] of Object.entries(overrides)) {
 }
 
 const output = {
-  version: '1.0',
+  version: '1.2',
   generatedAt: new Date().toISOString(),
   difficulties,
 };

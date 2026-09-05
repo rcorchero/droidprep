@@ -2031,19 +2031,6 @@
       "explanation": "Semantics-based selection (testTag/text/role) is independent of layout and pixel positions, so refactors and different screen sizes keep the test valid. Pixel and implementation-based matchers are brittle and fail for no product reason."
     },
     {
-      "id": "systemdesign-10",
-      "category": "systemdesign",
-      "question": "Which statement best demonstrates that AI improved engineering productivity measurably?",
-      "options": [
-        "Collecting a concrete baseline (e.g. PR review time, defect rate) and comparing it after adoption on the same team with matched control periods",
-        "A general sense that the team ships faster since enabling Copilot",
-        "The total number of lines of code the AI assistant generated",
-        "Comparing two unrelated teams with different workloads and features"
-      ],
-      "correctIndex": 0,
-      "explanation": "Measurable means a defined baseline, a metric tied to outcomes (not tool usage), the same or matched population, and enough time to separate signal from noise. Tool-generating lines and anecdotes are not causal evidence."
-    },
-    {
       "id": "systemdesign-11",
       "category": "systemdesign",
       "question": "Which architecture best supports offline-first sync on Android?",
@@ -2094,6 +2081,149 @@
       ],
       "correctIndex": 0,
       "explanation": "Startup work should be measured and then removed from the critical path: lazily initialized providers, precompiled startup profiles, and a non-blank first frame. Blocking init and empty screens either slow the real cold start or hide it rather than improve it."
+    },
+    {
+      "id": "architecture-07",
+      "category": "architecture",
+      "question": "Which pattern is the right fit when you want an explicit, immutable UI state updated through a single one-way data flow?",
+      "options": [
+        "MVVM with a mutable StateFlow exposed directly",
+        "MVI (Model-View-Intent)",
+        "Observer pattern on the view hierarchy",
+        "Factory pattern for constructing views"
+      ],
+      "correctIndex": 1,
+      "explanation": "MVI centralizes UI state in a single immutable state object updated only through intents, giving one-way data flow. MVVM works but typically exposes mutable state; Observer is a mechanism, not an architecture; Factory is a creational pattern."
+    },
+    {
+      "id": "testing-09",
+      "category": "testing",
+      "question": "Why is preserving the original exception valuable when your data layer returns a typed Result?",
+      "options": [
+        "It lets the UI catch exceptions directly instead of branching on Result",
+        "It keeps the original cause for retry decisions and diagnostics",
+        "It guarantees that the Result can be written to disk",
+        "It automatically retries the failed operation"
+      ],
+      "correctIndex": 1,
+      "explanation": "Keeping the cause lets callers decide retry vs. give-up and preserves the stack for telemetry. It does not change catch semantics, serializability, or retry behavior."
+    },
+    {
+      "id": "compose-31",
+      "category": "compose",
+      "question": "What does dynamicLightColorScheme(context) do in a Material 3 app?",
+      "options": [
+        "Always returns the same static palette regardless of device",
+        "Derives a color scheme from the user's wallpaper on Android 12+",
+        "Only affects the status bar color",
+        "Requires a custom theme in res/values/themes.xml"
+      ],
+      "correctIndex": 1,
+      "explanation": "dynamicLightColorScheme(context) reads the system-provided dynamic palette (wallpaper-derived) on Android 12+ (API 31+) so the app matches the user's system theme. Below API 31 it gracefully falls back to a static scheme."
+    },
+    {
+      "id": "coroutines-22",
+      "category": "coroutines",
+      "question": "Which operator set prevents a stale network result from overwriting the latest search results?",
+      "options": [
+        "debounce(300) then collectLatest { }",
+        "combine { two flows } then drop",
+        "debounce(300) then flatMapLatest { api.search(it) }",
+        "flatMapMerge { } with a concurrency limit of 1"
+      ],
+      "correctIndex": 2,
+      "explanation": "flatMapLatest cancels the previous inner flow when a new query arrives, so an in-flight search for an older query cannot emit after the newest one. collectLatest cancels the collector but not the network work; flatMapMerge keeps stale results; combine merges separate streams."
+    },
+    {
+      "id": "architecture-15",
+      "category": "architecture",
+      "question": "Which repository design is most likely to end up as a 'god object'?",
+      "options": [
+        "One repository per aggregate with a narrow suspend/Flow API",
+        "A single DataRepository exposing every DAO and Retrofit method",
+        "Repositories that delegate to focused RemoteDataSource and DAO sources",
+        "Repositories that expose only what the use cases need"
+      ],
+      "correctIndex": 1,
+      "explanation": "A single repository that exposes every DAO/Retrofit method and orchestrates unrelated domains grows into a god object. The hallmarks to avoid are a broad public API and multiple unrelated responsibilities in one class."
+    },
+    {
+      "id": "platform-34",
+      "category": "platform",
+      "question": "What does RemoteMediator add to a Room-based Paging 3 setup?",
+      "options": [
+        "It loads pages from the network and writes them into the Room database",
+        "It replaces PagingSource entirely",
+        "It renders the list UI for you",
+        "It deduplicates identical items across pages"
+      ],
+      "correctIndex": 0,
+      "explanation": "RemoteMediator is the bridge between the network and the local database: when loading a page it fetches from the network and persists it, so PagingSource serves from Room with an offline cache. It does not replace PagingSource, render UI, or do dedup."
+    },
+    {
+      "id": "platform-35",
+      "category": "platform",
+      "question": "Which ExistingWorkPolicy should you use when a new sync must replace a still-running one?",
+      "options": [
+        "KEEP",
+        "APPEND",
+        "REPLACE",
+        "CANCEL_PENDING"
+      ],
+      "correctIndex": 2,
+      "explanation": "REPLACE cancels the existing unique work chain and starts the new request. KEEP ignores the new request while one exists, APPEND queues after it, and there is no CANCEL_PENDING policy."
+    },
+    {
+      "id": "platform-36",
+      "category": "platform",
+      "question": "Which combination reduces APK size substantially at the packaging level?",
+      "options": [
+        "Shipping an AAB with R8 minification + resource shrinking and abi/density splits",
+        "Renaming resource files to shorter names",
+        "Continuously increasing minSdk to remove old code paths",
+        "Removing all compose dependencies"
+      ],
+      "correctIndex": 0,
+      "explanation": "App Bundles with ABI/density splits and dynamic delivery, plus R8 minification and resource shrinking, are the main packaging-level levers. Renaming and minSdk tricks have marginal or risky effects, and removing Compose is a product decision, not a sizing technique."
+    },
+    {
+      "id": "testing-13",
+      "category": "testing",
+      "question": "Why are hand-written fakes generally preferred over mocks for your own repository boundaries?",
+      "options": [
+        "Fakes are refactor-resilient and exercise real behavior deterministically",
+        "Mocks cannot verify behavior at all",
+        "Fakes never need to compile",
+        "Mocks are forbidden by the Android testing framework"
+      ],
+      "correctIndex": 0,
+      "explanation": "A fake implements the real interface with in-memory behavior, so tests keep passing when internals change and they exercise real branching. Mocks verify interaction but couple tests to implementation details. Fakes do not 'not compile', and mocks do verify behavior."
+    },
+    {
+      "id": "systemdesign-13",
+      "category": "systemdesign",
+      "question": "What is the primary risk of caching data across multiple tiers without invalidation?",
+      "options": [
+        "Serving stale data after a mutation, because the write path only updated one tier",
+        "Using too little memory",
+        "Making the network slower",
+        "Losing the ability to read data entirely"
+      ],
+      "correctIndex": 0,
+      "explanation": "The classic multi-tier cache failure is staleness: a mutation updates (in)validates only some tiers, so an upper tier serves old data. The public API must invalidate or update every tier on writes (or version keys)."
+    },
+    {
+      "id": "algorithms-19",
+      "category": "algorithms",
+      "question": "Which property makes a two-pointer approach valid where brute force is O(n^2)?",
+      "options": [
+        "The array must always be sorted in descending order",
+        "The pointers can move in one direction based only on ordering/monotonicity of the data",
+        "All elements must be unique",
+        "The window must be exactly half the array size"
+      ],
+      "correctIndex": 1,
+      "explanation": "Two pointers work when the data has a monotonic/ordering property so each pointer only moves one way and the answer is not recomputed from scratch — dropping runtime to O(n). Sorted order, uniqueness, and window size are not requirements."
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
-  "version": "1.1",
-  "generatedAt": "2026-09-03T13:09:28.702Z",
-  "totalQuestions": 156,
+  "version": "1.2",
+  "generatedAt": "2026-09-05T00:00:00.000Z",
+  "totalQuestions": 171,
   "questions": [
     {
       "id": "algorithms-01",
@@ -238,9 +238,9 @@
       "category": "architecture",
       "categoryLabel": "Architecture",
       "question": "What are common design patterns in Android and when to use them?",
-      "answer": "- **MVVM/MVI**: UI architecture patterns\n- **Repository**: Data access abstraction\n- **Dependency Injection**: Hilt/Koin for managing dependencies\n- **Observer**: LiveData/Flow for reactive updates\n- **Factory**: Creating objects without exposing construction logic\n- **Strategy**: Interchangeable algorithms\n- **Singleton**: Single instance (use carefully)",
-      "whyItMatters": "",
-      "codeExample": "",
+      "answer": "- **MVVM/MVI**: UI architecture patterns — default to MVVM (Jetpack ViewModel + StateFlow); reach for MVI when you want an explicit, immutable UI state and one-way data flow\n- **Repository**: Data-access abstraction — one repository per domain owning the local/remote strategy; keep methods narrow to avoid a god object\n- **Dependency Injection**: Hilt/Koin for wiring dependencies — prefer Hilt for compile-time safety and platform integration\n- **Observer**: LiveData/Flow for reactive updates — prefer Flow + repeatOnLifecycle in production\n- **Factory**: Creating objects without exposing construction logic — useful when DI cannot express runtime parameters (e.g. ViewModel factories)\n- **Strategy**: Interchangeable algorithms behind an interface — e.g. swapping sync policies or parsers at runtime\n- **Singleton**: Single instance (use carefully — prefer DI scoped singletons over global statics)",
+      "whyItMatters": "Design-pattern vocabulary alone is shallow; the interview discriminator is knowing when each pattern earns its overhead and how it composes with the Android lifecycle.",
+      "codeExample": "// Strategy: interchangeable algorithm behind an interface\ninterface SyncPolicy {\n    suspend fun sync(repo: Repository)\n}\n\nclass ImmediateSync : SyncPolicy { ... }\nclass BackoffSync : SyncPolicy { ... }\n\n// Selected at runtime, injected where needed\nclass SyncController(private val policy: SyncPolicy) { ... }",
       "furtherReading": []
     },
     {
@@ -268,9 +268,9 @@
       "category": "architecture",
       "categoryLabel": "Architecture",
       "question": "What are the advantages and disadvantages of a modularized architecture versus a monolith?",
-      "answer": "**Modularization advantages:**\n- Faster build times\n- Better separation of concerns\n- Easier testing\n- Independent development",
-      "whyItMatters": "",
-      "codeExample": "",
+      "answer": "**Modularization advantages:**\n- Faster build times (incremental compilation only rebuilds changed modules)\n- Better separation of concerns and enforced ownership boundaries\n- Easier testing (tests run per module, independent of the app)\n- Independent development and release (parallel teams, dynamic feature delivery)\n\n**Modularization disadvantages:**\n- Higher initial and ongoing build-configuration cost (Gradle, Hilt components, navigation wiring)\n- Dependency graph complexity: risk of cycles, duplicated transitive dependencies, and version drift\n- Cross-module refactoring is heavier — moving a class across modules means touching build files and module boundaries\n- Debugging and tooling overhead (multi-module profiles, build cache, configuration cache tuning)\n\n**Monolith advantages (the other side of the coin):**\n- Simpler build graph and dependency story\n- Faster to prototype and refactor within a single module\n- No module-boundary ceremony for small apps or teams\n\n**When to modularize:** when team size, build times, or independent delivery needs outweigh the graph/configuration overhead. For small apps a well-structured single module is often the right trade-off.",
+      "whyItMatters": "Modularization is a classic senior-level trade-off question; a mature answer weighs costs (build graph, refactor friction, version drift) rather than only listing modularization benefits.",
+      "codeExample": "// settings.gradle.kts -- module graph\ninclude(\":app\")\ninclude(\":core:network\")\ninclude(\":core:database\")\ninclude(\":feature:home\")\ninclude(\":feature:profile\")\n\n// Avoid cycles: feature modules depend on core modules; never the reverse.\n// :app -> :feature:home (via navigation) -> :core:network",
       "furtherReading": []
     },
     {
@@ -1464,16 +1464,6 @@
       "furtherReading": []
     },
     {
-      "id": "systemdesign-10",
-      "category": "systemdesign",
-      "categoryLabel": "System Design",
-      "question": "Give a real case where AI improved productivity measurably.",
-      "answer": "Describe a concrete baseline and metric (lead time, review time, defects, rework), the task type where AI helped and where it did not, and the trade-offs and controls used to keep quality.",
-      "whyItMatters": "Requires concrete, quantified examples rather than vague claims about \"using Copilot\".",
-      "codeExample": "",
-      "furtherReading": []
-    },
-    {
       "id": "testing-01",
       "category": "testing",
       "categoryLabel": "Testing & Debugging",
@@ -1558,8 +1548,8 @@
       "category": "testing",
       "categoryLabel": "Testing & Debugging",
       "question": "How would you implement a robust error handling strategy?",
-      "answer": "1. **Result type**: Use sealed class for success/error\n2. **Error mapping**: Convert exceptions to user-friendly messages\n3. **Retry logic**: For transient failures\n4. **Fallback**: Graceful degradation\n5. **Reporting**: Log errors for debugging",
-      "whyItMatters": "",
+      "answer": "1. **Result type**: Use a sealed class to model success/error explicitly so the UI can branch exhaustively\n2. **Error mapping**: Convert exceptions to user-friendly messages, preserving the cause for diagnostics\n3. **Retry logic**: For transient failures, with exponential backoff or delegation to WorkManager\n4. **Fallback**: Graceful degradation — cached data, default state, offline banner\n5. **Reporting**: Log errors with correlation IDs for production debugging\n\nKey principle: keep failures typed at the layer where you understand them (data/repository → typed Result; UI → mapped message), and never let raw exceptions leak to the UI.",
+      "whyItMatters": "A robust error strategy is a senior differentiator — it determines whether failures are recoverable, observable, and testable instead of crash-and-log.",
       "codeExample": "sealed class Result<out T> {\n    data class Success<T>(val data: T) : Result<T>()\n    data class Error(val exception: Exception) : Result<Nothing>()\n}\n\nsuspend fun <T> safeCall(block: suspend () -> T): Result<T> {\n    return try {\n        Result.Success(block())\n    } catch (e: Exception) {\n        Result.Error(e)\n    }\n}\n\n// Usage\nwhen (val result = safeCall { repository.getData() }) {\n    is Result.Success -> showData(result.data)\n    is Result.Error -> showError(result.exception.message)\n}",
       "furtherReading": []
     },
@@ -1631,6 +1621,96 @@
       "answer": "Measure first with Macrobenchmark StartupTimingMetric on a mid-tier device, then attack the critical path: defer initialization with the App Startup library (lazy ContentProviders), avoid heavy work in Application.onCreate and the first Activity, theme the windowBackground so the first frame is not blank, and ship baseline startup profiles so the runtime does not JIT/interprete the whole hot path. Move SQLite/IO off the main thread.",
       "whyItMatters": "Startup latency is a top ranking and retention factor; the skill is profiling the cold path, not guessing.",
       "codeExample": "// StartupProfile (generated baseline profile) for the hot first frames:\n- com.example.app.MainActivity\n- com.example.app.MainScreen\n- androidx.compose.foundation.LazyColumn\n- androidx.compose.material3.*",
+      "furtherReading": []
+    },
+    {
+      "id": "compose-31",
+      "category": "compose",
+      "categoryLabel": "Jetpack Compose",
+      "question": "How would you theme a Jetpack Compose app with Material 3 and dynamic color?",
+      "answer": "Use MaterialTheme(colorScheme, typography, shapes). Compose the colorScheme from M3 roles (primary, secondary, tertiary, surface, etc.) via lightColorScheme()/darkColorScheme(), and on Android 12+ (S+) optionally enable dynamic color: dynamicLightColorScheme(context)/dynamicDarkColorScheme(context) derive a scheme from the user's wallpaper. Choose light/dark with isSystemInDarkTheme(). Keep semantic roles (not raw hex values) in components, and centralize typography and shapes through MaterialTheme so the whole app stays consistent.",
+      "whyItMatters": "Theming is day-one work for any new feature; showing M3 roles, dark mode, and dynamic color indicates you can actually build and ship a polished UI, not just write composables.",
+      "codeExample": "val colorScheme = if (darkTheme) {\n    dynamicDarkColorScheme(context)\n} else {\n    dynamicLightColorScheme(context)\n}\nMaterialTheme(colorScheme = colorScheme, typography = Typography, shapes = Shapes) {\n    AppContent()\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "coroutines-22",
+      "category": "coroutines",
+      "categoryLabel": "Coroutines & Flow",
+      "question": "Which Flow operators would you use to combine multiple flows, debounce rapid emissions, and switch between streams — and what are the trade-offs?",
+      "answer": "combine() merges the latest values of two or more flows and re-emits whenever any input emits — good for deriving UI state from several sources (e.g. filters + query). debounce(timeout) drops emissions closer than the timeout and emits the last one after the stream quiets — essential for search-as-you-type. flatMapLatest() maps each emission to a new inner flow and cancels the previous inner flow when a new value arrives, preventing a stale result from an old request overriding a newer one. flatMapMerge()/flatMapConcat() instead run inner flows concurrently or serially without cancelling — right when work must not be interrupted.",
+      "whyItMatters": "These operators are the practical core of Flow; interviewers check that you know the cancellation/staleness semantics of flatMapLatest, not just the operator names.",
+      "codeExample": "searchQuery\n    .debounce(300)\n    .flatMapLatest { api.search(it) } // new keystroke cancels in-flight search\n    .collect { render(it) }\n\ncombine(aFlow, bFlow) { a, b -> a to b }",
+      "furtherReading": []
+    },
+    {
+      "id": "architecture-15",
+      "category": "architecture",
+      "categoryLabel": "Architecture",
+      "question": "What belongs in a Repository, and how do you keep it from becoming a 'god object'?",
+      "answer": "A Repository is the single point of access for one domain/aggregate: it owns the data-source strategy (local-first vs. remote-first), coordinates local and remote sources, and exposes a narrow suspend/Flow API to use cases. Keep one repository per aggregate (UserRepository, ProfileRepository) rather than one DataRepository; delegate actual data access to focused sources (RemoteDataSource, DAO); never expose raw DAO or Retrofit types in signatures; keep business rules in use cases, not the repository, and keep the public surface slim. Split it when it starts orchestrating unrelated domains or its API grows beyond what use cases need.",
+      "whyItMatters": "A Repository that becomes a DataManager is the most common architecture smell in real codebases; senior answers describe the boundary and how to keep it narrow.",
+      "codeExample": "class ProfileRepository(\n    private val remote: ProfileRemoteSource,\n    private val local: ProfileDao\n) {\n    fun observeProfile(id: String): Flow<Profile> = local.observe(id)\n    suspend fun save(profile: Profile) {\n        local.upsert(profile)\n        remote.upload(profile)\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-34",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "What is Paging 3 and how does it differ from hand-rolling LazyColumn pagination?",
+      "answer": "Paging 3 (androidx.paging) loads data incrementally and exposes PagingData<T> with built-in loading/error/refresh/retry state and placeholders. Define a PagingSource (implementing load(params, key)) for remote data or wrap a Room query with a PagingSource factory, build a Pager(PagingConfig(pageSize, prefetchDistance)) and collect via collectAsLazyPagingItems() in Compose. It owns page keys, backpressure, cancellation, and cache via cachedIn(). Hand-rolled pagination with scroll listeners is fine for small deterministic lists, but you own keys, dedup, and loading/error UI yourself; RemoteMediator extends Paging 3 for offline-first network+DB paging.",
+      "whyItMatters": "Paging is the standard solution for infinite/feed lists; candidates who know Paging 3 + RemoteMediator avoid reimplementing a hard, subtle problem badly.",
+      "codeExample": "val pager = Pager(PagingConfig(pageSize = 20, prefetchDistance = 5)) {\n    db.userDao().pagingSource()\n}\nval items = pager.flow.cachedIn(viewModelScope)\nLazyColumn {\n    items(items.collectAsLazyPagingItems()) { user -> UserRow(user) }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-35",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do you run chains of WorkManager jobs, enforce unique work, and retry with backoff?",
+      "answer": "Compose chains with WorkContinuation: enqueue(A).then(B).then(C) runs dependents only on Result.success(); Result.failure() stops the chain. Unique work uses enqueueUniqueWork(name, ExistingWorkPolicy, request): REPLACE supersedes a running chain, KEEP ignores a new request while one exists, and APPEND queues after it — guaranteeing only one sync chain at a time. Configure retries with setBackoffCriteria(BackoffPolicy.EXPONENTIAL/LINEAR, 10, SECONDS) and return Result.retry() from doWork(); rescheduling respects constraints. Periodic work uses PeriodicWorkRequest plus unique work with REPLACE to keep a single recurring job.",
+      "whyItMatters": "WorkManager is the default for deferred/guaranteed background work; chaining, uniqueness, and backoff are the mechanics that make sync actually reliable.",
+      "codeExample": "val sync = OneTimeWorkRequestBuilder<SyncWorker>()\n    .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.SECONDS)\n    .build()\nWorkManager.getInstance(context).enqueueUniqueWork(\n    \"sync_chain\", ExistingWorkPolicy.REPLACE, sync\n)",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-36",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do you reduce the size of an Android release binary (APK/AAB)?",
+      "answer": "Enable R8 minification and resource shrinking in release (isMinifyEnabled, shrinkResources), keep reflected/API-accessible classes with keep rules, and ship an App Bundle (AAB) so Google Play serves density- and ABI-split APKs plus dynamic delivery per device. Remove unused dependencies (check with apk analyzer/gradle dependency reports), prefer VectorDrawable over PNGs (and WebP for photos), use resource qualifiers instead of duplicating across locales, strip debug symbols from native libs with abiFilters, and avoid bundling large assets — download them lazily. Measure with APK Analyzer/bundletool before removing the wrong things.",
+      "whyItMatters": "Install size drives conversion and Play ranking; sizing is a team-wide concern and knowing AAB + R8 + splits is the modern baseline.",
+      "codeExample": "buildTypes {\n    release {\n        isMinifyEnabled = true\n        isShrinkResources = true\n        proguardFiles(getDefaultProguardFile(\"proguard-android-optimize.txt\"), \"proguard-rules.pro\")\n    }\n}\nsplits {\n    abi {\n        isEnable = true\n        include(\"x86_64\", \"arm64-v8a\", \"armeabi-v7a\")\n    }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-13",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "Fakes vs. mocks — when should you use each during Android testing?",
+      "answer": "Prefer hand-written fakes for your own code boundaries: a FakeUserRepository implements the same interface with in-memory behavior, giving deterministic tests that stay meaningful when implementations change (refactor-resilient). Use mocks (MockK/Mockito) only at boundaries you cannot fake cheaply (Retrofit interfaces, system services) or when you must verify interaction order and argument values. Rule of thumb: real implementations > fakes > stubs > mocks. Fakes keep tests honest by exercising real logic; over-mocking couples tests to implementation details and yields false-green tests.",
+      "whyItMatters": "Test-double choice is a senior signal; interviewers check whether you know fakes are preferred and why over-mocking hides regressions.",
+      "codeExample": "class FakeAuthService : AuthService {\n    override suspend fun login(email: String, code: String): Result<User> =\n        Result.success(User(id = 1, email = email))\n}\n\n// MockK: only for hard-to-fake boundaries\nval api = mockk<Api>()\nevery { api.login(any()) } returns LoginResponse(token = \"abc\")",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-13",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "How would you design a multi-tier caching strategy for a data-heavy Android app?",
+      "answer": "Layer reads as memory → disk → network with promotion on miss and explicit invalidation on write. Tier 1 in-memory (bounded LruCache/ConcurrentHashMap keyed by canonical key), Tier 2 disk (Room/DataStore with eviction), Tier 3 network. Public API: suspend get(key, fetch) that returns cached-or-fetched and invalidates on mutation. Handle staleness with TTLs per resource class, ETag/Last-Modified revalidation, and event-based invalidation after mutations; guard against cache stampede with single-flight per key; never serve per-user/tenant data under a shared key. Keep caching behind the repository boundary so it can be reasoned about and disabled in tests.",
+      "whyItMatters": "Caching is where correctness meets performance; interviewers probe invalidation and staleness, not just 'use a cache' memorization.",
+      "codeExample": "class TieredCache(private val mem: LruCache<String, Any>) {\n    suspend fun <T> get(key: String, fetch: suspend () -> T): T {\n        mem.get(key)?.let { return it as T }\n        return fetch().also { mem.put(key, it) } // promote on miss\n    }\n    fun invalidate(key: String) { mem.remove(key) }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "algorithms-19",
+      "category": "algorithms",
+      "categoryLabel": "Data Structures & Algorithms",
+      "question": "When would you use the two-pointer or sliding-window technique, and what complexity does it buy?",
+      "answer": "Use sliding window for problems over a contiguous range where you can grow/shrink one end at a time while maintaining an invariant (longest substring without repeating chars, min-size subarray with sum >= k, max sum of fixed-size window). Use the two-pointer pattern on sorted/ordered inputs to find pairs or triplets in O(n) instead of O(n^2) (two-sum, container with most water, merging sorted arrays). Both cut brute force from O(n^2) to O(n) with O(1) extra space by reusing the information already in the window rather than recomputing from scratch.",
+      "whyItMatters": "These are the most common 'obvious brute force' follow-ups; recognizing when a monotonic window or ordered-pair approach applies is a core algorithm signal.",
+      "codeExample": "fun lengthOfLongestSubstring(s: String): Int {\n    val seen = mutableSetOf<Char>()\n    var left = 0\n    var best = 0\n    for ((right, c) in s.withIndex()) {\n        while (c in seen) seen.remove(s[left++])\n        seen.add(c)\n        best = maxOf(best, right - left + 1)\n    }\n    return best\n}",
       "furtherReading": []
     }
   ]

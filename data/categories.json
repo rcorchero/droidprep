@@ -15,7 +15,7 @@
       "icon": "🎨",
       "description": "Declarative UI, recomposition, state management, and theming.",
       "color": "#4285F4",
-      "questionCount": 30
+      "questionCount": 31
     },
     {
       "id": "coroutines",
@@ -23,7 +23,7 @@
       "icon": "⚡",
       "description": "Structured concurrency, StateFlow, SharedFlow, and Flow operators.",
       "color": "#3DDC84",
-      "questionCount": 21
+      "questionCount": 22
     },
     {
       "id": "architecture",
@@ -31,7 +31,7 @@
       "icon": "🏗️",
       "description": "MVVM, MVI, clean architecture, dependency injection, and modularization.",
       "color": "#FFB300",
-      "questionCount": 13
+      "questionCount": 14
     },
     {
       "id": "platform",
@@ -39,7 +39,7 @@
       "icon": "📱",
       "description": "Activity lifecycle, Services, WorkManager, permissions, and system APIs.",
       "color": "#26C6DA",
-      "questionCount": 33
+      "questionCount": 36
     },
     {
       "id": "testing",
@@ -47,7 +47,7 @@
       "icon": "🐞",
       "description": "Unit tests, UI tests, Compose testing, and debugging techniques.",
       "color": "#F06292",
-      "questionCount": 12
+      "questionCount": 13
     },
     {
       "id": "systemdesign",
@@ -63,7 +63,7 @@
       "icon": "🔢",
       "description": "Complexity analysis, common patterns, and problem-solving strategies.",
       "color": "#FF7043",
-      "questionCount": 18
+      "questionCount": 19
     }
   ]
 }
