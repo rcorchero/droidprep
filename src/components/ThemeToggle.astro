@@ -2,25 +2,6 @@
 
 ---
 
-<!-- Runs before paint to prevent FOUC -->
-<script is:inline>
-  (function() {
-    function applyTheme() {
-      const stored = localStorage.getItem('theme');
-      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-      const isLight = stored ? stored === 'light' : prefersLight;
-      document.documentElement.classList.toggle('dark', !isLight);
-      document.documentElement.classList.toggle('light', isLight);
-    }
-
-    applyTheme();
-
-    if (!localStorage.getItem('theme')) {
-      window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', applyTheme);
-    }
-  })();
-</script>
-
 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
   <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="12" r="5"></circle>
@@ -39,23 +20,27 @@
 </button>
 
 <script is:inline>
-  (function() {
-    // Event delegation: the button is re-rendered on each Astro view-transition
-    // swap, so bind once on document and let clicks bubble up.
-    document.addEventListener('click', function(e) {
-      const btn = e.target.closest('#theme-toggle');
-      if (!btn) return;
-      const isLight = document.documentElement.classList.contains('light');
-      localStorage.setItem('theme', isLight ? 'dark' : 'light');
-      if (window.applyTheme) {
-        window.applyTheme(!isLight);
-      } else {
-        document.documentElement.classList.toggle('dark', isLight);
-        document.documentElement.classList.toggle('light', !isLight);
-      }
-    });
-  })();
-</script>
+    // is:inline scripts re-run on every view-transition visit, so a guard flag
+    // keeps the `document` delegation listener bound exactly once.
+    (function () {
+      if (window.__themeToggleBound) return;
+      window.__themeToggleBound = true;
+      document.addEventListener('click', function (event) {
+        var target = event.target;
+        var btn = target && target.closest ? target.closest('#theme-toggle') : null;
+        if (!btn) return;
+        var isDark = document.documentElement.classList.contains('dark');
+        var isLight = isDark;
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        if (typeof window.applyTheme === 'function') {
+          window.applyTheme(isLight);
+        } else {
+          document.documentElement.classList.toggle('dark', !isLight);
+          document.documentElement.classList.toggle('light', isLight);
+        }
+      });
+    })();
+  </script>
 
 <style>
   .theme-toggle {

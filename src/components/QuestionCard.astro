@@ -53,7 +53,7 @@ const whyHTML = inlineMarkdown(whyItMatters);
   <div class="question-header">
     <button class="question-toggle" aria-expanded="false">
       <span class="question-category" style={`--cat-color: ${categoryColor}`}>{categoryLabel}</span>
-      <h3 class="question-text" set:html={qHTML}></h3>
+      <h2 class="question-text" set:html={qHTML}></h2>
       {difficulty !== 'unknown' && (
         <span class:list={['badge', `badge-${difficulty}`]}>
           <span class="badge-dot" aria-hidden="true"></span>
@@ -157,6 +157,14 @@ const whyHTML = inlineMarkdown(whyItMatters);
     letter-spacing: 0.05em;
     white-space: nowrap;
     flex-shrink: 0;
+  }
+
+  html.dark .question-category {
+    color: color-mix(in srgb, var(--cat-color) 85%, #FFFFFF);
+  }
+
+  html.light .question-category {
+    color: color-mix(in srgb, var(--cat-color) 55%, var(--android-dark));
   }
 
   .question-text {

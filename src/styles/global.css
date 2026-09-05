@@ -1,7 +1,8 @@
 /* DroidPrep — Global Styles */
 /* Android-themed, dark-mode-first design system */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
 
 :root {
   color-scheme: dark;
@@ -40,8 +41,8 @@
   --space-3xl: 4rem;
 
   /* Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', 'Fira Code', monospace;
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -301,6 +302,28 @@ html.dark .astro-code span {
 .badge-senior {
   background: rgba(127, 82, 255, 0.15);
   color: var(--kotlin-purple);
+}
+
+/* Theme-aware level colors: keep >= 4.5:1 contrast on the card background
+   in both themes (dark card #232340, light card #FFFFFF). */
+html.dark .badge-intermediate {
+  color: color-mix(in srgb, var(--compose-blue) 70%, #FFFFFF);
+}
+
+html.dark .badge-senior {
+  color: color-mix(in srgb, var(--kotlin-purple) 70%, #FFFFFF);
+}
+
+html.light .badge-basic {
+  color: color-mix(in srgb, var(--android-green) 50%, var(--android-dark));
+}
+
+html.light .badge-intermediate {
+  color: color-mix(in srgb, var(--compose-blue) 50%, var(--android-dark));
+}
+
+html.light .badge-senior {
+  color: color-mix(in srgb, var(--kotlin-purple) 50%, var(--android-dark));
 }
 
 /* Utility */

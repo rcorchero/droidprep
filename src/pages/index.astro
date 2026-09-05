@@ -62,7 +62,7 @@ const qotd = questions[Math.abs(hash) % questions.length];
           <span class="qotd-category">{qotd.categoryLabel}</span>
         </div>
         <h2 class="qotd-question">{qotd.question}</h2>
-        <p class="qotd-answer" set:html={inlineMarkdown(qotd.answer)}></p>
+        <p class="qotd-answer" set:html={inlineMarkdown(qotd.answer, { preserveNewlines: true })}></p>
         <a href={`${base}browse?category=${qotd.category}`} class="btn btn-secondary">Practice this category</a>
       </div>
     </div>

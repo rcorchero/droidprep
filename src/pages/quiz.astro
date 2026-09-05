@@ -1,15 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { questions as mcqQuestions } from '../../data/mcq.json';
-import { difficulties } from '../../data/difficulty.json';
 import categoriesData from '../../data/categories.json';
 
-const diffByQid: Record<string, string> = {};
-mcqQuestions.forEach((q) => {
-  diffByQid[q.id] = (difficulties as Record<string, string>)[q.id] ?? 'basic';
-});
-
-const base = import.meta.env.BASE_URL;
 const categories = categoriesData.categories;
 ---
 
@@ -103,244 +96,28 @@ const categories = categoriesData.categories;
   </div>
 </BaseLayout>
 
-<script define:vars={{ mcqQuestions, diffByQid, base }}>
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  /* eslint-enable */
-  (function () {
-    var questionsAll = mcqQuestions || [];
-    var questions = [];
-    var current = 0;
-    var answers = {};
-    var answered = {};
-    var orderCache = {};
+<script>
+  import { questions as mcqQuestions } from '../../data/mcq.json';
+  import { difficulties } from '../../data/difficulty.json';
+  import { mountQuiz } from '../lib/quiz-app';
+  import type { Question } from '../lib/quiz-engine';
 
-    var setup = document.getElementById('quiz-setup');
-    var session = document.getElementById('quiz-session');
-    var results = document.getElementById('quiz-results');
-    var startBtn = document.getElementById('quiz-start');
-    var nextBtn = document.getElementById('quiz-next-btn');
-    var retryBtn = document.getElementById('quiz-retry');
-    var homeBtn = document.getElementById('quiz-home');
-    var countSlider = document.getElementById('quiz-count');
-    var countDisplay = document.getElementById('quiz-count-display');
-    var difficultySelect = document.getElementById('quiz-difficulty');
-    var categorySelect = document.getElementById('quiz-category');
-    var emptyHint = document.getElementById('quiz-empty-hint');
-    var progressFill = document.getElementById('quiz-progress-fill');
-    var progressText = document.getElementById('quiz-progress-text');
-    var questionEl = document.getElementById('quiz-question');
-    var optionsEl = document.getElementById('quiz-options');
-    var feedbackEl = document.getElementById('quiz-feedback');
+  const questionsAll = mcqQuestions as Question[];
+  const difficultyByQid: Record<string, string> = {};
+  for (const q of questionsAll) {
+    difficultyByQid[q.id] = (difficulties as Record<string, string>)[q.id] ?? 'basic';
+  }
 
-    if (!startBtn || !questionsAll.length) return;
-
-    countSlider.addEventListener('input', function () {
-      countDisplay.textContent = countSlider.value + ' question' + (countSlider.value === '1' ? '' : 's');
+  // Bundled module scripts run once. Registering on `astro:page-load` mounts
+  // the quiz on the initial load and again after every client-side
+  // navigation, always against the current DOM.
+  document.addEventListener('astro:page-load', () => {
+    mountQuiz({
+      questions: questionsAll,
+      difficultyByQid,
+      base: import.meta.env.BASE_URL,
     });
-
-    function shuffle(arr) {
-      for (var i = arr.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
-      }
-      return arr;
-    }
-
-    // Client copy of inlineMarkdown (define:vars can't serialize the imported
-    // function, so keep a self-contained renderer as the primary path).
-    function renderInline(value) {
-      var safe = String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-      var segments = safe.split('`');
-      var out = '';
-      for (var i = 0; i < segments.length; i++) {
-        out += (i % 2 === 1)
-          ? '<code class="inline-code">' + segments[i] + '</code>'
-          : segments[i];
-      }
-      out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-      out = out.replace(/(^|[^*])\*([^*\s][^*]*?)\*(?![*])/g, '$1<em>$2</em>');
-      return out;
-    }
-
-    function startQuiz() {
-      var count = parseInt(countSlider.value, 10);
-      var level = difficultySelect ? difficultySelect.value : 'all';
-      var cat = categorySelect ? categorySelect.value : 'all';
-      var pool = questionsAll.filter(function (q) {
-        var okLevel = level === 'all' || diffByQid[q.id] === level;
-        var okCategory = cat === 'all' || q.category === cat;
-        return okLevel && okCategory;
-      });
-      if (!pool.length) {
-        emptyHint.hidden = false;
-        return;
-      }
-      emptyHint.hidden = true;
-      questions = shuffle(pool).slice(0, count);
-      current = 0;
-      answers = {};
-      answered = {};
-      orderCache = {};
-
-      setup.hidden = true;
-      results.hidden = true;
-      session.hidden = false;
-      render();
-    }
-
-    function render() {
-      var q = questions[current];
-      var total = questions.length;
-
-      progressFill.style.width = (((current + 1) / total) * 100) + '%';
-      progressText.textContent = (current + 1) + ' / ' + total;
-      questionEl.textContent = q.question;
-
-      optionsEl.innerHTML = '';
-      // Shuffle the display order once per question so options don't jump
-      // around when feedback is rendered after answering. Each button keeps
-      // its original index so correctness checks stay valid.
-      var order = orderCache[q.id];
-      if (!order) {
-        order = [];
-        for (var oi = 0; oi < q.options.length; oi++) order.push(oi);
-        for (var oi = order.length - 1; oi > 0; oi--) {
-          var oj = Math.floor(Math.random() * (oi + 1));
-          var ot = order[oi]; order[oi] = order[oj]; order[oj] = ot;
-        }
-        orderCache[q.id] = order;
-      }
-
-      order.forEach(function (origIndex) {
-        var btn = document.createElement('button');
-        btn.className = 'quiz-option';
-        btn.setAttribute('data-index', origIndex);
-
-        var opt = q.options[origIndex];
-        btn.innerHTML =
-          '<span class="option-radio" aria-hidden="true"><span class="option-radio-dot"></span></span>' +
-          '<span class="option-text"></span>' +
-          '<span class="option-mark" aria-hidden="true"></span>';
-        btn.querySelector('.option-text').textContent = opt;
-
-        btn.addEventListener('click', function () {
-          selectOption(q.id, origIndex);
-        });
-        optionsEl.appendChild(btn);
-      });
-
-      // Lock options and show feedback once answered
-      if (answered[q.id]) {
-        var isCorrect = answers[q.id] === q.correctIndex;
-        feedbackEl.hidden = false;
-        feedbackEl.innerHTML =
-          '<span class="quiz-feedback-head">' + (isCorrect ? 'Correct!' : 'Incorrect') + '</span> ' +
-          renderInline(q.explanation || '');
-        feedbackEl.style.background = isCorrect
-          ? 'rgba(61,220,132,0.12)' : 'rgba(255,82,82,0.12)';
-        feedbackEl.style.color = isCorrect ? 'var(--success)' : 'var(--error)';
-
-        var btns = optionsEl.querySelectorAll('.quiz-option');
-        btns.forEach(function (b) {
-          b.classList.add('disabled');
-          var idx = parseInt(b.getAttribute('data-index'), 10);
-          var mark = b.querySelector('.option-mark');
-          if (idx === q.correctIndex) {
-            b.classList.add('correct');
-            if (mark) mark.textContent = '\u2713';
-          } else if (idx === answers[q.id]) {
-            b.classList.add('incorrect');
-            if (mark) mark.textContent = '\u2717';
-          }
-        });
-
-        if (current === total - 1) {
-          nextBtn.textContent = 'See Results';
-        }
-      } else {
-        feedbackEl.hidden = true;
-        nextBtn.textContent = 'Next';
-      }
-    }
-
-    function selectOption(qid, index) {
-      if (answered[qid]) return;
-      answered[qid] = true;
-      answers[qid] = index;
-      render();
-    }
-
-    function goNext() {
-      if (!answered[questions[current].id]) return;
-      if (current < questions.length - 1) {
-        current++;
-        render();
-      } else {
-        showResults();
-      }
-    }
-
-    function showResults() {
-      session.hidden = true;
-      results.hidden = false;
-
-      var total = questions.length;
-      var correct = 0;
-      var missed = [];
-      questions.forEach(function (q) {
-        if (answers[q.id] === q.correctIndex) {
-          correct++;
-        } else {
-          missed.push(q.id);
-        }
-      });
-
-      var reviewP = document.getElementById('results-review');
-      var reviewLink = document.getElementById('results-review-link');
-      if (missed.length > 0) {
-        var basePath = (base || '/').replace(/\/$/, '');
-        var qs = missed.join(',');
-        reviewLink.setAttribute('href', basePath + '/browse?q=' + encodeURIComponent(qs));
-        reviewP.hidden = false;
-      } else {
-        reviewP.hidden = true;
-      }
-
-      var pct = Math.round((correct / total) * 100);
-      document.getElementById('results-score').innerHTML =
-        '<span class="score-num">' + pct + '%</span>' +
-        '<span class="score-detail">' + correct + ' of ' + total + ' correct</span>';
-
-      var breakdown = document.getElementById('results-breakdown');
-      breakdown.innerHTML = '';
-      questions.forEach(function (q, i) {
-        var isCorrect = answers[q.id] === q.correctIndex;
-        var div = document.createElement('div');
-        div.className = 'result-item' + (isCorrect ? ' correct' : ' incorrect');
-        var qSpan = document.createElement('span');
-        qSpan.className = 'result-q';
-        qSpan.textContent = (i + 1) + '. ' + q.question;
-        var badge = document.createElement('span');
-        badge.className = 'result-badge';
-        badge.textContent = isCorrect ? 'Correct' : 'Wrong';
-        div.appendChild(qSpan);
-        div.appendChild(badge);
-        breakdown.appendChild(div);
-      });
-    }
-
-    startBtn.addEventListener('click', startQuiz);
-    nextBtn.addEventListener('click', goNext);
-    retryBtn.addEventListener('click', function () {
-      results.hidden = true;
-      setup.hidden = false;
-    });
-    homeBtn.addEventListener('click', function () {
-      results.hidden = true;
-      setup.hidden = false;
-    });
-  })();
+  });
 </script>
 
 <style is:global>

@@ -19,8 +19,8 @@ jobs:
     name: Build & upload
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: withastro/action@v6
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: withastro/action@e84f40bd8d2caa9e768ec82ad30dd81f0b280853 # v6
 
   deploy:
     name: Deploy to Pages
@@ -31,4 +31,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5

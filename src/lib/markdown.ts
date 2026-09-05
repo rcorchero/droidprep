@@ -10,6 +10,11 @@
  * HTML-escaped before tokens are re-inserted.
  */
 
+export interface InlineMarkdownOptions {
+  /** Replace newlines with <br> to preserve multi-line text. */
+  preserveNewlines?: boolean;
+}
+
 function esc(s: string): string {
   return s
     .replace(/&/g, '&amp;')
@@ -19,7 +24,7 @@ function esc(s: string): string {
 }
 
 /** Convert a single inline-markdown string to safe HTML. */
-export function inlineMarkdown(input: string): string {
+export function inlineMarkdown(input: string, options: InlineMarkdownOptions = {}): string {
   // Escape HTML first so any stray angle brackets can't inject content.
   const safe = esc(input);
 
@@ -34,11 +39,22 @@ export function inlineMarkdown(input: string): string {
     }
   }
 
+  // Links [text](https://...). Only http(s) hrefs are allowed, and the URL
+  // was already escaped, so the attribute can't break out of the tag.
+  out = out.replace(
+    /\[([^\]\[]+)\]\((https?:\/\/[^)\s]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+  );
+
   // Bold **text**
   out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
 
   // Italic *text* (single asterisks, not part of bold)
   out = out.replace(/(^|[^*])\*([^*\s][^*]*?)\*(?![*])/g, '$1<em>$2</em>');
+
+  if (options.preserveNewlines) {
+    out = out.replace(/\n/g, '<br>');
+  }
 
   return out;
 }

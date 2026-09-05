@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { ClientRouter } from 'astro:transitions';
+import { site, base } from '../../site.config.mjs';
 import '../styles/global.css';
 
 interface Props {
@@ -11,11 +12,16 @@ interface Props {
 
 const { title, description = 'Technical interview prep for Android engineers — searchable Q&A database and multiple choice quizzes.' } = Astro.props;
 
-const base = import.meta.env.BASE_URL;
-const site = import.meta.env.SITE || '';
 const path = Astro.url.pathname;
 const canonical = site + base.replace(/\/$/, '') + path.replace(new RegExp('^' + base), '/');
 const ogImage = site + base + 'og-image.png';
+// sha256 (base64) of the two inline scripts emitted below, computed from the
+// exact bytes that appear in dist HTML. Keep in sync — verify at build.
+const themeScriptSha256 = 'bKhCGEOtLBq88qApl09g43qon7/6xe53mmTB17EYXaI=';
+const toggleScriptSha256 = '1hf6+dmRilwA8Hqc938o8KVmjonQt2sKgXiyiL8wsWY=';
+// Note: `frame-ancestors` is deliberately absent — it is ignored when delivered
+// via a <meta> element and only adds a console warning.
+const cspContent = `default-src 'self'; script-src 'self' 'sha256-${themeScriptSha256}' 'sha256-${toggleScriptSha256}'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'`;
 ---
 
 <!DOCTYPE html>
@@ -38,27 +44,34 @@ const ogImage = site + base + 'og-image.png';
   <meta name="twitter:title" content={`${title} | DroidPrep`} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
+  {import.meta.env.PROD && <meta http-equiv="Content-Security-Policy" content={cspContent} />}
   <script is:inline>
-    (function() {
-      const mql = window.matchMedia('(prefers-color-scheme: light)');
+    (function () {
+      var THEME_KEY = 'theme';
+      var mql = window.matchMedia('(prefers-color-scheme: light)');
       function applyTheme(force) {
-        const stored = localStorage.getItem('theme');
-        const isLight = force != null ? force : (stored ? stored === 'light' : mql.matches);
+        var stored = localStorage.getItem(THEME_KEY);
+        var isLight = force != null ? force : (stored ? stored === 'light' : mql.matches);
         document.documentElement.classList.toggle('dark', !isLight);
         document.documentElement.classList.toggle('light', isLight);
-        const meta = document.querySelector('meta[name="theme-color"]');
+        var meta = document.querySelector('meta[name="theme-color"]');
         if (meta) meta.setAttribute('content', isLight ? '#F5F5FA' : '#1B1B2F');
       }
       // Expose globally so the toggle can reuse it across view-transition swaps
       window.applyTheme = applyTheme;
       applyTheme();
-      // Re-apply after Astro client-side navigation swaps the document
-      document.addEventListener('astro:after-swap', function() {
-        applyTheme();
-      });
-      mql.addEventListener('change', function() {
-        if (!localStorage.getItem('theme')) applyTheme();
-      });
+      // Bind document-level listeners once: inline scripts re-execute on every
+      // view-transition visit, which would otherwise stack duplicate handlers.
+      if (!window.__themeGuardBound) {
+        window.__themeGuardBound = true;
+        // Re-apply after Astro client-side navigation swaps the document
+        document.addEventListener('astro:after-swap', function () {
+          applyTheme();
+        });
+        mql.addEventListener('change', function () {
+          if (!localStorage.getItem(THEME_KEY)) applyTheme();
+        });
+      }
     })();
   </script>
   <ClientRouter />

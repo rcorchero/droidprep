@@ -7,7 +7,7 @@
       Built for Android engineers, by Android engineers.
     </p>
     <p class="footer-text footer-muted">
-      Open source &middot; <a href="https://github.com/rcorchero/droidprep" target="_blank" rel="noopener">GitHub</a> &middot; Contribute
+      Open source &middot; <a class="footer-link" href="https://github.com/rcorchero/droidprep" target="_blank" rel="noopener">GitHub</a> &middot; Contribute
     </p>
   </div>
 </footer>
@@ -33,5 +33,24 @@
 
   .footer-muted {
     color: var(--text-muted);
+  }
+
+  .footer-link {
+    display: inline-block;
+    padding: 0.25em 0.7em;
+    margin: 0 0.2em;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: background var(--transition-fast), color var(--transition-fast);
+  }
+
+  .footer-link:hover,
+  .footer-link:focus-visible {
+    background: var(--accent-dim);
+    color: var(--accent);
+    text-decoration: none;
+    outline: none;
   }
 </style>
