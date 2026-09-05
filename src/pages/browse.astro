@@ -15,7 +15,7 @@ const categoryColorMap = Object.fromEntries(categories.map(c => [c.id, c.color])
   <div class="browse-header">
     <div class="container">
       <h1>Question Database</h1>
-      <p class="subtitle">Browse all {allQuestions.length} questions across 8 categories. Click a question to expand the answer.</p>
+      <p class="subtitle">Browse all {allQuestions.length} questions across {categories.length} categories. Click a question to expand the answer.</p>
 
       <div class="search-container">
         <div class="search-box">
@@ -187,12 +187,17 @@ const categoryColorMap = Object.fromEntries(categories.map(c => [c.id, c.color])
         const answer = card.querySelector('.question-answer');
         const expanded = btn.getAttribute('aria-expanded') === 'true';
         btn.setAttribute('aria-expanded', String(!expanded));
+        const stateEl = card.querySelector('.toggle-state');
+        if (stateEl) stateEl.textContent = expanded ? 'Show answer' : 'Hide answer';
         answer?.toggleAttribute('hidden', expanded);
         chevron?.classList.toggle('open', !expanded);
       };
 
       btn.addEventListener('click', toggle);
-      chevron?.addEventListener('click', toggle);
+      if (chevron) {
+        chevron.setAttribute('aria-expanded', 'false');
+        chevron.addEventListener('click', toggle);
+      }
     });
 
     // Copy code button

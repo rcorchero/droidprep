@@ -17,7 +17,7 @@ for (let i = 0; i < today.length; i++) {
 const qotd = questions[Math.abs(hash) % questions.length];
 ---
 
-<BaseLayout title="DroidPrep" description="Master Android technical interviews with 156 curated questions across 8 core topics.">
+<BaseLayout title="DroidPrep" description={`Master Android technical interviews with ${totalQuestions} curated questions across ${cats.length} core topics.`}>
   <!-- Hero -->
   <section class="hero">
     <div class="container hero-content">
@@ -29,7 +29,7 @@ const qotd = questions[Math.abs(hash) % questions.length];
         technical interview
       </h1>
       <p class="hero-subtitle">
-        {totalQuestions} curated questions across 8 core topics — from Kotlin fundamentals to system design.
+        {totalQuestions} curated questions across {cats.length} core topics — from Kotlin fundamentals to system design.
         Search, study, and test yourself with multiple choice quizzes.
       </p>
       <div class="hero-actions">
@@ -105,8 +105,8 @@ const qotd = questions[Math.abs(hash) % questions.length];
         </div>
         <div class="feature-card">
           <div class="feature-icon gradient-purple">&#x1F4CC;</div>
-          <h3>Bookmark & track progress</h3>
-          <p>Save questions for later and track your quiz scores over time — all stored locally.</p>
+          <h3>Bookmark questions</h3>
+          <p>Save questions for later and filter to your saved list — all stored locally in your browser.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon gradient-orange">&#x1F4DA;</div>

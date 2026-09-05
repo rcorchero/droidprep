@@ -258,12 +258,36 @@ html.dark .astro-code span {
 .badge {
   display: inline-flex;
   align-items: center;
+  gap: 0.4em;
   padding: 0.15em 0.6em;
   border-radius: var(--radius-full);
   font-size: var(--text-xs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* Non-color level cue: a distinct marker shape per difficulty so the
+   level is distinguishable without relying on color alone (WCAG 1.4.1). */
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  background: currentColor;
+}
+
+.badge-intermediate .badge-dot {
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
+
+.badge-senior .badge-dot {
+  border-radius: 0;
+}
+
+.badge-staff .badge-dot {
+  border-radius: 50% 50% 0 0;
 }
 
 .badge-basic {

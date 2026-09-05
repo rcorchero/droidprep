@@ -55,8 +55,12 @@ const whyHTML = inlineMarkdown(whyItMatters);
       <span class="question-category" style={`--cat-color: ${categoryColor}`}>{categoryLabel}</span>
       <h3 class="question-text" set:html={qHTML}></h3>
       {difficulty !== 'unknown' && (
-        <span class:list={['badge', `badge-${difficulty}`]}>{difficulty}</span>
+        <span class:list={['badge', `badge-${difficulty}`]}>
+          <span class="badge-dot" aria-hidden="true"></span>
+          <span class="badge-text">{difficulty}</span>
+        </span>
       )}
+      <span class="toggle-state" aria-hidden="true">Show answer</span>
     </button>
     <div class="header-actions">
       <span class="bookmark-btn" data-bookmark={id} role="button" tabindex="0" aria-label="Save question" aria-pressed="false" title="Save this question">
@@ -160,6 +164,19 @@ const whyHTML = inlineMarkdown(whyItMatters);
     color: var(--text-primary);
     margin: 0;
     line-height: 1.4;
+  }
+
+  .toggle-state {
+    flex-shrink: 0;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    white-space: nowrap;
+    padding: 0.15em 0.5em;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
   }
 
   .header-actions {

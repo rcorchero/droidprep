@@ -121,6 +121,23 @@ mcqQuestions.forEach((q) => {
       return arr;
     }
 
+    // Client copy of inlineMarkdown (define:vars can't serialize the imported
+    // function, so keep a self-contained renderer as the primary path).
+    function renderInline(value) {
+      var safe = String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      var segments = safe.split('`');
+      var out = '';
+      for (var i = 0; i < segments.length; i++) {
+        out += (i % 2 === 1)
+          ? '<code class="inline-code">' + segments[i] + '</code>'
+          : segments[i];
+      }
+      out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      out = out.replace(/(^|[^*])\*([^*\s][^*]*?)\*(?![*])/g, '$1<em>$2</em>');
+      return out;
+    }
+
     function startQuiz() {
       var count = parseInt(countSlider.value, 10);
       var level = difficultySelect ? difficultySelect.value : 'all';
@@ -182,24 +199,7 @@ mcqQuestions.forEach((q) => {
         optionsEl.appendChild(btn);
       });
 
-      // Client copy of inlineMarkdown (define:vars can't serialize the imported
-    // function, so keep a self-contained renderer as the primary path).
-    function renderInline(value) {
-      var safe = String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-      var segments = safe.split('`');
-      var out = '';
-      for (var i = 0; i < segments.length; i++) {
-        out += (i % 2 === 1)
-          ? '<code class="inline-code">' + segments[i] + '</code>'
-          : segments[i];
-      }
-      out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-      out = out.replace(/(^|[^*])\*([^*\s][^*]*?)\*(?![*])/g, '$1<em>$2</em>');
-      return out;
-    }
-
-    // Lock options and show feedback once answered
+      // Lock options and show feedback once answered
       if (answered[q.id]) {
         var isCorrect = answers[q.id] === q.correctIndex;
         feedbackEl.hidden = false;
