@@ -12,6 +12,10 @@ interface Props {
 const { title, description = 'Technical interview prep for Android engineers — searchable Q&A database and multiple choice quizzes.' } = Astro.props;
 
 const base = import.meta.env.BASE_URL;
+const site = import.meta.env.SITE || '';
+const path = Astro.url.pathname;
+const canonical = site + base.replace(/\/$/, '') + path.replace(new RegExp('^' + base), '/');
+const ogImage = site + base + 'og-image.svg';
 ---
 
 <!DOCTYPE html>
@@ -22,6 +26,17 @@ const base = import.meta.env.BASE_URL;
   <title>{title} | DroidPrep</title>
   <meta name="description" content={description} />
   <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="DroidPrep" />
+  <meta property="og:title" content={`${title} | DroidPrep`} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={`${title} | DroidPrep`} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
   <script is:inline>
     (function() {
       const mql = window.matchMedia('(prefers-color-scheme: light)');

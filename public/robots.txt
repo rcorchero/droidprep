@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://rcorchero.github.io/droidprep/sitemap.xml
