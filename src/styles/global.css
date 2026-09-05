@@ -18,7 +18,7 @@
   --bg-input: #1A1A30;
   --text-primary: #FFFFFF;
   --text-secondary: #B0B0CC;
-  --text-muted: #6B6B8D;
+  --text-muted: #8A8AAF;
   --border: #333355;
   --accent: var(--android-green);
   --accent-hover: #34C075;
@@ -82,8 +82,8 @@ html.light {
   --bg-input: #EEEEF5;
   --text-primary: #1B1B2F;
   --text-secondary: #555577;
-  --text-muted: #8888AA;
-  --border: #DDDDEE;
+  --text-muted: #6B6B8D;
+  --border: #8A8AB0;
   --code-bg: #F0F0F5;
   --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
