@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { questions as mcqQuestions } from '../../data/mcq.json';
 import { difficulties } from '../../data/difficulty.json';
+import categoriesData from '../../data/categories.json';
 
 const diffByQid: Record<string, string> = {};
 mcqQuestions.forEach((q) => {
@@ -9,6 +10,7 @@ mcqQuestions.forEach((q) => {
 });
 
 const base = import.meta.env.BASE_URL;
+const categories = categoriesData.categories;
 ---
 
 <BaseLayout title="Quiz">
@@ -40,6 +42,16 @@ const base = import.meta.env.BASE_URL;
             <option value="basic">Basic</option>
             <option value="intermediate">Intermediate</option>
             <option value="senior">Senior</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="quiz-category">Category</label>
+          <select id="quiz-category">
+            <option value="all" selected>All topics</option>
+            {categories.map(cat => (
+              <option value={cat.id}>{cat.name}</option>
+            ))}
           </select>
         </div>
 
@@ -108,6 +120,7 @@ const base = import.meta.env.BASE_URL;
     var countSlider = document.getElementById('quiz-count');
     var countDisplay = document.getElementById('quiz-count-display');
     var difficultySelect = document.getElementById('quiz-difficulty');
+    var categorySelect = document.getElementById('quiz-category');
     var progressFill = document.getElementById('quiz-progress-fill');
     var progressText = document.getElementById('quiz-progress-text');
     var questionEl = document.getElementById('quiz-question');
@@ -148,11 +161,13 @@ const base = import.meta.env.BASE_URL;
     function startQuiz() {
       var count = parseInt(countSlider.value, 10);
       var level = difficultySelect ? difficultySelect.value : 'all';
-      var pool = questionsAll.slice();
-      if (level !== 'all' && diffByQid) {
-        pool = pool.filter(function (q) { return diffByQid[q.id] === level; });
-        if (!pool.length) pool = questionsAll.slice();
-      }
+      var cat = categorySelect ? categorySelect.value : 'all';
+      var pool = questionsAll.filter(function (q) {
+        var okLevel = level === 'all' || diffByQid[q.id] === level;
+        var okCategory = cat === 'all' || q.category === cat;
+        return okLevel && okCategory;
+      });
+      if (!pool.length) pool = questionsAll.slice();
       questions = shuffle(pool).slice(0, count);
       current = 0;
       answers = {};
