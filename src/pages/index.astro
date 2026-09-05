@@ -17,7 +17,7 @@ for (let i = 0; i < today.length; i++) {
 const qotd = questions[Math.abs(hash) % questions.length];
 ---
 
-<BaseLayout title="DroidPrep" description="Master Android technical interviews with 173 curated questions across 8 core topics.">
+<BaseLayout title="DroidPrep" description="Master Android technical interviews with 156 curated questions across 8 core topics.">
   <!-- Hero -->
   <section class="hero">
     <div class="container hero-content">
@@ -33,8 +33,8 @@ const qotd = questions[Math.abs(hash) % questions.length];
         Search, study, and test yourself with multiple choice quizzes.
       </p>
       <div class="hero-actions">
-        <a href="${base}browse" class="btn btn-primary">Start Browsing</a>
-        <a href="${base}quiz" class="btn btn-secondary">Take a Quiz</a>
+        <a href={`${base}browse`} class="btn btn-primary">Start Browsing</a>
+        <a href={`${base}quiz`} class="btn btn-secondary">Take a Quiz</a>
       </div>
       <div class="hero-stats">
         <div class="stat">
@@ -96,7 +96,7 @@ const qotd = questions[Math.abs(hash) % questions.length];
         <div class="feature-card">
           <div class="feature-icon gradient-green">&#x1F50E;</div>
           <h3>Full-text search</h3>
-          <p>Find exactly what you need across all 173 questions with instant client-side search.</p>
+          <p>Find exactly what you need across all {totalQuestions} questions with instant client-side search.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon gradient-blue">&#x2705;</div>
@@ -123,8 +123,8 @@ const qotd = questions[Math.abs(hash) % questions.length];
       <h2>Ready to ace your interview?</h2>
       <p>Start with a quiz in your weakest category, or browse everything first.</p>
       <div class="cta-actions">
-        <a href="${base}quiz" class="btn btn-primary">Take a Quiz</a>
-        <a href="${base}browse" class="btn btn-ghost">Browse Questions</a>
+        <a href={`${base}quiz`} class="btn btn-primary">Take a Quiz</a>
+        <a href={`${base}browse`} class="btn btn-ghost">Browse Questions</a>
       </div>
     </div>
   </section>
