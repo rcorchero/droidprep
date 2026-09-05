@@ -178,6 +178,7 @@ const categoryColorMap = Object.fromEntries(categories.map(c => [c.id, c.color])
     });
 
     // Expand / collapse questions
+    const togglesByCard = new Map();
     document.querySelectorAll('.question-card').forEach((card) => {
       const btn = card.querySelector('.question-toggle');
       const chevron = card.querySelector('.chevron');
@@ -198,7 +199,41 @@ const categoryColorMap = Object.fromEntries(categories.map(c => [c.id, c.color])
         chevron.setAttribute('aria-expanded', 'false');
         chevron.addEventListener('click', toggle);
       }
+      togglesByCard.set(card, { toggle, btn });
     });
+
+    // Review-missed deep link: `?q=id1,id2`. Reset filters so the target
+    // cards are visible, expand them, and scroll to the first one.
+    const urlParams = new URLSearchParams(window.location.search);
+    const qParam = urlParams.get('q');
+    if (qParam) {
+      const targetIds = qParam.split(',').filter(Boolean);
+      if (searchInput) searchInput.value = '';
+      if (categoryFilter) categoryFilter.value = 'all';
+      if (difficultyFilter) difficultyFilter.value = 'all';
+      savedOnly = false;
+      if (savedFilter) {
+        savedFilter.setAttribute('aria-pressed', 'false');
+        savedFilter.classList.remove('active');
+      }
+      applyFilters();
+
+      const targets = targetIds
+        .map(id => Array.from(togglesByCard.entries())
+          .find(([card]) => card.dataset.questionId === id))
+        .filter(Boolean)
+        .map(([card, entry]) => ({ card, ...entry }));
+
+      if (targets.length) {
+        targets.forEach(({ btn }) => {
+          if (btn.getAttribute('aria-expanded') !== 'true') {
+            btn.click();
+          }
+        });
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        targets[0].card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      }
+    }
 
     // Copy code button
     document.querySelectorAll('.copy-btn').forEach((btn) => {

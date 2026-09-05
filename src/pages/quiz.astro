@@ -7,6 +7,8 @@ const diffByQid: Record<string, string> = {};
 mcqQuestions.forEach((q) => {
   diffByQid[q.id] = (difficulties as Record<string, string>)[q.id] ?? 'basic';
 });
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout title="Quiz">
@@ -71,6 +73,11 @@ mcqQuestions.forEach((q) => {
       <div class="panel-card card results-card">
         <div id="results-score" class="results-score"></div>
         <div id="results-breakdown" class="results-breakdown"></div>
+        <p id="results-review" class="results-review" hidden>
+          <a id="results-review-link" class="btn btn-ghost btn-sm" href="#">
+            Review missed questions
+          </a>
+        </p>
         <div class="quiz-nav">
           <button id="quiz-retry" class="btn btn-ghost">Retry</button>
           <button id="quiz-home" class="btn btn-primary">New Quiz</button>
@@ -80,7 +87,7 @@ mcqQuestions.forEach((q) => {
   </div>
 </BaseLayout>
 
-<script define:vars={{ mcqQuestions, diffByQid }}>
+<script define:vars={{ mcqQuestions, diffByQid, base }}>
   /* eslint-disable @typescript-eslint/no-unused-vars */
   /* eslint-enable */
   (function () {
@@ -256,9 +263,25 @@ mcqQuestions.forEach((q) => {
 
       var total = questions.length;
       var correct = 0;
+      var missed = [];
       questions.forEach(function (q) {
-        if (answers[q.id] === q.correctIndex) correct++;
+        if (answers[q.id] === q.correctIndex) {
+          correct++;
+        } else {
+          missed.push(q.id);
+        }
       });
+
+      var reviewP = document.getElementById('results-review');
+      var reviewLink = document.getElementById('results-review-link');
+      if (missed.length > 0) {
+        var basePath = (base || '/').replace(/\/$/, '');
+        var qs = missed.join(',');
+        reviewLink.setAttribute('href', basePath + '/browse?q=' + encodeURIComponent(qs));
+        reviewP.hidden = false;
+      } else {
+        reviewP.hidden = true;
+      }
 
       var pct = Math.round((correct / total) * 100);
       document.getElementById('results-score').innerHTML =
@@ -558,6 +581,15 @@ mcqQuestions.forEach((q) => {
   .results-card {
     text-align: center;
     min-height: 40vh;
+  }
+
+  .results-review {
+    margin-top: var(--space-md);
+  }
+
+  .results-review .btn-sm {
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--text-sm);
   }
 
   .results-score {
