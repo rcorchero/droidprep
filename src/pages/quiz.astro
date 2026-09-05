@@ -13,7 +13,7 @@ mcqQuestions.forEach((q) => {
   <div class="quiz-page container">
     <div class="quiz-header">
       <h1>Test Yourself</h1>
-      <p>Answer multiple choice questions and track your score.</p>
+      <p>Answer multiple choice questions to reinforce what you've learned.</p>
     </div>
 
     <!-- Setup -->
@@ -281,16 +281,6 @@ mcqQuestions.forEach((q) => {
         div.appendChild(badge);
         breakdown.appendChild(div);
       });
-
-      try {
-        var catSet = [];
-        questions.forEach(function (q) {
-          if (catSet.indexOf(q.category) === -1) catSet.push(q.category);
-        });
-        var scores = JSON.parse(localStorage.getItem('quiz_scores') || '[]');
-        scores.push({ date: new Date().toISOString(), category: catSet.join(','), total: total, correct: correct, pct: pct });
-        localStorage.setItem('quiz_scores', JSON.stringify(scores.slice(-20)));
-      } catch (e) {}
     }
 
     startBtn.addEventListener('click', startQuiz);

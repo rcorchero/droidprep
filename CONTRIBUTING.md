@@ -44,7 +44,7 @@ droidprep/
    - `correctIndex`: index (0–3) of the correct option
    - `explanation`: why the answer is correct (and why distractors are wrong)
 4. Add a difficulty tag to `data/difficulty.json`:
-   - One of `basic`, `intermediate`, `senior`, `staff`
+   - One of `basic`, `intermediate`, `senior`
 5. Submit a **pull request** to `main`.
 
 ## MCQ Quality Guidelines

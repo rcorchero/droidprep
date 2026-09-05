@@ -5,7 +5,7 @@ const mcqFile = loadData('mcq.json');
 const difficultyFile = loadData('difficulty.json');
 
 const questionIds = new Set((questionsFile?.questions || []).map((q) => q.id));
-const VALID_LEVELS = new Set(['basic', 'intermediate', 'senior', 'staff']);
+const VALID_LEVELS = new Set(['basic', 'intermediate', 'senior']);
 
 test('mcq.json has a version and a non-empty questions array', () => {
   assert(typeof mcqFile?.version === 'string', 'missing version string');

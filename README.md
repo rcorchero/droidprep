@@ -4,10 +4,10 @@ Free, open-source interview prep for Android engineers. A searchable Q&A databas
 
 ## Features
 
-- **173 curated questions** across 8 Android topics — Kotlin, Jetpack Compose, Coroutines & Flow, Architecture, Android Platform, Testing, System Design, and Data Structures & Algorithms.
+- **156 curated questions** across 8 Android topics — Kotlin, Jetpack Compose, Coroutines & Flow, Architecture, Android Platform, Testing, System Design, and Data Structures & Algorithms.
 - **Instant full-text search** with filters by category and difficulty.
-- **Multiple choice quizzes** with pre-authored answers targeting real misconceptions, explanations, and score tracking.
-- **Dark-mode-first** design with light mode, bookmarks, and progress saved locally.
+- **Multiple choice quizzes** with pre-authored answers targeting real misconceptions and clear explanations.
+- **Dark-mode-first** design with light mode and bookmarks saved locally.
 
 ## Getting Started
 

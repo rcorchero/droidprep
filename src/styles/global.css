@@ -286,10 +286,6 @@ html.dark .astro-code span {
   border-radius: 0;
 }
 
-.badge-staff .badge-dot {
-  border-radius: 50% 50% 0 0;
-}
-
 .badge-basic {
   background: rgba(61, 220, 132, 0.15);
   color: var(--android-green);
@@ -303,11 +299,6 @@ html.dark .astro-code span {
 .badge-senior {
   background: rgba(127, 82, 255, 0.15);
   color: var(--kotlin-purple);
-}
-
-.badge-staff {
-  background: rgba(255, 87, 34, 0.15);
-  color: #FF5722;
 }
 
 /* Utility */

@@ -49,7 +49,7 @@ function validateQuestions(questions, categoryIds) {
 }
 
 function validateDifficulty(difficulties, questionIds) {
-  const levels = new Set(['basic', 'intermediate', 'senior', 'staff']);
+  const levels = new Set(['basic', 'intermediate', 'senior']);
   Object.entries(difficulties || {}).forEach(([id, level]) => {
     if (!questionIds.has(id)) warnings.push(`Difficulty references unknown question: ${id}`);
     if (!levels.has(level)) errors.push(`Difficulty for ${id} has invalid level: ${level}`);
