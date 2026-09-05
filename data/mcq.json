@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "generatedAt": "2026-09-03",
   "questions": [
     {
@@ -1756,6 +1756,240 @@
       ],
       "correctIndex": 1,
       "explanation": "Dynamic programming solves problems with optimal substructure and overlapping subproblems, storing partial results in a table (bottom-up) or memoizing recursion (top-down) so each subproblem is computed once — reducing exponential brute force to polynomial."
+    },
+    {
+      "id": "platform-09",
+      "category": "platform",
+      "question": "How should you secure a local Room database that holds sensitive user data?",
+      "options": [
+        "Enable SQLCipher encryption and keep the key in the Android Keystore",
+        "Encrypt only the most sensitive columns and leave the rest plaintext",
+        "Rely on the app sandbox, since the OS already isolates the database file",
+        "Store the database on shared external storage so the filesystem encrypts it"
+      ],
+      "correctIndex": 0,
+      "explanation": "SQLCipher transparently encrypts the whole database file and the key is hardware-backed via the Android Keystore. Sandboxing alone does not protect against rooted devices or backups, and encrypting only a few columns misses data that leaks through other paths. Expect a small read/write performance penalty."
+    },
+    {
+      "id": "platform-10",
+      "category": "platform",
+      "question": "What is the recommended way to persist a session token on Android?",
+      "options": [
+        "EncryptedSharedPreferences backed by the Android Keystore",
+        "Plain SharedPreferences so the value is easy to read and update",
+        "A plain file under the app’s external storage directory",
+        "Keep it in memory only and force re-authentication at every process start"
+      ],
+      "correctIndex": 0,
+      "explanation": "EncryptedSharedPreferences plus the Keystore keeps the token confidential at rest. Plain SharedPreferences or plain files are extractable, and in-memory-only storage forces users to re-authenticate constantly. Always clear tokens (and any refresh logic) on logout."
+    },
+    {
+      "id": "platform-13",
+      "category": "platform",
+      "question": "A user rotates the device, then Android kills your process. Where should you restore UI state that must survive process death?",
+      "options": [
+        "A ViewModel holding state through SavedStateHandle",
+        "A static field in the Application class",
+        "An object reference stored in a companion object",
+        "A field on the Activity that is never cleared"
+      ],
+      "correctIndex": 0,
+      "explanation": "ViewModel + SavedStateHandle survive both configuration changes and process death. Static/Application fields and Activity fields die with the process and recreate awkwardly. Use onSaveInstanceState or rememberSaveable for small, parcelable transient state."
+    },
+    {
+      "id": "platform-17",
+      "category": "platform",
+      "question": "Which modern, reliable Android API tells you which app is currently in the foreground?",
+      "options": [
+        "UsageStatsManager query with the PACKAGE_USAGE_STATS permission",
+        "ActivityManager.getRunningTasks",
+        "PackageManager.queryIntentActivities",
+        "TelephonyManager.getCellLocation"
+      ],
+      "correctIndex": 0,
+      "explanation": "getRunningTasks has been restricted for third-party apps since Android 5.0; the sanctioned path is a UsageStatsManager query (or an accessibility service). These APIs exist with privacy guardrails, so be sure the use is legitimate."
+    },
+    {
+      "id": "platform-20",
+      "category": "platform",
+      "question": "Which pipeline best represents a solid CI/CD setup for Android?",
+      "options": [
+        "Build with Gradle caching, run unit/instrumented tests, lint, scan dependencies, then deploy to an internal track",
+        "Lint once, build release, and push straight to production",
+        "Run unit tests only and skip lint and security scanning",
+        "Hand-build APKs on a developer laptop and upload them manually"
+      ],
+      "correctIndex": 0,
+      "explanation": "A robust pipeline gates quality early: Gradle caching speeds builds, tests/lint give fast feedback, dependency scanning catches supply-chain risk, and an internal track gives a safe deployment target before production."
+    },
+    {
+      "id": "platform-22",
+      "category": "platform",
+      "question": "Which set of practices best describes building an accessible Android app?",
+      "options": [
+        "Content descriptions, 48dp touch targets, WCAG color contrast, large-text support, and TalkBack testing",
+        "Using larger fonts and nothing else",
+        "Focusing on color contrast alone",
+        "Replacing all touch UI with hardware buttons so the screen reader is unnecessary"
+      ],
+      "correctIndex": 0,
+      "explanation": "Accessibility is multi-faceted: labels for screen readers, adequate touch targets (48dp), sufficient contrast, support for text scaling, and validating with TalkBack/Accessibility Scanner. Addressing only one dimension leaves most users out."
+    },
+    {
+      "id": "platform-23",
+      "category": "platform",
+      "question": "What is the idiomatic first step to make an Android app localizable?",
+      "options": [
+        "Move all user-visible strings into strings.xml resources",
+        "Hardcode English text and branch on Locale.getDefault() in code",
+        "Bundle locale-specific text in a JSON config loaded at startup",
+        "Use strings.xml only for the app name and keep UI text hardcoded"
+      ],
+      "correctIndex": 0,
+      "explanation": "The Android resource system resolves string resources automatically per locale (values-* directories), which makes translation and RTL testing straightforward. Hardcoded strings cannot be localized, and hand-rolled configs duplicate what the framework provides."
+    },
+    {
+      "id": "platform-24",
+      "category": "platform",
+      "question": "Which combination most directly improves network performance in an Android app?",
+      "options": [
+        "OkHttp cache with HTTP cache headers, compression, pagination, and connection reuse",
+        "Opening more parallel threads to send more requests at once",
+        "Increasing the request timeout on every call",
+        "Switching every request to plain HTTP to remove TLS overhead"
+      ],
+      "correctIndex": 0,
+      "explanation": "Caching avoids redundant transfers, gzip/Brotli shrink payloads, pagination limits what is fetched, and connection pooling reuses sockets. Extra threads and longer timeouts move just as many bytes, and dropping TLS is a serious security regression."
+    },
+    {
+      "id": "platform-26",
+      "category": "platform",
+      "question": "How would you implement an A/B testing feature-flag system in production?",
+      "options": [
+        "Remote configuration, deterministic user-based variant assignment, per-variant analytics, and percentage-based rollout",
+        "Compile two separate apps, each shipping only one variant",
+        "Randomly flip features per network request with no stable assignment",
+        "Flip the flag for every user at once and watch the crash report after a week"
+      ],
+      "correctIndex": 0,
+      "explanation": "A/B tests need stable variant assignment, metrics to compare conversions, gradual rollout to limit blast radius, and a kill switch to disable instantly on trouble. Randomized-per-request or global flips destroy experiment validity and safety."
+    },
+    {
+      "id": "platform-28",
+      "category": "platform",
+      "question": "Which change gives the largest, safest win for faster incremental builds in a large Android project?",
+      "options": [
+        "Modularize so edits only rebuild affected modules, and enable Gradle build and configuration cache",
+        "Disable R8/minification in release builds to speed up compilation",
+        "Consolidate everything into one module to avoid inter-module overhead",
+        "Buy faster hardware and leave the build configuration untouched"
+      ],
+      "correctIndex": 0,
+      "explanation": "Modularization plus build/configuration cache attacks the dominant cost - redundant rebuilds. Minify affects release packaging, not incremental dev builds, and performance work should be guided by --profile/Build Analyzer measurements."
+    },
+    {
+      "id": "platform-30",
+      "category": "platform",
+      "question": "What does \"promotion\" mean in the Google Play release flow?",
+      "options": [
+        "Moving the already-uploaded release that passed a lower track up to the next track",
+        "Re-uploading the same APK to the production track manually",
+        "Rebuilding the app from source before pushing to production",
+        "Releasing to 100% of users immediately after the first upload"
+      ],
+      "correctIndex": 0,
+      "explanation": "Promotion reuses the identical tested artifact - you do not re-upload or rebuild, so what was validated in internal/open testing is exactly what ships. Combined with staged rollout percentages, this limits the blast radius of a bad release."
+    },
+    {
+      "id": "platform-31",
+      "category": "platform",
+      "question": "What should you verify before shipping an Android release build?",
+      "options": [
+        "Test the minified release build, check R8 keep rules and mapping.txt, verify android:exported and PendingIntent flags, and test deep links and notifications",
+        "Only confirm the project compiles in debug mode",
+        "Skip release testing because R8 never changes behavior",
+        "Rely on the Play pre-launch report alone without manual testing"
+      ],
+      "correctIndex": 0,
+      "explanation": "R8 can strip code that works in debug, keep rules and mapping.txt matter for crash reporting, and release gating checks like android:exported and PendingIntent.FLAG_IMMUTABLE are easy to miss. Pre-launch reports complement, but do not replace, testing the actual minified artifact."
+    },
+    {
+      "id": "compose-25",
+      "category": "compose",
+      "question": "What is the recommended strategy for migrating a legacy View-based app to Jetpack Compose?",
+      "options": [
+        "Strangler fig: migrate leaf components first, ship new features in Compose, and use AndroidView/ComposeView interop during the transition",
+        "Rewrite the entire UI in a single release to avoid a mixed stack",
+        "Pause all new feature work until the migration is fully complete",
+        "Render the whole app with WebViews while the migration is planned"
+      ],
+      "correctIndex": 0,
+      "explanation": "Incremental replacement keeps the app shippable throughout. Interop APIs (AndroidView and ComposeView) let View and Compose coexist, and testing at each step catches regressions before the migration finishes."
+    },
+    {
+      "id": "compose-26",
+      "category": "compose",
+      "question": "How do you keep state manageable in a complex Compose application?",
+      "options": [
+        "Unidirectional data flow, hoist state to shared owners, use ViewModels as the source of truth, and rememberSaveable for transient UI state",
+        "Store all state in a singleton so every screen can read it directly",
+        "Keep mutable state inside composable bodies and mutate it in place",
+        "Use one global mutableStateOf map updated from anywhere in the app"
+      ],
+      "correctIndex": 0,
+      "explanation": "Unidirectional flow with hoisting and a single source of truth keeps state predictable; remember covers ephemeral UI state and rememberSaveable survives config changes. Singletons and globals create hidden coupling that is hard to test."
+    },
+    {
+      "id": "compose-27",
+      "category": "compose",
+      "question": "What is the most idiomatic way to build a complex custom UI in Compose?",
+      "options": [
+        "Use the Layout composable for custom measurement/placement, Canvas for drawing, Modifiers for behavior, and keep it well tested",
+        "Create a custom Android View and host it via AndroidView, isolated from Compose state",
+        "Assemble standard components in nested Boxes using fixed pixel offsets",
+        "Render a static image of the UI and layer click handlers on top"
+      ],
+      "correctIndex": 0,
+      "explanation": "Custom Layouts provide tailored measurement and placement, Canvas handles custom drawing, and Modifiers encapsulate behavior. Preferring native Compose building blocks keeps the UI reactive and testable; fixed offsets and static images break under different sizes and languages."
+    },
+    {
+      "id": "compose-28",
+      "category": "compose",
+      "question": "Which approach best diagnoses slow startup or scroll jank in Compose?",
+      "options": [
+        "Macrobenchmark for repeatable startup/scroll numbers, plus Perfetto/Systrace traces and Compose Compiler metrics",
+        "Open Layout Inspector and infer performance from the hierarchy",
+        "Watch the app on a device and guess which function is slow",
+        "Check the CPU load of the developer’s host machine"
+      ],
+      "correctIndex": 0,
+      "explanation": "Macrobenchmark gives stable, reproducible measurements; Perfetto/Systrace identifies the hot frames; and Compose Compiler metrics reveal recomposition and stability problems. Guessing or using host metrics misleads because they do not reflect on-device behavior."
+    },
+    {
+      "id": "compose-29",
+      "category": "compose",
+      "question": "When should you use Compose Compiler stability reports?",
+      "options": [
+        "When profiling shows a real stability-driven recomposition problem - the reports are compile-time and identical across debug/release",
+        "Always, before any optimization, to fix every unstable class",
+        "Only in release builds, because debug builds hide instability",
+        "Never, because recomposition order is fully deterministic"
+      ],
+      "correctIndex": 0,
+      "explanation": "The reports show skippable/restartable status and per-class stability so you can target @Stable/@Immutable fixes precisely. Because the analysis is compile-time, build type does not change the results - and you should optimize only after actually measuring a recomposition issue."
+    },
+    {
+      "id": "compose-30",
+      "category": "compose",
+      "question": "What does Strong Skipping mode do in the Compose compiler?",
+      "options": [
+        "Makes all restartable composables skippable and memoizes all lambdas inside composables - enabled by default since Kotlin 2.0.20",
+        "Turns off skipping altogether so composition stays deterministic",
+        "Requires manual @Stable annotations on every parameter to work",
+        "Removes lambdas from the emitted bytecode entirely"
+      ],
+      "correctIndex": 0,
+      "explanation": "Strong skipping compares unstable parameters by instance equality and auto-memoizes lambdas, so most code gets faster without manual @Stable work; opt out with @NonSkippableComposable or @DontMemoize. Watch for code that relied on side effects in now-skipped lambdas."
     }
   ]
 }
