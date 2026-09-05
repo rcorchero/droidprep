@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "generatedAt": "2026-09-03T13:09:28.702Z",
   "totalQuestions": 156,
   "questions": [
@@ -1561,6 +1561,76 @@
       "answer": "1. **Result type**: Use sealed class for success/error\n2. **Error mapping**: Convert exceptions to user-friendly messages\n3. **Retry logic**: For transient failures\n4. **Fallback**: Graceful degradation\n5. **Reporting**: Log errors for debugging",
       "whyItMatters": "",
       "codeExample": "sealed class Result<out T> {\n    data class Success<T>(val data: T) : Result<T>()\n    data class Error(val exception: Exception) : Result<Nothing>()\n}\n\nsuspend fun <T> safeCall(block: suspend () -> T): Result<T> {\n    return try {\n        Result.Success(block())\n    } catch (e: Exception) {\n        Result.Error(e)\n    }\n}\n\n// Usage\nwhen (val result = safeCall { repository.getData() }) {\n    is Result.Success -> showData(result.data)\n    is Result.Error -> showError(result.exception.message)\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-10",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "How do you make Android UI tests reliable at scale?",
+      "answer": "Flakiness is usually a determinism problem, so attack the data and the clock: use fixed, seeded fixtures and hermetic backends; never rely on wall-clock timing. Prefer test tags and content descriptions plus idling resources over sleep calls, and let Compose test rules auto-advance their clock. Disable animations in tests. Quarantine genuinely intermittent tests with a retry policy and run a flaky dashboard to root-cause trends rather than papering over them.",
+      "whyItMatters": "A flaky suite silently stops catching regressions and erodes CI trust; reliability work here is worth more raw test count.",
+      "codeExample": "",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-11",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "How do you test coroutine- and Flow-based code correctly?",
+      "answer": "Use runTest from kotlinx-coroutines-test to control virtual time, inject dispatchers so Main can be swapped with Dispatchers.setMain(StandardTestDispatcher), and assert Flow emissions with Turbine (awaitItem/expectNoEvents/cancelAndIgnoreRemainingEvents). Real delays and undispatched IO in tests that are only used to hope timing works out are a smell; virtual time keeps tests fast and deterministic.",
+      "whyItMatters": "Coroutines are core to modern Android; testing them wrongly produces tests that pass by accident or hang forever.",
+      "codeExample": "@OptIn(ExperimentalCoroutinesApi::class)\nclass SearchViewModelTest {\n  private val dispatcher = StandardTestDispatcher()\n\n  @Before fun setUp() = Dispatchers.setMain(dispatcher)\n  @After fun tearDown() = Dispatchers.resetMain()\n\n  @Test\n  fun `results stream as the query changes`() = runTest {\n    val vm = SearchViewModel(Repo(FakeSource))\n    launch(dispatcher) { vm.search(\"and\") }\n    advanceUntilIdle()\n\n    vm.results.test {\n      assertEquals(listOf(\"Android\"), awaitItem())\n      cancelAndIgnoreRemainingEvents()\n    }\n  }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "testing-12",
+      "category": "testing",
+      "categoryLabel": "Testing & Debugging",
+      "question": "How do you write maintainable UI tests for Jetpack Compose screens?",
+      "answer": "Select nodes through semantics: give unstable or ambiguous elements a testTag and find them with onNodeWithTag, otherwise assert roles/text/content descriptions. Drive the test clock with mainClock.autoAdvance = true or advanceTimeBy, perform clicks through semantics (not pixels), and use waitUntil only when a truly async condition exists. Keep tests focused on observable state transitions so refactors of internals do not break the suite.",
+      "whyItMatters": "Semantics-based tests survive layout refactors and read like the UI the user actually experiences.",
+      "codeExample": "@get:Rule val rule = createComposeRule()\n\n@Test\nfun `typing filters the list`() {\n  rule.setContent { HomeScreen(viewModel = fakeVm) }\n  rule.onNodeWithTag(\"search-field\").performTextInput(\"compose\")\n  rule.onNodeWithTag(\"result-list\").assertExists()\n  rule.onNodeWithText(\"Compose State\").assertIsDisplayed()\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-11",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "How would you design an offline-first Android app with reliable sync?",
+      "answer": "Make the local database the source of truth (Room), record every user write into an outbox/queue so it is never lost, and push it with a WorkManager worker gated on network availability using exponential backoff and conflict resolution (version numbers or last-write-wins per entity). Pull data via incremental sync identified by cursors so reconnect does not refetch whole collections. Always render cached state immediately and surface sync status in the UI.",
+      "whyItMatters": "Offline-first is standard for resilient mobile UX; the hard parts are ordering, conflict, and retry semantics, which is what these design questions probe.",
+      "codeExample": "class SyncWorker(ctx: Context, params: WorkerParameters) :\n  CoroutineWorker(ctx, params) {\n\n  override suspend fun doWork(): Result = withContext(Dispatchers.IO) {\n    val pending = db.outboxDao().nextBatch()\n    if (pending.isEmpty()) return@withContext Result.success()\n    for (op in pending) {\n      api.push(op.idempotencyKey, op.payload)\n      db.outboxDao().delete(op.id)\n    }\n    Result.success()\n  }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "systemdesign-12",
+      "category": "systemdesign",
+      "categoryLabel": "System Design",
+      "question": "How would you design a reliable photo/video upload pipeline for Android?",
+      "answer": "Persist the job in a local database and drive it with WorkManager using constraints (network type, charging) plus an exponential backoff to a dead-letter state after a maximum attempt count. Upload in resumable chunks with a stable idempotency key so retries never create duplicates, verify integrity (size/hash) after each chunk, and reflect progress from the persisted state so process death does not lose work. Use a foreground service for long uploads the user watches.",
+      "whyItMatters": "Uploads sit exactly where networks fail; a robust pipeline distinguishes a product from a demo.",
+      "codeExample": "val request = OneTimeWorkRequestBuilder<UploadWorker>()\n  .setConstraints(\n    Constraints.Builder()\n      .setRequiredNetworkType(NetworkType.CONNECTED)\n      .setRequiresCharging(true)\n      .build()\n  )\n  .setInputData(workDataOf(\"mediaId\" to uri.toString()))\n  .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.SECONDS)\n  .build()\n\nWorkManager.getInstance(ctx).enqueue(request)",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-32",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do you detect and fix memory leaks in a production Android app?",
+      "answer": "Run LeakCanary in debug/QA, and for the long tail use heap dumps with the Memory Profiler on a repeatable open-close flow to find retained objects. Grep the retainer chain for the classic culprits: a long-lived singleton holding a Context/View, an event bus or callback not unregistered, a coroutine launched with the wrong scope, or a ViewModel holding an Activity. Fix by scoping work to the lifecycle (lifecycleScope, repeatOnLifecycle), unregistering in onDestroy, and holding applicationContext for app-scoped singletons.",
+      "whyItMatters": "Leaks cause OOM crashes and jank that are hardest to reproduce; knowing how to find and fix the retainer chain is a senior signal.",
+      "codeExample": "class DetailScreen : Fragment() {\n  override fun onViewCreated(view: View, saved: Bundle?) {\n    lifecycleScope.launch {\n      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {\n        vm.detail.collect { render(it) }\n      }\n    }\n  }\n}",
+      "furtherReading": []
+    },
+    {
+      "id": "platform-33",
+      "category": "platform",
+      "categoryLabel": "Android Platform",
+      "question": "How do you reduce cold app startup time on Android?",
+      "answer": "Measure first with Macrobenchmark StartupTimingMetric on a mid-tier device, then attack the critical path: defer initialization with the App Startup library (lazy ContentProviders), avoid heavy work in Application.onCreate and the first Activity, theme the windowBackground so the first frame is not blank, and ship baseline startup profiles so the runtime does not JIT/interprete the whole hot path. Move SQLite/IO off the main thread.",
+      "whyItMatters": "Startup latency is a top ranking and retention factor; the skill is profiling the cold path, not guessing.",
+      "codeExample": "// StartupProfile (generated baseline profile) for the hot first frames:\n- com.example.app.MainActivity\n- com.example.app.MainScreen\n- androidx.compose.foundation.LazyColumn\n- androidx.compose.material3.*",
       "furtherReading": []
     }
   ]

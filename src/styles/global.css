@@ -4,6 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
+  color-scheme: dark;
   /* Android branding */
   --android-green: #3DDC84;
   --compose-blue: #4285F4;
@@ -76,6 +77,7 @@
 
 /* Light mode overrides */
 html.light {
+  color-scheme: light;
   --bg-primary: #F5F5FA;
   --bg-card: #FFFFFF;
   --bg-card-hover: #F0F0FF;

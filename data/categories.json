@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "categories": [
     {
       "id": "kotlin",
@@ -39,7 +39,7 @@
       "icon": "📱",
       "description": "Activity lifecycle, Services, WorkManager, permissions, and system APIs.",
       "color": "#26C6DA",
-      "questionCount": 31
+      "questionCount": 33
     },
     {
       "id": "testing",
@@ -47,7 +47,7 @@
       "icon": "🐞",
       "description": "Unit tests, UI tests, Compose testing, and debugging techniques.",
       "color": "#F06292",
-      "questionCount": 9
+      "questionCount": 12
     },
     {
       "id": "systemdesign",
@@ -55,7 +55,7 @@
       "icon": "🌐",
       "description": "Architecture at scale, trade-offs, and technical decision-making.",
       "color": "#BA68C8",
-      "questionCount": 9
+      "questionCount": 11
     },
     {
       "id": "algorithms",

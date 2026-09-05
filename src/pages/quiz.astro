@@ -55,6 +55,10 @@ const categories = categoriesData.categories;
           </select>
         </div>
 
+        <p id="quiz-empty-hint" class="quiz-empty-hint" hidden>
+          No questions match this combination. Try another difficulty or topic.
+        </p>
+
         <button id="quiz-start" class="btn btn-primary">Start Quiz</button>
       </div>
     </section>
@@ -121,6 +125,7 @@ const categories = categoriesData.categories;
     var countDisplay = document.getElementById('quiz-count-display');
     var difficultySelect = document.getElementById('quiz-difficulty');
     var categorySelect = document.getElementById('quiz-category');
+    var emptyHint = document.getElementById('quiz-empty-hint');
     var progressFill = document.getElementById('quiz-progress-fill');
     var progressText = document.getElementById('quiz-progress-text');
     var questionEl = document.getElementById('quiz-question');
@@ -167,7 +172,11 @@ const categories = categoriesData.categories;
         var okCategory = cat === 'all' || q.category === cat;
         return okLevel && okCategory;
       });
-      if (!pool.length) pool = questionsAll.slice();
+      if (!pool.length) {
+        emptyHint.hidden = false;
+        return;
+      }
+      emptyHint.hidden = true;
       questions = shuffle(pool).slice(0, count);
       current = 0;
       answers = {};
@@ -400,6 +409,16 @@ const categories = categoriesData.categories;
   .setup-hint {
     font-size: var(--text-sm);
     color: var(--text-secondary);
+  }
+
+  .quiz-empty-hint {
+    font-size: var(--text-sm);
+    color: var(--warning);
+    background: var(--accent-dim);
+    border: 1px solid var(--warning);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-md);
   }
 
   .quiz-progress {

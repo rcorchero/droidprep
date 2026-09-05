@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "generatedAt": "2026-09-03T13:09:51.309Z",
+  "version": "1.1",
+  "generatedAt": "2026-09-05T14:01:58.759Z",
   "difficulties": {
     "algorithms-01": "basic",
     "algorithms-02": "basic",
@@ -157,6 +157,13 @@
     "testing-06": "basic",
     "testing-07": "intermediate",
     "testing-08": "intermediate",
-    "testing-09": "intermediate"
+    "testing-09": "intermediate",
+    "testing-10": "senior",
+    "testing-11": "senior",
+    "testing-12": "senior",
+    "systemdesign-11": "senior",
+    "systemdesign-12": "senior",
+    "platform-32": "senior",
+    "platform-33": "senior"
   }
 }

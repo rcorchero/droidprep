@@ -1,5 +1,5 @@
 {
-  "version": "1.1",
+  "version": "1.2",
   "generatedAt": "2026-09-03",
   "questions": [
     {
@@ -1990,6 +1990,110 @@
       ],
       "correctIndex": 0,
       "explanation": "Strong skipping compares unstable parameters by instance equality and auto-memoizes lambdas, so most code gets faster without manual @Stable work; opt out with @NonSkippableComposable or @DontMemoize. Watch for code that relied on side effects in now-skipped lambdas."
+    },
+    {
+      "id": "testing-10",
+      "category": "testing",
+      "question": "What is the most effective way to reduce flaky Android UI tests?",
+      "options": [
+        "Deterministic fixtures, test tags/idling resources instead of sleeps, animations disabled, and a quarantine+retry policy",
+        "Add longer sleeps before every assertion so the UI always settles",
+        "Run the full suite in parallel on many physical devices with no retries",
+        "Delete every test that only fails intermittently"
+      ],
+      "correctIndex": 0,
+      "explanation": "Flakes come from nondeterminism: fixed data, semantic selectors, a controlled test clock, and a quarantine workflow reduce the flake rate while preserving coverage. Sleeps and deletions either mask the real cause or silently remove protection."
+    },
+    {
+      "id": "testing-11",
+      "category": "testing",
+      "question": "Which approach most reliably tests coroutine code that switches dispatchers?",
+      "options": [
+        "Inject dispatchers, set Main to a StandardTestDispatcher, drive virtual time with runTest, and assert Flows with Turbine",
+        "Use the real Dispatchers.Main and add generous delays until the test passes",
+        "Call collect() inside the test and hope the flow completes before timeout",
+        "Refactor every function to return synchronously so no coroutines exist"
+      ],
+      "correctIndex": 0,
+      "explanation": "runTest gives deterministic virtual time, swapping Main keeps the production dispatch order visible, and Turbine asserts emissions without race-sensitive waits. Real-time delays reintroduce the exact flakiness coroutines were meant to remove."
+    },
+    {
+      "id": "testing-12",
+      "category": "testing",
+      "question": "What is the most robust way to select a composable inside a Compose UI test?",
+      "options": [
+        "Add a testTag and locate the node with onNodeWithTag, then assert on accessible semantics",
+        "Match the node by its exact pixel coordinates on the screen",
+        "Assert on the internal composable function name",
+        "Dump the rendered bitmap and compare it against a stored image"
+      ],
+      "correctIndex": 0,
+      "explanation": "Semantics-based selection (testTag/text/role) is independent of layout and pixel positions, so refactors and different screen sizes keep the test valid. Pixel and implementation-based matchers are brittle and fail for no product reason."
+    },
+    {
+      "id": "systemdesign-10",
+      "category": "systemdesign",
+      "question": "Which statement best demonstrates that AI improved engineering productivity measurably?",
+      "options": [
+        "Collecting a concrete baseline (e.g. PR review time, defect rate) and comparing it after adoption on the same team with matched control periods",
+        "A general sense that the team ships faster since enabling Copilot",
+        "The total number of lines of code the AI assistant generated",
+        "Comparing two unrelated teams with different workloads and features"
+      ],
+      "correctIndex": 0,
+      "explanation": "Measurable means a defined baseline, a metric tied to outcomes (not tool usage), the same or matched population, and enough time to separate signal from noise. Tool-generating lines and anecdotes are not causal evidence."
+    },
+    {
+      "id": "systemdesign-11",
+      "category": "systemdesign",
+      "question": "Which architecture best supports offline-first sync on Android?",
+      "options": [
+        "Local database as source of truth, an outbox queue for pending writes, WorkManager-driven sync with backoff, and explicit conflict resolution",
+        "Cache API responses in memory only and always fetch fresh data in flight",
+        "Store all data in RAM and re-download everything on each launch",
+        "Block the UI until the network returns so cached state is never shown"
+      ],
+      "correctIndex": 0,
+      "explanation": "Offline-first needs a durable local store, a durable write queue so user actions are never lost, managed retries with backoff, and explicit conflict policy. In-memory or blocked caches fail the moment the network or process disappears."
+    },
+    {
+      "id": "systemdesign-12",
+      "category": "systemdesign",
+      "question": "What makes a media upload pipeline survive process death and flaky networks?",
+      "options": [
+        "A database-backed job driven by WorkManager with exponential backoff, chunked resumable uploads, and idempotency keys",
+        "Uploading on the main thread and blocking until the network call finishes",
+        "Holding the file only in memory and uploading when a handler fires later",
+        "One un-cancelable network request with a very long timeout"
+      ],
+      "correctIndex": 0,
+      "explanation": "Persistence plus constraint-aware scheduling plus idempotency makes retries safe and resumable across process and network death. Main-thread or in-memory approaches lose state the moment anything interrupts them and can freeze the UI."
+    },
+    {
+      "id": "platform-32",
+      "category": "platform",
+      "question": "How should you approach a memory leak that only reproduces occasionally in production?",
+      "options": [
+        "Enable LeakCanary/heap analysis in QA builds, reproduce with a repeatable open-close flow, and inspect the retained chain to find the owner",
+        "Increase the app heap size in the manifest so the leak never crashes",
+        "Restart the activity automatically whenever memory pressure rises",
+        "Ignore Java-side leaks and assume the OS reclaims memory for you"
+      ],
+      "correctIndex": 0,
+      "explanation": "Leak analysis needs a repeatable repro and the retainer chain to identify the strong reference keeping the object alive. Raising the heap or restarting delays the symptom; the OS never reclaims objects that are strongly reachable."
+    },
+    {
+      "id": "platform-33",
+      "category": "platform",
+      "question": "Which combination most reliably reduces cold app startup time?",
+      "options": [
+        "Measure with Macrobenchmark, defer initialization via the App Startup library, ship baseline startup profiles, and theme the window background",
+        "Show a blank screen longer so the first frame appears instant by comparison",
+        "Preload the entire dependency graph synchronously in Application.onCreate",
+        "Disable the launcher animation and ship without measuring"
+      ],
+      "correctIndex": 0,
+      "explanation": "Startup work should be measured and then removed from the critical path: lazily initialized providers, precompiled startup profiles, and a non-blank first frame. Blocking init and empty screens either slow the real cold start or hide it rather than improve it."
     }
   ]
 }
