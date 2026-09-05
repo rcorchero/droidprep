@@ -403,4 +403,10 @@ html.light .badge-senior {
   .container {
     padding: 0 var(--space-md);
   }
+
+  /* iOS Safari zooms the viewport when focusing a control whose font-size
+     is below 16px — keep selects at the base size on small screens. */
+  main .container select {
+    font-size: var(--text-base);
+  }
 }

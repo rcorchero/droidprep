@@ -169,6 +169,7 @@ const whyHTML = inlineMarkdown(whyItMatters);
 
   .question-text {
     flex: 1;
+    min-width: 0;
     font-size: var(--text-base);
     font-weight: 600;
     color: var(--text-primary);
@@ -265,9 +266,43 @@ const whyHTML = inlineMarkdown(whyItMatters);
     background: var(--accent-dim);
   }
 
-  @media (max-width: 560px) {
+  @media (max-width: 768px) {
+    .question-header {
+      align-items: flex-start;
+      gap: var(--space-sm);
+      padding: var(--space-md);
+    }
+
+    .question-toggle {
+      flex-wrap: wrap;
+      column-gap: var(--space-sm);
+      row-gap: var(--space-xs);
+    }
+
+    .question-category {
+      flex-basis: 100%;
+    }
+
+    .question-toggle .badge {
+      flex-shrink: 0;
+    }
+
+    .toggle-state {
+      display: none;
+    }
+
     .bookmark-label {
       display: none;
+    }
+
+    .bookmark-btn {
+      padding: var(--space-sm);
+    }
+
+    .chevron {
+      width: 40px;
+      height: 40px;
+      font-size: var(--text-base);
     }
   }
 

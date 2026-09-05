@@ -256,6 +256,25 @@ const categoryColorMap = Object.fromEntries(categories.map(c => [c.id, c.color])
     .filters {
       flex-direction: column;
       gap: var(--space-md);
+      align-items: stretch;
+    }
+
+    .filter-group {
+      width: 100%;
+    }
+
+    .filter-group select {
+      flex: 1 1 0%;
+      min-width: 0;
+      max-width: 360px;
+    }
+
+    .saved-filter {
+      min-height: 44px;
+    }
+
+    .count-display {
+      justify-content: center;
     }
   }
 </style>
